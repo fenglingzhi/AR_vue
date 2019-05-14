@@ -6,6 +6,20 @@
 
 > npm run build 项目打包
 
+##### 目录结构
+```
+|--api  接口目录
+|--assets 静态资源文件
+|--|--icon 字体图标库
+|-- components 组件目录
+|--lib 引用库目录
+|--mock mock数据目录
+|--router 路由目录
+|--store 状态管理中心
+|--utils 工具目录
+|--views 页面目录
+|--config.js httip服务封装&&接口地址配置
+|--main.js 全局依赖入口
 
 ##### main.js
 ``` javascript
@@ -24,11 +38,18 @@ Vue.use(vant);
 Vue.use($);
 
 ```
-### 三、引用库
- * vant-ui
+##### 引用库
+ * vant-ui UI框架
 > https://youzan.github.io/vant/#/zh-CN/quickstart
 
-* vuex
+* vuex 状态管理插件
 > https://vuex.vuejs.org/zh-cn/intro.html
+
+* axios http请求插件
+> https://www.kancloud.cn/yunye/axios/234845
+
+* vue开发规范
+> [https://www.jianshu.com/p/62a9bbe7b8e3](https://www.jianshu.com/p/62a9bbe7b8e3)
+
 
 
