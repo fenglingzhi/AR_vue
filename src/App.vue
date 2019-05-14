@@ -1,13 +1,17 @@
 <template>
   <div id="app">
+    <!-- 内容主视区 -->
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+    <!-- 内容主视区 -->
   </div>
 </template>
+<script>
 
+</script>
 <style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
