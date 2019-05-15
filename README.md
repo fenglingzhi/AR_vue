@@ -51,5 +51,8 @@ Vue.use($);
 * vue开发规范
 > [https://www.jianshu.com/p/62a9bbe7b8e3](https://www.jianshu.com/p/62a9bbe7b8e3)
 
+* iconfont字体库
+> https://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=565624
+
 
 

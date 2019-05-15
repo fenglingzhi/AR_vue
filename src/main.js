@@ -9,13 +9,13 @@ import config from './config.js' /* 全局状态管理 */
 import vant from 'vant' /* vantUI */
 import $ from 'jquery' /* jquery */
 import axios from 'axios' /* 引入axios库处理http请求 */
+import './assets/icon/iconfont.css' /* 引入iconfont字体库 */
 
 /**
  * 依赖全局调用
  * @type {boolean}
  */
-Vue.use(config);
-
+// Vue.use(config);
 
 Vue.config.productionTip = false;
 

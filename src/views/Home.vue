@@ -4,7 +4,7 @@
     <div class="login">
       <input type="text" v-model="username" placeholder="用户名qwe">
       <input type="text" v-model="password" placeholder="密码123">
-      <div class="submit" @click="login(username,password)">submit</div>
+      <div class="submit" @click="login(username,password)"><i class="iconfont cupshe-xiangzi"></i> submit</div>
     </div>
   </div>
 </template>
@@ -28,15 +28,16 @@
         },
         methods: {
           login:function (username,password) {
+              let vm = this;
               api.Login(username,password).then(resp=>{
                   this.token = resp.data.token;
                   Dialog.alert({
                       title: 'token',
-                      message: this.token
+                      message: vm.token
                   }).then(() => {
                       // on close
                   });
-                  console.log(this.token = resp.data);
+                  console.log(vm.token = resp.data);
               })
           }
         }
