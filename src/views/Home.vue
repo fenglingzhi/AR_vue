@@ -12,18 +12,22 @@
 <script>
     import * as api from '../api/commonApi'
     import { Dialog } from 'vant';
+    import router from 'vue-router';
     export default {
         components : {
-            Dialog
+            Dialog,router
         },
         data () {
             return {
                 username: '',
                 password: '',
-                token: ''
+                token: '',
             }
         },
         mounted() {
+            //表单验证demo
+            this.$validator.errors.has('name');
+
 
         },
         methods: {
@@ -31,12 +35,13 @@
               let vm = this;
               api.Login(username,password).then(resp=>{
                   this.token = resp.data.token;
-                  Dialog.alert({
-                      title: 'token',
-                      message: vm.token
-                  }).then(() => {
-                      // on close
-                  });
+                  // Dialog.alert({
+                  //     title: 'token',
+                  //     message: vm.token
+                  // }).then(() => {
+                  //     // on close
+                  // });
+                  this.$router.push('/utilPage')
                   console.log(vm.token = resp.data);
               })
           }

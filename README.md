@@ -54,5 +54,8 @@ Vue.use($);
 * iconfont字体库
 > https://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=565624
 
+* vee-validate表单验证库
+> https://baianat.github.io/vee-validate/guide/#features
+
 
 
