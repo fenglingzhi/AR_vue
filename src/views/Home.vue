@@ -65,6 +65,9 @@
         <img v-for="(v,i) in columns.policy" :key="i" :src="v.image_url" alt="">
       </div>
     </div>
+    <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad">
+      <van-cell  v-for="item in columns.products"  :key="item"  :title="item"/>
+    </van-list> -->
     <div class="products" >
         <div v-for="(v,i) in columns.products" :key='i'>
           <img :src="v.img_url" alt="">
@@ -79,26 +82,25 @@
 
 <script>
 import * as api from "../api/commonApi";
-import { Dialog, Swipe, SwipeItem } from "vant";
+import { Dialog} from "vant";
 import router from "vue-router";
 import axios from "axios";
-// import { } from "vant"; 
-// import CountDown from 'vant';
-// import 'vant/lib/CountDown/style';
+// import { CountDown } from 'vant';
+
 
 export default {
     data(){
       return{
           columns:{
-            
-          },
-          time:1598097090000
+           },
+          // time:1598097090000          
+          loading: false,
+          finished: false
       }
     },
    components: {
-     Swipe,
-     Dialog,
-     SwipeItem
+      // CountDown,
+      // List
    },
    methods: {
     loadhomehearder() {
@@ -112,10 +114,25 @@ export default {
         });
     },
 
+    onLoad() {
+      // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          this.columns.products.push(this.columns.products.length + 1);
+        }
+        // 加载状态结束
+        this.loading = false;
+
+        // 数据全部加载完成
+        if (this.columns.products.length >= 40) {
+          this.finished = true;
+        }
+      }, 500);
+    }
   },
   mounted() {
     this.loadhomehearder();
-    
+    this.onLoad();
   }
   
 };
