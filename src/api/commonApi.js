@@ -1,5 +1,4 @@
 import { getData,postData } from '../config.js';
-
 export function Login(username,pwd) {
     let req = {
         username:username,
@@ -7,3 +6,7 @@ export function Login(username,pwd) {
     };
     return postData('/login',req)
 }
+// import Vue from 'vue'
+// import VueJsonp  from "vue-jsonp";
+// Vue.use(VueJsonp);
+

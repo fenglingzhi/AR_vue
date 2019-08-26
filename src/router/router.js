@@ -10,7 +10,7 @@ const utilPage = resolve => require(['../views/utilPage.vue'],resolve);
 
 var routerMaps = [
     {name:'Home',path:'/',component:Home,meta: { name:'home' }},
-    {name:'utilPage',path:'/utilPage',component:utilPage,meta: { name:'utilPage' }},
+    // {name:'utilPage',path:'/utilPage',component:utilPage,meta: { name:'utilPage' }},
 ];
 
 const router = new Router({

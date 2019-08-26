@@ -1,15 +1,20 @@
 import axios from 'axios'
 import QS from 'qs'; // 引入qs模块
 import { Toast } from 'vant';
+import { Dialog, Swipe, SwipeItem } from "vant";
+Vue.use(Swipe).use(SwipeItem)
+import Vue from 'vue'; 
 import store from './store/store';
 import router from 'vue-router'
+
 /**
  * 配置baseurl接口地址
  */
-export const BasicUrl = 'http://rap2api.taobao.org/app/mock/121288/cupshe';
-
+// export const BasicUrl = 'http://rap2api.taobao.org/app/mock/121288/cupshe';
+export const BasicUrl = 'http://192.168.0.18:8081/zorafanERP';
 
 axios.defaults.timeout = 10000;
+// axios.defaults.baseURL ='http://192.168.0.18:8081/zorafanERP';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // 先导入vuex,因为我们要使用到里面的状态对象
@@ -123,7 +128,7 @@ export const postData = (url,data={}) =>{
         axios({
             method:'post',
             url:BasicUrl+url,
-            data:data
+            data:QS.stringify(data)
         })
         .then(resp=>{
             resolve(resp)
