@@ -1,9 +1,6 @@
 import axios from 'axios'
 import QS from 'qs'; // 引入qs模块
 import { Toast } from 'vant';
-import { Dialog, Swipe, SwipeItem } from "vant";
-Vue.use(Swipe).use(SwipeItem)
-import Vue from 'vue'; 
 import store from './store/store';
 import router from 'vue-router'
 

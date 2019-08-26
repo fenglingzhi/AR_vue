@@ -21,7 +21,7 @@ import {getData,postData} from './config.js'
  * 依赖全局调用
  * @type {boolean}
  */
-// Vue.use(Vant);
+Vue.use(Vant);
 // Vue.use(config);
 Vue.use(validate);
 Vue.prototype.$get=getData;

@@ -43,7 +43,7 @@
             <img :src="k.image_url" >
           </div>
       </div>
-      <!-- <van-count-down millisecond :time="time" format="HH:mm:ss:SSS"/> -->
+       <van-count-down millisecond :time="time" format="HH:mm:ss:SSS"/>
       <div class="countlists">
         <div class="countdown" > 
             <img v-for="(m,n) in columns.count_down.products" :key="n" :src="m.img_url" alt="">     
@@ -79,10 +79,9 @@
 
 <script>
 import * as api from "../api/commonApi";
-import { Dialog, Swipe, SwipeItem } from "vant";
+import { Dialog, Swipe, SwipeItem, CountDown } from 'vant';
 import router from "vue-router";
 import axios from "axios";
-// import { } from "vant"; 
 // import CountDown from 'vant';
 // import 'vant/lib/CountDown/style';
 
@@ -96,9 +95,11 @@ export default {
       }
     },
    components: {
-     Swipe,
-     Dialog,
-     SwipeItem
+       Swipe,
+       Dialog,
+       SwipeItem,
+       router,
+       CountDown
    },
    methods: {
     loadhomehearder() {
