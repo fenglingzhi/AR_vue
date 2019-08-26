@@ -15,7 +15,7 @@
   </header>
   <div class="toptexts"  >
       <van-swipe :autoplay="3000" :show-indicators="false"  vertical style="height:45px">
-      <van-swipe-item   v-for="(v,i) in columns.bannNotices" :key='i'>
+      <van-swipe-item   v-for="(v,i) in columns.bannNotices" :key="i">
         {{ v.title }}
       </van-swipe-item>
     </van-swipe>
@@ -43,7 +43,19 @@
             <img :src="k.image_url" >
           </div>
       </div>
-      <!-- <van-count-down millisecond :time="time" format="HH:mm:ss:SSS"/> -->
+      <van-count-down :time="time">
+        <template v-slot="timeData">
+          <span class="item">{{ timeData.days }}:</span>
+          <span class="item">{{ timeData.hours }}:</span>
+          <span class="item">{{ timeData.minutes }}:</span>
+          <span class="item">{{ timeData.seconds }}</span>
+           <span class="text"> العد التنازلي </span>
+        </template>       
+      </van-count-down>
+      <div class="countdownimg">
+        
+        <img src="../assets/漏斗,倒计时.png" alt="">
+      </div>
       <div class="countlists">
         <div class="countdown" > 
             <img v-for="(m,n) in columns.count_down.products" :key="n" :src="m.img_url" alt="">     
@@ -65,44 +77,50 @@
         <img v-for="(v,i) in columns.policy" :key="i" :src="v.image_url" alt="">
       </div>
     </div>
-    <!-- <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad">
-      <van-cell  v-for="item in columns.products"  :key="item"  :title="item"/>
-    </van-list> -->
-    <div class="products" >
-        <div v-for="(v,i) in columns.products" :key='i'>
-          <img :src="v.img_url" alt="">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad">
+      <van-cell  v-for="item in Lists"  :key="item"  >
+          <img :src="item.img_url" alt="">
           <p>
-            <span class="newprice">{{ v.newprice }}</span>
-            <span class="oldprice">{{ v.oldprice }}</span>
-          </p>        
-        </div>
-    </div>
+            <span class="newprice">{{ item.newprice }}</span>
+            <span class="oldprice">{{ item.oldprice }}</span>
+          </p> 
+    </van-cell>       
+    </van-list> 
   </div>
 </template>
 
 <script>
 import * as api from "../api/commonApi";
-import { Dialog} from "vant";
+import { Dialog, Swipe, SwipeItem, CountDown, List  } from 'vant';
 import router from "vue-router";
 import axios from "axios";
-// import { CountDown } from 'vant';
-
 
 export default {
     data(){
       return{
+          Lists:[],   
           columns:{
+              
            },
-          // time:1598097090000          
+          time:1598097090000,       
           loading: false,
-          finished: false
-      }
+          finished: false,
+          listData:{
+            id_currency:"1",
+            page:"1"
+          },
+          total_page:""      
+          }
     },
    components: {
-      // CountDown,
-      // List
+       Swipe,
+       Dialog,
+       SwipeItem,
+       router,
+       CountDown,
+       List
    },
-   methods: {
+   methods: {  
     loadhomehearder() {
       this.$post("/api/home/getHome", {
         id_currency: "1"
@@ -113,26 +131,36 @@ export default {
           console.log(error);
         });
     },
+    loadhomeWaterfall(data){
+      this.$post("/api/home/getHomeProductList",data).then(redata => {
+          this.Lists = redata.data.data.products;
+          this.total_page = redata.data.total_page;
+          // console.log(data);
+        }).catch(error => {
+          console.log(error);
+        });
+    },
 
     onLoad() {
       // 异步更新数据
       setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.columns.products.push(this.columns.products.length + 1);
+        if(this.total_page>=this.listData.page){
+          this.listData.page=this.listData.page+1
+          this.Lists.push(this.loadhomeWaterfall(this.listData))
+        }else{
+          this.loading = false;
+           this.finished = true;
         }
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.columns.products.length >= 40) {
-          this.finished = true;
-        }
-      }, 500);
+        // // 数据全部加载完成
+        // if (this.Lists.length >=  ) {
+        //   this.finished = true;
+        // }
+      }, 2000);
     }
   },
   mounted() {
     this.loadhomehearder();
-    this.onLoad();
+    this.loadhomeWaterfall(this.listData);
   }
   
 };
@@ -160,7 +188,6 @@ header {
   justify-content: space-between;
   padding: 0 10px;
   align-items: center;
-  // position: fixed;
 }
 .topwiper{
   width: 100%;
@@ -169,7 +196,6 @@ header {
   margin-top: 45px;
   color: #fff;
   line-height: 40px;
-  // position: fixed;
 }
 .toptexts{
   height: 45px;
@@ -191,19 +217,19 @@ header {
   float: left;
   width: 187px;
   height: 214px;
-  // position: fixed;
+  margin-top: 15px;
 }
 .banner4left{
   width: 180px;
-  height: 180px;
+  height: 194px;
   float: left;
-  // position: fixed;
+  margin-top: 15px;
 }
 .banner4right{
   width: 195px;
   height: 90px;
   float: left;
-  // position: fixed;
+  margin-top: 15px;
 }
 .countdown img{
    width: 120px;
@@ -215,9 +241,34 @@ header {
 }
 .countdown{
   margin-top: 10px;
-  width: 1320px;
+  width: 1200px;
   // overflow-x: auto;
   // white-space: nowrap;
+}
+.countdownimg{
+  width: 34px;
+  height: 30px;
+  margin-left: 304px;
+  margin-top: -16px;
+}
+.van-count-down{
+  height: 14px;
+  margin-top: 550px;
+  padding-top: 110px;
+  margin-left: -120px;
+}
+.text{
+  font-weight: bold;
+  font-size: 20px;
+}
+.item {
+  display: inline-block;
+  width: 30px;
+  margin-right: 5px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  background-color: #4b555f;
 }
 .countlists{
   width: 100%;
@@ -242,13 +293,14 @@ header {
 .oldprice{
   color:red;
 }
-.item {
-  display: inline-block;
-  width: 22px;
-  margin-right: 5px;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-  background-color: #1989fa;
+
+.van-list{
+  overflow: hidden;
+  // display: flex;
+}
+.van-cell{
+  float: left;
+  width: 187px;
+  height: 230px;
 }
 </style>

@@ -1,16 +1,9 @@
 import axios from 'axios'
 import QS from 'qs'; // 引入qs模块
 import { Toast } from 'vant';
-import { Dialog} from "vant";
-import Vue from 'vue'; 
 import store from './store/store';
 import router from 'vue-router'
-import { Swipe, SwipeItem } from 'vant';
-import { List } from 'vant';
 
-Vue.use(List);
-
-Vue.use(Swipe).use(SwipeItem);
 
 /**
  * 配置baseurl接口地址
