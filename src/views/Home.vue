@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="home_ar">
     <header>
-    <div class="header_wrap">
+    <div class="header_wrap" v-if="unshow">
       <div class="search">
         <img src="../assets/img/index/serch.png" alt />
       </div>
@@ -12,80 +12,82 @@
         <img src="../assets/img/index/message.png" alt />
       </div>
     </div>
+    <div class="header_wrap" v-if="!unshow">
+        <div class="announce">
+            <img src="../assets/img/index/message.png" alt />
+        </div>
+        <div class="title">
+            <img src="../assets/img/index/AR-logo.png" alt />
+        </div>
+        <div class="search">
+            <img src="../assets/img/index/serch.png" alt />
+        </div>
+    </div>
   </header>
   <div class="toptexts"  >
       <van-swipe :autoplay="3000" :show-indicators="false"  vertical style="height:45px">
-      <van-swipe-item   v-for="(v,i) in columns.bannNotices" :key="i">
+      <van-swipe-item   v-for="(v,i) in  bann_Notices" :key="i">
         {{ v.title }}
       </van-swipe-item>
     </van-swipe>
   </div>
   <div class="banner">
       <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(v,i) in columns.banner.banner_tops" :key='i'>
+        <van-swipe-item v-for="(v,a) in banner_tops" :key='"a"+a'>
           <img :src="v.image_url" />
         </van-swipe-item>
       </van-swipe>
       <div class="banner2">
-         <img :src="a.image_url"  v-for="(a,b) in columns.banner.banner_1" :key="b">
+         <img :src="a.image_url"  v-for="(a,b) in banner1" :key="'b'+b">
       </div>
-      <div class="banner3" v-for="(c,d) in columns.banner.banner_2" :key="d">
+       <div class="banner3" v-for="(c,d) in banner2" :key="'d'+d">
          <img :src="c.image_url" >
       </div>
       <div class="banner4">
-          <div class="banner4left" v-for="(e,f) in columns.banner.banner_3_left" :key="f">
+          <div class="banner4left" v-for="(e,f) in banner3left" :key="'f'+f">
             <img :src="e.image_url" >
           </div>
-          <div class="banner4right" v-for="(h,j) in columns.banner.banner_3_right_1" :key="j">
+          <div class="banner4right" v-for="(h,j) in banner3right1" :key="'j'+j">
             <img :src="h.image_url" >
           </div>
-          <div class="banner4right" v-for="(k,l) in columns.banner.banner_3_right_2" :key="l">
+          <div class="banner4right" v-for="(k,l) in banner3right2" :key="'l'+l">
             <img :src="k.image_url" >
           </div>
       </div>
-      <van-count-down :time="time">
+       <van-count-down :time="time">
         <template v-slot="timeData">
-          <span class="item">{{ timeData.days }}:</span>
-          <span class="item">{{ timeData.hours }}:</span>
-          <span class="item">{{ timeData.minutes }}:</span>
+          <span class="item">{{ timeData.days }}</span><span class="maohao">:</span>
+          <span class="item">{{ timeData.hours }}</span><span class="maohao">:</span>
+          <span class="item">{{ timeData.minutes }}</span><span class="maohao">:</span>
           <span class="item">{{ timeData.seconds }}</span>
-           <span class="text"> العد التنازلي </span>
-        </template>       
+          <span class="text"> العد التنازلي </span>
+        </template>
       </van-count-down>
       <div class="countdownimg">
-        
         <img src="../assets/漏斗,倒计时.png" alt="">
       </div>
       <div class="countlists">
-        <div class="countdown" > 
-            <img v-for="(m,n) in columns.count_down.products" :key="n" :src="m.img_url" alt="">     
+        <div class="countdown" :style="{width:contentWidth}">
+            <img v-for="(m,n) in countdown" :key="n" :src="m.img_url" alt="" class="countimg">
         </div>
       </div>
-      <div class="banner5" v-for="(v,i) in columns.banner.banner_5" :key="i"> 
+      <div class="banner5" v-for="(v,i) in banner5" :key="i">
          <img :src="v.image_url" alt="">
       </div>
-      <div class="banner6" > 
-        <img v-for="(v,i) in columns.banner.banner_4" :key="i" :src="v.image_url" alt="">
+      <div class="banner6" >
+        <img v-for="(v,i) in banner4" :key="i" :src="v.image_url" alt="">
       </div>
-      <div class="banner7" > 
-        <img v-for="(v,i) in columns.banner.banner_6" :key="i" :src="v.image_url" alt="">
+      <div class="banner7" >
+        <img v-for="(v,i) in banner6" :key="i" :src="v.image_url" alt="">
       </div>
-      <div class="banner8" > 
-        <img v-for="(v,i) in columns.banner.banner_7" :key="i" :src="v.image_url" alt="">
+      <div class="banner8" >
+        <img v-for="(v,i) in banner7" :key="i" :src="v.image_url" alt="">
       </div>
-       <div class="banner9" > 
-        <img v-for="(v,i) in columns.policy" :key="i" :src="v.image_url" alt="">
+       <div class="banner9" >
+        <img v-for="(v,i) in banner9" :key="i" :src="v.image_url" alt="">
       </div>
     </div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad">
-      <van-cell  v-for="item in Lists"  :key="item"  >
-          <img :src="item.img_url" alt="">
-          <p>
-            <span class="newprice">{{ item.newprice }}</span>
-            <span class="oldprice">{{ item.oldprice }}</span>
-          </p> 
-    </van-cell>       
-    </van-list> 
+    <CommodityWaterfall></CommodityWaterfall>
   </div>
 </template>
 
@@ -94,23 +96,27 @@ import * as api from "../api/commonApi";
 import { Dialog, Swipe, SwipeItem, CountDown, List  } from 'vant';
 import router from "vue-router";
 import axios from "axios";
+import CommodityWaterfall from "../components/CommodityWaterfall.vue";
 
 export default {
     data(){
       return{
-          Lists:[],   
-          columns:{
-              
-           },
-          time:1598097090000,       
-          loading: false,
-          finished: false,
-          listData:{
-            id_currency:"1",
-            page:"1"
-          },
-          total_page:""      
-          }
+          bann_Notices:[],
+          banner_tops:[],
+          banner1:[],
+          banner2:[],
+          banner3left:[],
+          banner3right1:[],
+          banner3right2:[],
+          countdown:[],
+          banner5:[],
+          banner4:[],
+          banner6:[],
+          banner7:[],
+          banner9:[],
+          time:1598097090000,
+          contentWidth:0,
+      }
     },
    components: {
        Swipe,
@@ -118,55 +124,43 @@ export default {
        SwipeItem,
        router,
        CountDown,
-       List
+       CommodityWaterfall,
    },
    methods: {  
     loadhomehearder() {
       this.$post("/api/home/getHome", {
         id_currency: "1"
       }).then(data => {
-          this.columns = data.data.data;
-          console.log(this.columns);
+          this.bann_Notices = data.data.data.bannNotices
+          this.banner_tops = data.data.data.banner.banner_tops;
+          this.banner1 = data.data.data.banner.banner_1;
+          this.banner2 = data.data.data.banner.banner_2;
+          this.banner3left = data.data.data.banner.banner_3_left;
+          this.banner3right1 = data.data.data.banner.banner_3_right_1;
+          this.banner3right2 = data.data.data.banner.banner_3_right_2;
+          this.countdown = data.data.data.count_down.products;
+          this.banner5 = data.data.data.banner.banner_5;
+          this.banner4 = data.data.data.banner.banner_4;
+          this.banner6 = data.data.data.banner.banner_6;
+          this.banner7 = data.data.data.banner.banner_7;
+          this.banner9 = data.data.data.policy;
+          this.contentWidth = Number(this.countdown.length)*172 + 40+"px";
         }).catch(error => {
           console.log(error);
         });
     },
-    loadhomeWaterfall(data){
-      this.$post("/api/home/getHomeProductList",data).then(redata => {
-          this.Lists = redata.data.data.products;
-          this.total_page = redata.data.total_page;
-          // console.log(data);
-        }).catch(error => {
-          console.log(error);
-        });
-    },
-
-    onLoad() {
-      // 异步更新数据
-      setTimeout(() => {
-        if(this.total_page>=this.listData.page){
-          this.listData.page=this.listData.page+1
-          this.Lists.push(this.loadhomeWaterfall(this.listData))
-        }else{
-          this.loading = false;
-           this.finished = true;
-        }
-        // // 数据全部加载完成
-        // if (this.Lists.length >=  ) {
-        //   this.finished = true;
-        // }
-      }, 2000);
-    }
   },
   mounted() {
     this.loadhomehearder();
-    this.loadhomeWaterfall(this.listData);
   }
-  
 };
 </script>
 <style lang="scss" scoped>
-p {
+ .none{
+     display: none;
+ }
+.home_ar{
+  p {
   margin: 0;
 }
 img {
@@ -192,7 +186,6 @@ header {
 .topwiper{
   width: 100%;
   height: 200px;
-  // background: black;
   margin-top: 45px;
   color: #fff;
   line-height: 40px;
@@ -206,64 +199,72 @@ header {
 }
 .banner2 img{
   float: left;
-  width: 120px;
+  width: 111px;
   height: 190px;
-  // margin-left: 2px;
   margin-top: 10px;
-  padding-left: 4px;
-  // position: fixed;
+  padding-left: 10px;
 }
 .banner3{
   float: left;
-  width: 187px;
+  width: 170px;
   height: 214px;
   margin-top: 15px;
+  margin-left: 10px;
 }
 .banner4left{
-  width: 180px;
-  height: 194px;
+  width: 173px;
+  height: 196px;
   float: left;
   margin-top: 15px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: -1px
 }
 .banner4right{
-  width: 195px;
+  width: 174px;
   height: 90px;
   float: left;
   margin-top: 15px;
 }
-.countdown img{
-   width: 120px;
-   height: 180px;
-  //  float: left;
+.countimg{
+   width: 172px;
+   height: 236px;
    margin-top: 10px;
    display: inline-block;
+   margin-left: 7px;
 
 }
 .countdown{
   margin-top: 10px;
-  width: 1200px;
-  // overflow-x: auto;
-  // white-space: nowrap;
+  /*width: 900px;*/
 }
 .countdownimg{
   width: 34px;
   height: 30px;
   margin-left: 304px;
   margin-top: -16px;
+ 
 }
 .van-count-down{
   height: 14px;
-  margin-top: 550px;
-  padding-top: 110px;
-  margin-left: -120px;
+  margin-top: 525px;
+  padding-top: 135px;
+  margin-left: -180px;
 }
 .text{
   font-weight: bold;
   font-size: 20px;
+  position: absolute;
+  left: 215px;
+}
+.maohao{
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 3px;
 }
 .item {
   display: inline-block;
-  width: 30px;
+  width: 23px;
   margin-right: 5px;
   color: #fff;
   font-size: 12px;
@@ -276,7 +277,7 @@ header {
 }
 .banner6 img{
   width: 180px;
-
+  margin-top: 10px;
 }
 .banner9 img{
   width:120px ;
@@ -287,20 +288,170 @@ header {
   width: 180px;
   height: 230px;
 }
-.newprice{
-  color:#ccc;
+.banner5,.banner7,.banner8{
+  margin: 10px 10px;
 }
-.oldprice{
-  color:red;
 }
+.home_en{
+    p {
+        margin: 0;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    header {
+        position: fixed;
+        overflow: auto;
+        background: #fff;
+        width: 100%;
+        border-bottom: 1px solid #e7e7e7;
+        z-index: 999;
+    }
+    .header_wrap {
+        height: 44px;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        align-items: center;
+    }
+    .topwiper{
+        width: 100%;
+        height: 200px;
+        // background: black;
+        margin-top: 45px;
+        color: #fff;
+        line-height: 40px;
+    }
+    .toptexts{
+        height: 45px;
+        background: black;
+        line-height: 45px;
+        padding-top: 45px;
+        color: white;
+    }
+    .banner2 img{
+        float: left;
+        width: 115px;
+        height: 190px;
+        // margin-left: 2px;
+        margin-top: 10px;
+        padding-left: 10px;
+        // position: fixed;
+    }
+    .banner3{
+        float: left;
+        width: 170px;
+        height: 214px;
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+    .banner4left{
+        width: 173px;
+        height: 194px;
+        float: left;
+        margin-top: 15px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+    .banner4right{
+        width: 174px;
+        height: 90px;
+        float: left;
+        margin-top: 15px;
+    }
+    .countdown img{
+        width: 172px;
+        height: 236px;
+        margin-top: 10px;
+        display: inline-block;
+        margin-left: 7px;
 
-.van-list{
-  overflow: hidden;
-  // display: flex;
-}
-.van-cell{
-  float: left;
-  width: 187px;
-  height: 230px;
+    }
+    .countdown{
+        margin-top: 10px;
+        width: 900px;
+        // overflow-x: auto;
+        // white-space: nowrap;
+    }
+    .countdownimg{
+        width: 34px;
+        height: 30px;
+        margin-left: 304px;
+        margin-top: -16px;
+
+    }
+    .van-count-down{
+        height: 14px;
+        margin-top: 525px;
+        padding-top: 135px;
+        margin-left: -180px;
+    }
+    .text{
+        font-weight: bold;
+        font-size: 20px;
+        position: absolute;
+        left: 215px;
+    }
+    .maohao{
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 3px;
+    }
+    .item {
+        display: inline-block;
+        width: 23px;
+        margin-right: 5px;
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+        background-color: #4b555f;
+    }
+    .countlists{
+        width: 100%;
+        overflow: auto;
+    }
+    .banner6 img{
+        width: 180px;
+
+    }
+    .banner9 img{
+        width:120px ;
+        height: 190px;
+    }
+    .products div{
+        float: left;
+        width: 180px;
+        height: 230px;
+    }
+    .van-cell__value{
+        text-align: right;
+    }
+    .van-cell__value{
+        text-align: left;
+    }
+    .newprice{
+        color:#444040;
+    }
+    .oldprice{
+        color:red;
+    }
+    .van-list{
+        overflow: hidden;
+    }
+    .van-cell{
+        float: left;
+        width: 185px;
+        height: 325px;
+        padding: 5px 5px;
+    }
+    .van-cell img{
+        width: 100%;
+        height: 75%;
+    }
+    .banner5,.banner7,.banner8{
+        margin: 10px 10px;
+    }
 }
 </style>
