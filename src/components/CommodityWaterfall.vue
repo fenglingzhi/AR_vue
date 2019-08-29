@@ -42,10 +42,12 @@ export default {
         Dialog
     },
     methods:{
+        //点击切换样式类
         changeolalng(){
             this.unshow = !this.unshow
             store.commit('changeStore',{key:'unshow',val: !this.$store.state.unshow});
         },
+        // 瀑布流请求
         loadhomeWaterfall(data){
         this.$post("/api/home/getHomeProductList",data).then(redata => {
             this.Lists = this.Lists.concat(redata.data.data.products);
@@ -54,7 +56,6 @@ export default {
                 console.log(error);
             });
         },
-
         onLoad() {
         // 异步更新数据
             setTimeout(() => {
@@ -81,7 +82,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .pages_ar{
-    margin-bottom: 70px;
+    margin-bottom: 5rem;
     .newprice{
         color:#444040;
     }
@@ -135,7 +136,7 @@ export default {
     }
     .van-cell{
         float: left;
-        width: 185px;
+        width: 50%;
         height: 325px;
         padding: 5px 5px;
     }

@@ -49,14 +49,14 @@ export default {
     flex-flow: row nowrap;
     text-align: center;
     border-top: 1PX solid #efefef;
-    height:70px ;
+    height:10% ;
     align-items: center;
     box-sizing: border-box;
     background-color: white;
     .item{
         width: 100% / 4;
         cursor: pointer;
-        margin-left: 25px;
+        margin-left: 7%;
         >span{
             display: block;
             padding-top: 6px;

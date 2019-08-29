@@ -2,9 +2,11 @@
   <div class="home_ar">
     <header>
     <div class="header_wrap" v-if="$store.state.unshow">
-      <div class="search">
-        <img src="../assets/img/index/serch.png" alt />
-      </div>
+      <router-link to="/SearchHot">
+          <div class="search">
+              <img src="../assets/img/index/serch.png" alt />
+          </div>
+      </router-link>
       <div class="title">
         <img src="../assets/img/index/AR-logo.png" alt />
       </div>
@@ -38,38 +40,48 @@
         </van-swipe-item>
       </van-swipe>
       <div class="banner2">
-         <img :src="a.image_url"  v-for="(a,b) in banner1" :key="'b'+b">
+         <div class="banner22"  v-for="(a,b) in banner1" :key="'b'+b">
+             <img :src="a.image_url" >
+         </div>
       </div>
-       <div class="banner3" v-for="(c,d) in banner2" :key="'d'+d">
-         <img :src="c.image_url" >
+       <div class="banner3" >
+         <div class="banner33" v-for="(c,d) in banner2" :key="'d'+d">
+             <img :src="c.image_url" >
+         </div>
       </div>
       <div class="banner4">
           <div class="banner4left" v-for="(e,f) in banner3left" :key="'f'+f">
-            <img :src="e.image_url" >
+                <img :src="e.image_url" >
           </div>
           <div class="banner4right" v-for="(h,j) in banner3right1" :key="'j'+j">
-            <img :src="h.image_url" >
-          </div>
-          <div class="banner4right" v-for="(k,l) in banner3right2" :key="'l'+l">
-            <img :src="k.image_url" >
+            <div class="banner4right1" v-for="(h,j) in banner3right1" :key="'j'+j">
+                <img :src="h.image_url" >
+            </div>
+            <div class="banner4right2" v-for="(k,l) in banner3right2" :key="'l'+l">
+                <img :src="k.image_url" >
+            </div>
           </div>
       </div>
-       <van-count-down :time="time">
-        <template v-slot="timeData">
-          <span class="item">{{ timeData.days }}</span><span class="maohao">:</span>
-          <span class="item">{{ timeData.hours }}</span><span class="maohao">:</span>
-          <span class="item">{{ timeData.minutes }}</span><span class="maohao">:</span>
-          <span class="item">{{ timeData.seconds }}</span>
-          <span class="text"> العد التنازلي </span>
-        </template>
-      </van-count-down>
-      <div class="countdownimg">
-        <img src="../assets/漏斗,倒计时.png" alt="">
+      <div class="countdowns">
+          <van-count-down :time="time">
+              <template v-slot="timeData">
+                  <span class="item">{{ timeData.days }}</span><span class="maohao">:</span>
+                  <span class="item">{{ timeData.hours }}</span><span class="maohao">:</span>
+                  <span class="item">{{ timeData.minutes }}</span><span class="maohao">:</span>
+                  <span class="item">{{ timeData.seconds }}</span>
+              </template>
+          </van-count-down>
+          <div class="count">
+              <span class="text"> العد التنازلي </span>
+          </div>
       </div>
-      <div class="countlists">
-        <div class="countdown" :style="{width:contentWidth}">
-            <img v-for="(m,n) in countdown" :key="n" :src="m.img_url" alt="" class="countimg">
-        </div>
+      <div class="countdownlist">
+          <div class="countlists" :style="{width:contentWidth}">
+
+              <div class="countdown"  v-for="(m,n) in countdown" :key="n">
+                  <img  :src="m.img_url" alt="" class="countimg">
+              </div>
+          </div>
       </div>
       <div class="banner5" v-for="(v,i) in banner5" :key="i">
          <img :src="v.image_url" alt="">
@@ -84,9 +96,12 @@
         <img v-for="(v,i) in banner7" :key="i" :src="v.image_url" alt="">
       </div>
        <div class="banner9" >
-        <img v-for="(v,i) in banner9" :key="i" :src="v.image_url" alt="">
+        <div class="banner99" v-for="(v,i) in banner9" :key="i">
+            <img  :src="v.image_url" alt="">
+        </div>
       </div>
     </div>
+      <!--商品瀑布流组件-->
     <CommodityWaterfall></CommodityWaterfall>
   </div>
 </template>
@@ -145,7 +160,8 @@ export default {
           this.banner6 = data.data.data.banner.banner_6;
           this.banner7 = data.data.data.banner.banner_7;
           this.banner9 = data.data.data.policy;
-          this.contentWidth = Number(this.countdown.length)*172 + 40+"px";
+          //计算倒计时列表长度
+          this.contentWidth = Number(this.countdown.length)*170 + 95 +"px";
         }).catch(error => {
           console.log(error);
         });
@@ -193,91 +209,81 @@ header {
   padding-top: 45px;
   color: white;
 }
-.banner2 img{
-  float: left;
-  width: 30%;
-  margin-top: 10px;
-  padding-left: 10px;
+.banner2{
+   display: flex;
+}
+.banner22{
+  padding: 1%;
+  width: 33.3%;
 }
 .banner3{
-  float: left;
-  width: 45%;
-  /*height: 214px;*/
-  margin-top: 15px;
-  margin-left: 13px;
+  display: flex;
+}
+.banner33{
+  padding: 1%;
+  width: 48%;
+ }
+.banner4{
+  display: flex;
 }
 .banner4left{
   width: 46%;
-  /*height: 196px;*/
-  float: left;
-  margin-top: 30px;
-  margin-left: 8px;
-  margin-right: 8px;
-  margin-bottom: -1px
+  padding: 1%;
 }
 .banner4right{
   width: 49%;
-  /*height: 90px;*/
-  float: left;
-  margin-top: 15px;
+  padding: 1%;
 }
-.countimg{
-   width: 172px;
-   /*height: 236px;*/
-   margin-top: 10px;
-   display: inline-block;
-   margin-left: 7px;
-
+.countdowns{
+   display: flex;
 }
-.countdown{
-  margin-top: 10px;
-  /*width: 900px;*/
-}
-.countdownimg{
-  width: 34px;
-  height: 30px;
-  margin-left: 304px;
-  margin-top: -16px;
- 
+.count{
+    width: 50%;
 }
 .van-count-down{
-  /*height: 14px;*/
-  margin-top: 525px;
-  padding-top: 135px;
-  margin-left: -180px;
+   width: 50%;
+   padding: 1%;
 }
 .text{
   font-weight: bold;
   font-size: 20px;
-  position: absolute;
-  left: 215px;
 }
 .maohao{
   font-size: 18px;
   font-weight: bold;
-  margin-right: 3px;
+  margin-right: 1%;
 }
 .item {
-  display: inline-block;
-  width: 23px;
-  margin-right: 5px;
-  color: #fff;
-  font-size: 12px;
-  text-align: center;
-  background-color: #4b555f;
+ display: inline-block;
+ width: 15%;
+ margin-right: 1%;
+ color: #fff;
+ font-size: 18px;
+ text-align: center;
+ background-color: #4b555f;
+ height: 2rem;
+ line-height: 2.2rem;
 }
-.countlists{
+.countdownlist{
   width: 100%;
   overflow: auto;
 }
+.countdown{
+    display: inline-block;
+    width:170px ;
+    margin: 1%;
+}
 .banner6 img{
   width: 45%;
-  margin-top: 10px;
-  margin-left: 10px;
+  margin-top: 1%;
+  margin-left: 1%;
 }
-.banner9 img{
-  width:120px ;
-  height: 190px;
+.banner9{
+    display: flex;
+}
+.banner99{
+  width:33.3% ;
+  padding: 1%;
 }
 .products div{
   float: left;
