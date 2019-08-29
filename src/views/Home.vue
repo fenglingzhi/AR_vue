@@ -1,7 +1,7 @@
 <template>
   <div class="home_ar">
     <header>
-    <div class="header_wrap" v-if="unshow">
+    <div class="header_wrap" v-if="$store.state.unshow">
       <div class="search">
         <img src="../assets/img/index/serch.png" alt />
       </div>
@@ -12,7 +12,7 @@
         <img src="../assets/img/index/message.png" alt />
       </div>
     </div>
-    <div class="header_wrap" v-if="!unshow">
+    <div class="header_wrap" v-if="!$store.state.unshow">
         <div class="announce">
             <img src="../assets/img/index/message.png" alt />
         </div>
@@ -97,6 +97,7 @@ import { Dialog, Swipe, SwipeItem, CountDown, List  } from 'vant';
 import router from "vue-router";
 import axios from "axios";
 import CommodityWaterfall from "../components/CommodityWaterfall.vue";
+import store from '../store/store.js'
 
 export default {
     data(){
@@ -152,6 +153,8 @@ export default {
   },
   mounted() {
     this.loadhomehearder();
+
+
   }
 };
 </script>
@@ -176,19 +179,12 @@ header {
   z-index: 999;
 }
 .header_wrap {
-  height: 44px;
+  /*height: 44px;*/
   display: flex;
   display: -webkit-flex;
   justify-content: space-between;
   padding: 0 10px;
   align-items: center;
-}
-.topwiper{
-  width: 100%;
-  height: 200px;
-  margin-top: 45px;
-  color: #fff;
-  line-height: 40px;
 }
 .toptexts{
   height: 45px;
@@ -199,36 +195,35 @@ header {
 }
 .banner2 img{
   float: left;
-  width: 111px;
-  height: 190px;
+  width: 30%;
   margin-top: 10px;
   padding-left: 10px;
 }
 .banner3{
   float: left;
-  width: 170px;
-  height: 214px;
+  width: 45%;
+  /*height: 214px;*/
   margin-top: 15px;
-  margin-left: 10px;
+  margin-left: 13px;
 }
 .banner4left{
-  width: 173px;
-  height: 196px;
+  width: 46%;
+  /*height: 196px;*/
   float: left;
-  margin-top: 15px;
+  margin-top: 30px;
   margin-left: 8px;
   margin-right: 8px;
   margin-bottom: -1px
 }
 .banner4right{
-  width: 174px;
-  height: 90px;
+  width: 49%;
+  /*height: 90px;*/
   float: left;
   margin-top: 15px;
 }
 .countimg{
    width: 172px;
-   height: 236px;
+   /*height: 236px;*/
    margin-top: 10px;
    display: inline-block;
    margin-left: 7px;
@@ -246,7 +241,7 @@ header {
  
 }
 .van-count-down{
-  height: 14px;
+  /*height: 14px;*/
   margin-top: 525px;
   padding-top: 135px;
   margin-left: -180px;
@@ -276,8 +271,9 @@ header {
   overflow: auto;
 }
 .banner6 img{
-  width: 180px;
+  width: 45%;
   margin-top: 10px;
+  margin-left: 10px;
 }
 .banner9 img{
   width:120px ;
@@ -292,166 +288,5 @@ header {
   margin: 10px 10px;
 }
 }
-.home_en{
-    p {
-        margin: 0;
-    }
-    img {
-        width: 100%;
-        height: 100%;
-    }
-    header {
-        position: fixed;
-        overflow: auto;
-        background: #fff;
-        width: 100%;
-        border-bottom: 1px solid #e7e7e7;
-        z-index: 999;
-    }
-    .header_wrap {
-        height: 44px;
-        display: flex;
-        display: -webkit-flex;
-        justify-content: space-between;
-        padding: 0 10px;
-        align-items: center;
-    }
-    .topwiper{
-        width: 100%;
-        height: 200px;
-        // background: black;
-        margin-top: 45px;
-        color: #fff;
-        line-height: 40px;
-    }
-    .toptexts{
-        height: 45px;
-        background: black;
-        line-height: 45px;
-        padding-top: 45px;
-        color: white;
-    }
-    .banner2 img{
-        float: left;
-        width: 115px;
-        height: 190px;
-        // margin-left: 2px;
-        margin-top: 10px;
-        padding-left: 10px;
-        // position: fixed;
-    }
-    .banner3{
-        float: left;
-        width: 170px;
-        height: 214px;
-        margin-top: 15px;
-        margin-left: 10px;
-    }
-    .banner4left{
-        width: 173px;
-        height: 194px;
-        float: left;
-        margin-top: 15px;
-        margin-left: 8px;
-        margin-right: 8px;
-    }
-    .banner4right{
-        width: 174px;
-        height: 90px;
-        float: left;
-        margin-top: 15px;
-    }
-    .countdown img{
-        width: 172px;
-        height: 236px;
-        margin-top: 10px;
-        display: inline-block;
-        margin-left: 7px;
 
-    }
-    .countdown{
-        margin-top: 10px;
-        width: 900px;
-        // overflow-x: auto;
-        // white-space: nowrap;
-    }
-    .countdownimg{
-        width: 34px;
-        height: 30px;
-        margin-left: 304px;
-        margin-top: -16px;
-
-    }
-    .van-count-down{
-        height: 14px;
-        margin-top: 525px;
-        padding-top: 135px;
-        margin-left: -180px;
-    }
-    .text{
-        font-weight: bold;
-        font-size: 20px;
-        position: absolute;
-        left: 215px;
-    }
-    .maohao{
-        font-size: 18px;
-        font-weight: bold;
-        margin-right: 3px;
-    }
-    .item {
-        display: inline-block;
-        width: 23px;
-        margin-right: 5px;
-        color: #fff;
-        font-size: 12px;
-        text-align: center;
-        background-color: #4b555f;
-    }
-    .countlists{
-        width: 100%;
-        overflow: auto;
-    }
-    .banner6 img{
-        width: 180px;
-
-    }
-    .banner9 img{
-        width:120px ;
-        height: 190px;
-    }
-    .products div{
-        float: left;
-        width: 180px;
-        height: 230px;
-    }
-    .van-cell__value{
-        text-align: right;
-    }
-    .van-cell__value{
-        text-align: left;
-    }
-    .newprice{
-        color:#444040;
-    }
-    .oldprice{
-        color:red;
-    }
-    .van-list{
-        overflow: hidden;
-    }
-    .van-cell{
-        float: left;
-        width: 185px;
-        height: 325px;
-        padding: 5px 5px;
-    }
-    .van-cell img{
-        width: 100%;
-        height: 75%;
-    }
-    .banner5,.banner7,.banner8{
-        margin: 10px 10px;
-    }
-}
 </style>

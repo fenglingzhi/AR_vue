@@ -6,10 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token:'',
-    
+      unshow:true,
   },
   mutations: {
-
+      changeStore(state,data){
+          state[data.key] = data.val
+      }
   },
   actions: {
 

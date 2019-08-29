@@ -19,6 +19,8 @@ import { Dialog, List  } from 'vant';
 import router from "vue-router";
 import axios from "axios";
 import $ from "jquery"
+import store from '../store/store.js'
+
 export default {
     data(){
         return{
@@ -42,7 +44,7 @@ export default {
     methods:{
         changeolalng(){
             this.unshow = !this.unshow
-            this.$emit("listenEvent",this.unshow)
+            store.commit('changeStore',{key:'unshow',val: !this.$store.state.unshow});
         },
         loadhomeWaterfall(data){
         this.$post("/api/home/getHomeProductList",data).then(redata => {
@@ -69,15 +71,17 @@ export default {
                 }
             }, 3000);
         },
+
     },
     mounted(){
          this.loadhomeWaterfall(this.listData);
+
     }
 }
 </script>
 <style lang="scss" scoped>
 .pages_ar{
-    margin-bottom: 55px;
+    margin-bottom: 70px;
     .newprice{
         color:#444040;
     }
@@ -90,7 +94,7 @@ export default {
     }
     .van-cell{
         float: left;
-        width: 185px;
+        width: 50%;
         height: 325px;
         padding: 5px 5px;
     }
@@ -112,9 +116,13 @@ export default {
         font-size: 22px;
         font-weight: bold;
     }
+    button{
+        border-radius: 5px;
+        background-color: lightblue;
+    }
 }
 .pages_en{
-    margin-bottom: 55px;
+    margin-bottom: 70px;
     .newprice{
         color:#444040;
     }
@@ -146,6 +154,10 @@ export default {
         top: 245px;
         font-size: 22px;
         font-weight: bold;
+    }
+    button{
+        border-radius: 5px;
+        background-color: lightblue;
     }
 }
 
