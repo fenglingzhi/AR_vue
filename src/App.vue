@@ -3,12 +3,15 @@
     <!-- 内容主视区 -->
     <router-view/>
     <!-- 内容主视区 -->
+    <!-- 底部导航 -->
+    <BottomBar></BottomBar>
   </div>
 </template>
 <script>
+import BottomBar from "./views/BottomBar"
     export default {
         components : {
-
+          BottomBar
         },
         data () {
             return {
