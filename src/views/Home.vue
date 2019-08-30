@@ -103,6 +103,7 @@
     </div>
       <!--商品瀑布流组件-->
     <CommodityWaterfall></CommodityWaterfall>
+    <BottomBar></BottomBar>
   </div>
 </template>
 
@@ -113,7 +114,7 @@ import router from "vue-router";
 import axios from "axios";
 import CommodityWaterfall from "../components/CommodityWaterfall.vue";
 import store from '../store/store.js'
-
+import BottomBar from "./BottomBar"
 export default {
     data(){
       return{
@@ -141,6 +142,7 @@ export default {
        router,
        CountDown,
        CommodityWaterfall,
+       BottomBar
    },
    methods: {  
     loadhomehearder() {
