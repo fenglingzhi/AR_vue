@@ -169,8 +169,6 @@ export default {
   },
   mounted() {
     this.loadhomehearder();
-
-
   }
 };
 </script>
