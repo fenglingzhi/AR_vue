@@ -3,7 +3,7 @@
         <div class="category_index">
             <ul>
                 <li>
-
+                    {{title1}}
                 </li>
             </ul>
         </div>
@@ -27,7 +27,8 @@
         },
         data() {
             return {
-
+                title1:'en',
+                title2:'ar'
             }
         },
         methods: {
