@@ -3,7 +3,7 @@
         <div class="category_index">
             <ul>
                 <li>
-                    {{title1}}
+
                 </li>
             </ul>
         </div>
@@ -33,7 +33,7 @@
         },
         methods: {
             getCategoryList(data){
-                postData('/api/navigation/getlists',{id_currency:1}).then((resp) => {
+                this.$post('/api/navigation/getlists',{id_currency:1}).then(resp => {
                     console.log(resp)
                 })
             }
