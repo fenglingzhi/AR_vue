@@ -8,11 +8,11 @@
            <img src="../assets/img/index/bag.png" alt="">
             <span>  التسوق </span>
         </router-link>
-        <router-link to="" tag="div" class="item">
+        <router-link to="/Category" tag="div" class="item">
             <img src="../assets/img/index/category.png" alt="">
             <span> الرئيسية </span>
         </router-link>
-        <router-link to="" tag="div" class="item">
+        <router-link to="/" tag="div" class="item">
             <img src="../assets/img/index/home.png" alt="">
             <span> الرئيسية </span>
         </router-link>
@@ -49,14 +49,14 @@ export default {
     flex-flow: row nowrap;
     text-align: center;
     border-top: 1PX solid #efefef;
-    height:70px ;
+    height:10% ;
     align-items: center;
     box-sizing: border-box;
     background-color: white;
     .item{
         width: 100% / 4;
         cursor: pointer;
-        margin-left: 25px;
+        margin-left: 7%;
         >span{
             display: block;
             padding-top: 6px;
