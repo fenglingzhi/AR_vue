@@ -21,9 +21,11 @@
         <div class="title">
             <img src="../assets/img/index/AR-logo.png" alt />
         </div>
-        <div class="search">
-            <img src="../assets/img/index/serch.png" alt />
-        </div>
+        <router-link to="/SearchHot">
+            <div class="search">
+                <img src="../assets/img/index/serch.png" alt />
+            </div>
+        </router-link>
     </div>
   </header>
   <div class="toptexts"  >
@@ -171,8 +173,6 @@ export default {
   },
   mounted() {
     this.loadhomehearder();
-
-
   }
 };
 </script>

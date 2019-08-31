@@ -5,7 +5,7 @@
                 <span class="searchtext"> بحث </span>
             </router-link>
             <span class="searchinput"><input  type="text" v-model="$store.state.searchInput"></span>
-            <span class="searchicon"><van-icon name="arrow" class="vanicon" /></span>
+            <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="goback"/></span>
 
         </div>
         <div class="searchhistory">
@@ -45,6 +45,10 @@
         axios,
     },
     methods: {
+        goback(){
+            this.$router.go(-1)
+        },
+        //热门搜索词请求
         loadsearchhot(){
             this.$post("/api/search/getSearchHots",{
                 id_currency:"1"

@@ -12,6 +12,7 @@ import $ from 'jquery' /* jquery */
 import axios from 'axios' /* 引入axios库处理http请求 */
 import './assets/icon/iconfont.css' /* 引入iconfont字体库 */
 import validate from 'vee-validate' /* 表单验证库 */
+import md5 from 'js-md5';
 
 
 import {getData,postData} from './config.js'
@@ -21,9 +22,11 @@ import {getData,postData} from './config.js'
  * 依赖全局调用
  * @type {boolean}
  */
+
 Vue.use(Vant);
 // Vue.use(config);
 Vue.use(validate);
+Vue.prototype.$md5 = md5;
 Vue.prototype.$get=getData;
 Vue.prototype.$post=postData
 Vue.config.productionTip = false;
