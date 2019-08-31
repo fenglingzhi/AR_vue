@@ -112,7 +112,7 @@ export const getData = (url,data={}) =>{
             params:data
         })
         .then(resp=>{
-            resolve(resp)
+            resolve(resp.data)
         },reject)
         .catch(error =>{
             reject(error.data)
@@ -129,7 +129,7 @@ export const postData = (url,data={}) =>{
             data:QS.stringify(data)
         })
         .then(resp=>{
-            resolve(resp)
+            resolve(resp.data)
         },reject)
         .catch(err =>{
             reject(err.data)

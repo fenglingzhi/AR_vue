@@ -27,12 +27,13 @@
         },
         data() {
             return {
-
+                title1:'en',
+                title2:'ar'
             }
         },
         methods: {
             getCategoryList(data){
-                postData('/api/navigation/getlists',{id_currency:1}).then((resp) => {
+                this.$post('/api/navigation/getlists',{id_currency:1}).then(resp => {
                     console.log(resp)
                 })
             }
