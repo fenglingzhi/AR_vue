@@ -15,7 +15,8 @@ export default new Vuex.Store({
        mobile_version:'1.0.0',
        id_currency:'6',
        access_token:'cb99f6e8efa4fe871e8eb4325c5ce50f'
-      }
+    },
+    orderId:'',
   },
   mutations: {
       changeStore(state,data){
