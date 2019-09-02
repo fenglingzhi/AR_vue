@@ -12,7 +12,7 @@
             <img src="../assets/img/index/category.png" alt="">
             <span> الرئيسية </span>
         </router-link>
-        <router-link to="/" tag="div" class="item">
+        <router-link to="/home" tag="div" class="item">
             <img src="../assets/img/index/home.png" alt="">
             <span> الرئيسية </span>
         </router-link>

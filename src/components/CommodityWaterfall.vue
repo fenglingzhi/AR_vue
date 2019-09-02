@@ -52,8 +52,8 @@ export default {
         // 瀑布流请求
         loadhomeWaterfall(data){
         this.$post("/api/home/getHomeProductList",data).then(redata => {
-            this.Lists = this.Lists.concat(redata.data.data.products);
-            this.total_page = redata.data.data.total_page;
+            this.Lists = this.Lists.concat(redata.data.products);
+            this.total_page = redata.data.total_page;
             }).catch(error => {
                 console.log(error);
             });

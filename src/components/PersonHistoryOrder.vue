@@ -6,34 +6,34 @@
             <span class="returnicon"><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
         </header>
         <div class="order_content">
-            <div class="order_container">
-                <div class="order-item dis_flex1" >
+            <div class="order_container"  v-for="(v,i) in order" :key="'h'+i">
+                <div class="order-item dis_flex1">
                     <!-- 订单编号 -->
                     <div class="flexones ">
                         <span class="fontSize12 color000000">رقم الطلب:</span>
-                        <span class="fontSize12 color000000">A1234567</span>
+                        <span class="fontSize12 color000000">{{v.id_order}}</span>
                     </div>
                     <!-- 订单状态 -->
                     <div>
                         <div alt="" class="checkImg"></div>
-                        <span class="fontSize12 color000000">في انتظار الدفع</span>
+                        <span class="fontSize12 color000000">{{v.state_name}}</span>
                     </div>
                 </div>
-                <div class="order-item dis_flex2">
+                <div class="order-item dis_flex2" v-for="(item,index) in v.products" :key="'h'+index">
                     <div class="dis_flex3 textEllipsis" >
-                        <div><img src="../assets/img/personal/orderDetail_product.png" alt="" width="75"></div>
+                        <div><img :src="item.img_url" alt="" width="75" v-model="$store.state.orderId"></div>
                         <div  class="flex">
-                            <span class="dis_block textEllipsis">بطاقة ي222222222222منكنتيثقللقز</span>
+                            <span class="dis_block textEllipsis">{{item.name}}</span>
                             <span class="dis_block color999 fontSize12 textEllipsis" style="margin-left: 9rem;">(أكثر الألوان）</span>
                             <!-- 尺码 -->
-                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">المقاس:<span>L</span></span>
+                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">المقاس:<span>{{item.size}}</span></span>
                             <!-- 颜色 -->
-                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">اللون:<span>نالبي</span></span>
-                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">S.R.40.00</span>
+                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">اللون:<span>{{item.color}}</span></span>
+                            <span class="dis_block textEllipsis" style="margin-left: 9rem;">{{item.price}}</span>
                         </div>
                     </div>
                     <div style="line-height: 20px;">
-                        <span>x 2 </span>
+                        <span>x {{item.quantity}} </span>
                     </div>
                 </div>
                 <div class="order-item dis_flex4">
@@ -44,7 +44,7 @@
                     <!-- 支付 -->
                     <div class="payfor" >
                         <div class="pay">
-                            <span class="fontSize12">الدفع</span>
+                            <span class="fontSize12">支付</span>
                         </div>
                     </div>
                 </div>
@@ -66,6 +66,7 @@
     export default {
         data(){
             return{
+                order:{},
 
             }
         },
@@ -79,7 +80,9 @@
                 this.$post("/api/userOrder/getOrders",{
                     page:"1"
                 }).then(data=>{
-                    console.log(data)
+                    this.order = data.data.orders;
+                    // $store.state.orderId = data.data.orders.
+                    console.log(data.data.orders)
                 }).catch(error => {
                     console.log(error);
                 });

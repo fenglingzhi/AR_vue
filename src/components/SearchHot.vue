@@ -35,8 +35,6 @@
     data(){
        return{
          searchhot:{},
-         history:[],
-         word:'',
        }
     },
     components:{
@@ -53,8 +51,8 @@
             this.$post("/api/search/getSearchHots",{
                 id_currency:"1"
             }).then(data=>{
-                this.searchhot = data.data.data.MobileSearchhots;
-                this.history = this.$store.state.searchInput;
+                this.searchhot = data.data.MobileSearchhots;
+                // this.history = this.$store.state.searchInput;
                 console.log(data)
             }).catch(error => {
                 console.log(error);

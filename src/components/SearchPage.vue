@@ -85,8 +85,8 @@
                  id_currency:"1",
                  page:"1"
              }).then(redata=>{
-                 this.Lists = this.Lists.concat(redata.data.data.products);
-                 this.total_page = redata.data.data.total_page;
+                 this.Lists = this.Lists.concat(redata.data.products);
+                 this.total_page = redata.data.total_page;
                  console.log(data)
              }).catch(error => {
                  console.log(error);

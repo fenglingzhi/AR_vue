@@ -1,118 +1,121 @@
 <template>
     <div class="orderdetail">
-        <header class="dis_flex">
-            <span><img src="../assets/img/personal/order_addcart.png" alt="" width="20"></span>
-            <span class="header_titile">رقم الطلب :<span>A1234567</span></span>
-            <span><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
-        </header>
-        <div class="orderDetail_content">
-            <div class="orderDetail_container">
-                <div class="orderDetail_date orderDetail_item">
-                    <span>التاريخ:<span>20/03/2019</span></span>
-                </div>
-                <div class="orderDetail_item dis_flex">
-                    <div class="orderDetail_item_right">
-                        <label for=""  style="margin:0;">سعر طلبك :   S.R.30.00  </label>
+        <div >
+            <header class="dis_flex" >
+                <span><img src="../assets/img/personal/order_addcart.png" alt="" width="20"></span>
+                <span class="header_titile">رقم الطلب :<span>{{orderList.id_order}}</span></span>
+                <span><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
+            </header>
+            <div class="orderDetail_content">
+                <div class="orderDetail_container" >
+                    <div class="orderDetail_date orderDetail_item" >
+                        <span>التاريخ:<span>{{orderList.add_date}}</span></span>
                     </div>
-                    <div class="orderDetail_item_left">
-                        <span style="font-size: 12px;color: #999999;margin-left:14px;">أنمنتمر طبيعي</span>
-                        <img src="../assets/img/personal/adress_goLeft.png" alt="" width="8">
-                    </div>
-                </div>
-            </div>
-            <div class="orderDetail_container ">
-                <div class="orderDetail_item orderDetail_item_name dis_flex">
-                    <div>
-                        <img src="../assets/img/personal/orderDetail_me.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
-                        <span>Jiaoyang zhang SA 541236984</span>
-                    </div>
-                    <div>
-                        <img src="../assets/img/personal/adress_edit.png" width="14" alt="" style="margin-left: 5px;">
-                        <img src="../assets/img/personal/orderDetail_wenhao.png" width="14" alt="">
-                    </div>
-                </div>
-                <div class="orderDetail_item orderDetail_item_adress dis_flex">
-                    <div style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-                        <img src="../assets/img/personal/adress_loaction.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
-                        <span>victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</span>
-                    </div>
-                </div>
-            </div>
-            <div class="orderDetail_container ">
-                <div class="orderDetail_item  dis_flex" style="line-height: 15px">
-                    <div>
-                        <div alt="" class="checkImg" style="margin-left: 8px;width: 10px;height: 10px;border-radius: 50%;background: #ED0000;display: inline-block;"></div>
-                        <span>في انتظار تأكيد رقم الهاتف</span>
-                    </div>
-                </div>
-            </div>
-            <div class="orderDetail_item  dis_flex" style="line-height: 15px;padding: 0px 20px;flex-direction: column;">
-                <div class="orderDetail_item_list dis_flex">
-                    <div class="dis_flex orderDetail_item_list_right flexone textEllipsis">
-                        <div><img src="../assets/img/personal/orderDetail_product.png" alt="" width="75"></div>
-                        <div style="line-height: 20px;margin-right:12px;" class="flexone textEllipsis">
-                            <span class="dis_block textEllipsis">بطاقة ي222222222222منكنتيثقللقز</span>
-                            <span class="dis_block color999 fontSize12 textEllipsis" style="margin-left: 9rem;">(أكثر الألوان）</span>
-                            <span class="dis_block textEllipsis"  style="margin-left: 9rem;">S.R.40.00</span>
+                    <div class="orderDetail_item dis_flex">
+                        <div class="orderDetail_item_right">
+                            <label for=""  style="margin:0;">سعر طلبك :   S.R.30.00  </label>
+                        </div>
+                        <div class="orderDetail_item_left">
+                            <span style="font-size: 12px;color: #999999;margin-left:14px;">أنمنتمر طبيعي</span>
+                            <img src="../assets/img/personal/adress_goLeft.png" alt="" width="8">
                         </div>
                     </div>
-                    <div style="line-height: 20px;">
-                        <span>x 2 </span>
+                </div>
+                <div class="orderDetail_container " >
+                    <div class="orderDetail_item orderDetail_item_name dis_flex">
+                        <div>
+                            <img  src="../assets/img/personal/orderDetail_me.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
+                            <span>{{name}}</span>
+                        </div>
+                        <div>
+                            <img src="../assets/img/personal/adress_edit.png" width="14" alt="" style="margin-left: 5px;">
+                            <img src="../assets/img/personal/orderDetail_wenhao.png" width="14" alt="">
+                        </div>
+                    </div>
+                    <div class="orderDetail_item orderDetail_item_adress dis_flex">
+                        <div style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                            <img src="../assets/img/personal/adress_loaction.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
+                            <span>{{address}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="orderDetail_container ">
+                    <div class="orderDetail_item  dis_flex" style="line-height: 15px">
+                        <div>
+                            <div alt="" class="checkImg" style="margin-left: 8px;width: 10px;height: 10px;border-radius: 50%;background: #ED0000;display: inline-block;"></div>
+                            <!--等待确认电话号码-->
+                            <span>في انتظار تأكيد رقم الهاتف</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="orderDetail_item  dis_flex" style="line-height: 15px;padding: 0px 20px;flex-direction: column;" v-for="(item,index) in orderList.products">
+                    <div class="orderDetail_item_list dis_flex">
+                        <div class="dis_flex orderDetail_item_list_right flexone textEllipsis">
+                            <div><img :src="item.img_url" alt="" width="75"></div>
+                            <div style="line-height: 20px;margin-right:12px;" class="flexone textEllipsis">
+                                <span class="dis_block textEllipsis">{{item.name}}</span>
+                                <span class="dis_block color999 fontSize12 textEllipsis" style="margin-left: 9rem;">({{item.color}}）</span>
+                                <span class="dis_block textEllipsis"  style="margin-left: 9rem;">{{item.new_price}}</span>
+                            </div>
+                        </div>
+                        <div style="line-height: 20px;">
+                            <span>x {{item.quantity}} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="orderDetail_item" style="border:none;">
+                    <!-- 零售价 -->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">سعر الوحدة</span>
+                        </div>
+                        <div>
+                            <span class="text-line-through fontSize12">{{orderList.mark_total_price}}</span>
+                        </div>
+                    </div>
+                    <!-- 小计 -->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">إجمالي المبلغ</span>
+                        </div>
+                        <div>
+                            <span class="text-line-through fontSize12">S.R.15.00 </span>
+                        </div>
+                    </div>
+                    <!-- 运费价格 -->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">سعر الشحن</span>
+                        </div>
+                        <div>
+                            <span class="fontSize12">{{orderList.shipping_price}}</span>
+                        </div>
+                    </div>
+                    <!-- 折扣 -->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">خصم</span>
+                        </div>
+                        <div>
+                            <span class="fontSize12 colorED0000">{{orderList.total_discount_price}}</span>
+                        </div>
+                    </div>
+                    <!-- 总额 -->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">المجموع</span>
+                        </div>
+                        <div>
+                            <span class="fontSize12 colorED0000 fontWeight600">{{orderList.sub_total_price}} </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="orderDetail_item" style="border:none;">
-                <!-- 零售价 -->
-                <div class="dis_flex justify-space-between">
-                    <div class="flexone textEllipsis">
-                        <span class="fontSize12">سعر الوحدة</span>
-                    </div>
-                    <div>
-                        <span class="text-line-through fontSize12">S.R.15.00 </span>
-                    </div>
+            <!-- 支付 -->
+            <div class="adress_addContainer">
+                <div class="adress_addButton">
+                    <span>الدفع</span>
                 </div>
-                <!-- 小计 -->
-                <div class="dis_flex justify-space-between">
-                    <div class="flexone textEllipsis">
-                        <span class="fontSize12">إجمالي المبلغ</span>
-                    </div>
-                    <div>
-                        <span class="text-line-through fontSize12">S.R.15.00 </span>
-                    </div>
-                </div>
-                <!-- 运费价格 -->
-                <div class="dis_flex justify-space-between">
-                    <div class="flexone textEllipsis">
-                        <span class="fontSize12">سعر الشحن</span>
-                    </div>
-                    <div>
-                        <span class="fontSize12">S.R.15.00 </span>
-                    </div>
-                </div>
-                <!-- 折扣 -->
-                <div class="dis_flex justify-space-between">
-                    <div class="flexone textEllipsis">
-                        <span class="fontSize12">خصم</span>
-                    </div>
-                    <div>
-                        <span class="fontSize12 colorED0000">S.R.15.00 </span>
-                    </div>
-                </div>
-                <!-- 总额 -->
-                <div class="dis_flex justify-space-between">
-                    <div class="flexone textEllipsis">
-                        <span class="fontSize12">المجموع</span>
-                    </div>
-                    <div>
-                        <span class="fontSize12 colorED0000 fontWeight600">S.R.15.00 </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 支付 -->
-        <div class="adress_addContainer">
-            <div class="adress_addButton">
-                <span>الدفع</span>
             </div>
         </div>
     </div>
@@ -125,7 +128,9 @@
     export default {
         data(){
             return{
-
+                orderList:[],
+                name:"",
+                address:"",
             }
         },
         components:{
@@ -138,7 +143,10 @@
                 this.$post("/api/userOrder/getOrderDetail",{
                     id_order:"1"
                 }).then(data=>{
-                    console.log(data)
+                    this.orderList = data.data;
+                    this.name = data.data.shipping_address.name;
+                    this.address = data.data.shipping_address.address;
+                    console.log(this.orderList.add_date)
                 }).catch(error => {
                     console.log(error);
                 });
