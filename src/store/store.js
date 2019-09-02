@@ -5,15 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-      token:'',
-      unshow:true,
-      defaultData:{
-          sign:'',
-          tamp:'',
-          phone_type:'3',
-          mobile_version:'1.0.0',
-          id_currency:'6',
-          access_token:'cb99f6e8efa4fe871e8eb4325c5ce50f'
+
+    token:'',
+    unshow:true,
+    defaultData:{
+       sign:'',
+       tamp:'',
+       phone_type:'3',
+       mobile_version:'1.0.0',
+       id_currency:'6',
+       access_token:'cb99f6e8efa4fe871e8eb4325c5ce50f'
       }
   },
   mutations: {

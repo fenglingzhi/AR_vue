@@ -21,9 +21,11 @@
         <div class="title">
             <img src="../assets/img/index/AR-logo.png" alt />
         </div>
-        <div class="search">
-            <img src="../assets/img/index/serch.png" alt />
-        </div>
+        <router-link to="/SearchHot">
+            <div class="search">
+                <img src="../assets/img/index/serch.png" alt />
+            </div>
+        </router-link>
     </div>
   </header>
   <div class="toptexts"  >
@@ -103,6 +105,7 @@
     </div>
       <!--商品瀑布流组件-->
     <CommodityWaterfall></CommodityWaterfall>
+    <BottomBar></BottomBar>
   </div>
 </template>
 
@@ -113,7 +116,7 @@ import router from "vue-router";
 import axios from "axios";
 import CommodityWaterfall from "../components/CommodityWaterfall.vue";
 import store from '../store/store.js'
-
+import BottomBar from "./BottomBar"
 export default {
     data(){
       return{
@@ -141,6 +144,7 @@ export default {
        router,
        CountDown,
        CommodityWaterfall,
+       BottomBar
    },
    methods: {  
     loadhomehearder() {

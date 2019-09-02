@@ -53,10 +53,11 @@ export default {
     align-items: center;
     box-sizing: border-box;
     background-color: white;
+    justify-content: space-evenly;
     .item{
         width: 100% / 4;
         cursor: pointer;
-        margin-left: 7%;
+        /*margin-left: 7%;*/
         >span{
             display: block;
             padding-top: 6px;

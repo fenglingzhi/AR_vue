@@ -1,9 +1,12 @@
 <template>
     <div class="search">
         <div class="top">
-            <span class="searchtext"> بحث </span>
-            <span class="searchinput"><input type="text"></span>
-            <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="$router.back(-1)"/></span>
+            <router-link to="/SearchPage">
+                <span class="searchtext"> بحث </span>
+            </router-link>
+            <span class="searchinput"><input  type="text" v-model="$store.state.searchInput"></span>
+            <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="goback"/></span>
+
         </div>
         <div class="searchhistory">
             <div class="history">
@@ -26,10 +29,14 @@
  import { Icon } from 'vant';
  import router from "vue-router";
  import axios from "axios";
+ import store from '../store/store.js'
+
  export default {
     data(){
        return{
          searchhot:{},
+         history:[],
+         word:'',
        }
     },
     components:{
@@ -38,16 +45,22 @@
         axios,
     },
     methods: {
+        goback(){
+            this.$router.go(-1)
+        },
+        //热门搜索词请求
         loadsearchhot(){
             this.$post("/api/search/getSearchHots",{
                 id_currency:"1"
             }).then(data=>{
                 this.searchhot = data.data.data.MobileSearchhots;
+                this.history = this.$store.state.searchInput;
                 console.log(data)
             }).catch(error => {
                 console.log(error);
             });
-        }
+        },
+
     },
     mounted(){
        this.loadsearchhot();
