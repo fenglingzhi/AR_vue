@@ -11,6 +11,7 @@ const Category = resolve => require(['../views/category.vue'],resolve);
 const PersonHistoryOrder = resolve => require(['../components/PersonHistoryOrder.vue'],resolve);
 const PersonOrderDetail = resolve => require(['../components/PersonOrderDetail.vue'],resolve);
 const ProductDetail = resolve => require(['../views/ProductDetail.vue'], resolve);
+const Collection = resolve => require(['../views/collection.vue'], resolve);
 
 
 var routerMaps = [
@@ -23,6 +24,7 @@ var routerMaps = [
     {name:'PersonHistoryOrder', path:'/PersonHistoryOrder',component:PersonHistoryOrder,meta:{name:'personHistoryOrder'}},
     {name:'PersonOrderDetail', path:'/PersonOrderDetail',component:PersonOrderDetail,meta:{name:'personOrderDetail'}},
     { name: 'ProductDetail', path: '/ProductDetail', component: ProductDetail, meta: { name: 'ProductDetail' } },
+    { name: 'Collection', path: '/Collection', component: Collection, meta: { name: 'Collection' } },
 
 ];
 

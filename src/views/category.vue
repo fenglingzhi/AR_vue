@@ -16,9 +16,11 @@
                             <!--<div class="level_second_title">تتسانستم</div>-->
                             <div class="level_third_list_wrap">
                                 <van-row  class="level_third_list">
-                                    <van-col span="12"  class="level_third_list_item" v-for="(v,i) in category_second_list">
-                                        <img :src=v.category_url alt="">
-                                        <p :name="v.category_id">{{v.name}}</p>
+                                    <van-col span="8"  class="level_third_list_item" v-for="(v,i) in category_second_list">
+                                        <div @click="getCollection(v.category_id)">
+                                            <img :src=v.category_url alt="">
+                                            <p>{{v.name}}</p>
+                                        </div>
                                     </van-col>
                                 </van-row>
                             </div>
@@ -36,21 +38,22 @@
             </van-row>
             <div style="clear: both"></div>
         </div>
+        <BottomBar></BottomBar>
     </div>
 </template>
 
 <script>
     import { getData,postData } from '../config.js';
-    import * as api from "../api/commonApi";
-    import { Dialog, Swipe, SwipeItem, CountDown, List  } from 'vant';
+    import { Dialog, List  } from 'vant';
     import router from "vue-router";
-    import axios from "axios";
     import store from '../store/store.js'
+    import BottomBar from "../../src/views/BottomBar"
     export default {
         name: "category",
         components: {
             router,
             store,
+            BottomBar
         },
         data() {
             return {
@@ -61,17 +64,27 @@
         },
         methods: {
             getCategoryList(data){
-                this.$post('/api/navigation/getlists',{id_currency:1}).then(resp => {
+                this.$post('/api/navigation/getlists',).then(resp => {
                     this.category_list = resp.data;
-                    // console.log(this.category_list)
+                    console.log(this.category_list)
+                }).then(() =>{
+                    this.$post('/api/navigation/getSecondLists',{id_category:this.category_list[0].category_id}).then(resp => {
+                        this.category_second_list = resp.data;
+                        console.log(this.category_second_list)
+                    })
                 })
             },
             changeCategory(i,id){
                 this.class_show = i;
+                console.log(this.category_list[0])
                 this.$post('/api/navigation/getSecondLists',{id_category:id}).then(resp => {
                     this.category_second_list = resp.data;
                     console.log(this.category_second_list)
                 })
+            },
+            getCollection(data){
+                store.state.collection_id = data
+                this.$router.push({path:'/Collection'})
             }
         },
         mounted() {

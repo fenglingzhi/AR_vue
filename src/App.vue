@@ -20,15 +20,10 @@ import store from './store/store.js'
             }
         },
         mounted() {
-            this.md5()
+
         },
         methods: {
-            md5(){
-                let date = new Date().getTime().toString();
-                store.state.defaultData.sign = this.$md5(date + '安全码');
-                store.state.defaultData.tamp = date;
-                console.log('md5',store.state.defaultData.sign)
-            }
+
         }
     }
 </script>
