@@ -21,9 +21,11 @@
         <div class="title">
             <img src="../assets/img/index/AR-logo.png" alt />
         </div>
-        <div class="search">
-            <img src="../assets/img/index/serch.png" alt />
-        </div>
+        <router-link to="/SearchHot">
+            <div class="search">
+                <img src="../assets/img/index/serch.png" alt />
+            </div>
+        </router-link>
     </div>
   </header>
   <div class="toptexts"  >
@@ -103,6 +105,7 @@
     </div>
       <!--商品瀑布流组件-->
     <CommodityWaterfall></CommodityWaterfall>
+    <BottomBar></BottomBar>
   </div>
 </template>
 
@@ -113,7 +116,7 @@ import router from "vue-router";
 import axios from "axios";
 import CommodityWaterfall from "../components/CommodityWaterfall.vue";
 import store from '../store/store.js'
-
+import BottomBar from "./BottomBar"
 export default {
     data(){
       return{
@@ -141,25 +144,26 @@ export default {
        router,
        CountDown,
        CommodityWaterfall,
+       BottomBar
    },
    methods: {  
     loadhomehearder() {
       this.$post("/api/home/getHome", {
         id_currency: "1"
       }).then(data => {
-          this.bann_Notices = data.data.data.bannNotices
-          this.banner_tops = data.data.data.banner.banner_tops;
-          this.banner1 = data.data.data.banner.banner_1;
-          this.banner2 = data.data.data.banner.banner_2;
-          this.banner3left = data.data.data.banner.banner_3_left;
-          this.banner3right1 = data.data.data.banner.banner_3_right_1;
-          this.banner3right2 = data.data.data.banner.banner_3_right_2;
-          this.countdown = data.data.data.count_down.products;
-          this.banner5 = data.data.data.banner.banner_5;
-          this.banner4 = data.data.data.banner.banner_4;
-          this.banner6 = data.data.data.banner.banner_6;
-          this.banner7 = data.data.data.banner.banner_7;
-          this.banner9 = data.data.data.policy;
+          this.bann_Notices = data.data.bannNotices
+          this.banner_tops = data.data.banner.banner_tops;
+          this.banner1 = data.data.banner.banner_1;
+          this.banner2 = data.data.banner.banner_2;
+          this.banner3left = data.data.banner.banner_3_left;
+          this.banner3right1 = data.data.banner.banner_3_right_1;
+          this.banner3right2 = data.data.banner.banner_3_right_2;
+          this.countdown = data.data.count_down.products;
+          this.banner5 = data.data.banner.banner_5;
+          this.banner4 = data.data.banner.banner_4;
+          this.banner6 = data.data.banner.banner_6;
+          this.banner7 = data.data.banner.banner_7;
+          this.banner9 = data.data.policy;
           //计算倒计时列表长度
           this.contentWidth = Number(this.countdown.length)*170 + 95 +"px";
         }).catch(error => {

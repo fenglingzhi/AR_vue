@@ -12,7 +12,7 @@
             <img src="../assets/img/index/category.png" alt="">
             <span> الرئيسية </span>
         </router-link>
-        <router-link to="/" tag="div" class="item">
+        <router-link to="/home" tag="div" class="item">
             <img src="../assets/img/index/home.png" alt="">
             <span> الرئيسية </span>
         </router-link>
@@ -53,10 +53,11 @@ export default {
     align-items: center;
     box-sizing: border-box;
     background-color: white;
+    justify-content: space-evenly;
     .item{
         width: 100% / 4;
         cursor: pointer;
-        margin-left: 7%;
+        /*margin-left: 7%;*/
         >span{
             display: block;
             padding-top: 6px;
