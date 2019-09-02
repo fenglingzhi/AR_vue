@@ -24,7 +24,7 @@
     </van-swipe>
     <div class="category_info">
       <div class="share_title">
-        <div class="share">
+        <div class="share" @click="share_show_event">
           <img src="../assets/img/product_detail/share.png" alt />
         </div>
         <div class="title">{{data_all.name}}</div>
@@ -131,6 +131,8 @@
         </div>
       </div>
     </div>
+    <!-- 分享模态框 -->
+    <van-popup v-model="share_show">内容</van-popup>
   </div>
 </template>
 <script>
@@ -145,7 +147,8 @@ export default {
       material_content_show: true,
       data_all: {},
       view_more1: false,
-      view_more2: false
+      view_more2: false,
+      share_show: false
     };
   },
   components: {},
@@ -208,6 +211,9 @@ export default {
           data.product_attribute_sizes
         );
       });
+    },
+    share_show_event() {
+      this.share_show = true;
     }
   }
 };
