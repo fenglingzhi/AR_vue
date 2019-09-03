@@ -2,12 +2,14 @@
     <div :class="unshow?'pages_ar':'pages_en'" >
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="300">
             <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
-                <img :src="v.img_url" alt="">
-                <span class="message">{{ v.saleMessage }}</span>
-                <p class="price">
-                    <span class="newprice">{{ v.newprice }}</span>
-                    <span class="oldprice">{{ v.oldprice }}</span>
-                </p> 
+                <div class="countimg">
+                    <img :src="v.img_url" alt="">
+                    <p class="message">{{ v.saleMessage }}</p>
+                    <p class="price">
+                        <span class="newprice">{{ v.newprice }}</span>
+                        <span class="oldprice">{{ v.oldprice }}</span>
+                    </p>
+                </div>
             </div>       
        </van-list>
         <button class="button" @click="changeolalng()">切换</button>
@@ -19,6 +21,8 @@ import { Dialog, List  } from 'vant';
 import router from "vue-router";
 import axios from "axios";
 import $ from "jquery"
+import store from '../store/store.js'
+
 export default {
     data(){
         return{
@@ -40,19 +44,20 @@ export default {
         Dialog
     },
     methods:{
+        //点击切换样式类
         changeolalng(){
             this.unshow = !this.unshow
-            this.$emit("listenEvent",this.unshow)
+            store.commit('changeStore',{key:'unshow',val: !this.$store.state.unshow});
         },
+        // 瀑布流请求
         loadhomeWaterfall(data){
         this.$post("/api/home/getHomeProductList",data).then(redata => {
-            this.Lists = this.Lists.concat(redata.data.data.products);
-            this.total_page = redata.data.data.total_page;
+            this.Lists = this.Lists.concat(redata.data.products);
+            this.total_page = redata.data.total_page;
             }).catch(error => {
                 console.log(error);
             });
         },
-
         onLoad() {
         // 异步更新数据
             setTimeout(() => {
@@ -69,15 +74,17 @@ export default {
                 }
             }, 3000);
         },
+
     },
     mounted(){
          this.loadhomeWaterfall(this.listData);
+
     }
 }
 </script>
 <style lang="scss" scoped>
 .pages_ar{
-    margin-bottom: 55px;
+    margin-bottom: 5rem;
     .newprice{
         color:#444040;
     }
@@ -86,35 +93,37 @@ export default {
     }
     .van-list{
         overflow: hidden;
-        // display: flex;
+        /*display: flex;*/
+        width: 100%;
     }
     .van-cell{
+        width: 50%;
         float: left;
-        width: 185px;
-        height: 325px;
         padding: 5px 5px;
     }
     .van-cell img{
         width: 100%;
-        height: 75%;
     }
     .price{
-        position: absolute;
-        top: 255px;
-        left: 55px;
         font-weight: bold;
         font-size: 14px;
+        text-align: right;
     }
     .message{
-        position: absolute;
-        top: 245px;
-        left: 115px;
         font-size: 22px;
         font-weight: bold;
+        text-align: right;
+    }
+    .countimg{
+        width: 100%;
+    }
+    button{
+        border-radius: 5px;
+        background-color: lightblue;
     }
 }
 .pages_en{
-    margin-bottom: 55px;
+    margin-bottom: 5rem;
     .newprice{
         color:#444040;
     }
@@ -123,29 +132,32 @@ export default {
     }
     .van-list{
         overflow: hidden;
-        // display: flex;
+        /*display: flex;*/
     }
     .van-cell{
+        width: 50%;
         float: left;
-        width: 185px;
-        height: 325px;
         padding: 5px 5px;
     }
     .van-cell img{
         width: 100%;
-        height: 75%;
     }
     .price{
-        position: absolute;
-        top: 255px;
         font-weight: bold;
         font-size: 14px;
+        text-align: left;
     }
     .message{
-        position: absolute;
-        top: 245px;
         font-size: 22px;
         font-weight: bold;
+        text-align: left;
+    }
+    .countimg{
+        width: 100%;
+    }
+    button{
+        border-radius: 5px;
+        background-color: lightblue;
     }
 }
 

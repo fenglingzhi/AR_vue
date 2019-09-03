@@ -9,9 +9,11 @@
 </template>
 <script>
 import BottomBar from "./views/BottomBar"
+import store from './store/store.js'
     export default {
         components : {
-          BottomBar
+            BottomBar,
+            store
         },
         data () {
             return {
