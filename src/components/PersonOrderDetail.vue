@@ -13,7 +13,7 @@
                     </div>
                     <div class="orderDetail_item dis_flex">
                         <div class="orderDetail_item_right">
-                            <label for=""  style="margin:0;">سعر طلبك :   S.R.30.00  </label>
+                            <label for=""  style="margin:0;">سعر طلبك :{{orderList.total_price}}</label>
                         </div>
                         <div class="orderDetail_item_left">
                             <span style="font-size: 12px;color: #999999;margin-left:14px;">أنمنتمر طبيعي</span>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="orderDetail_item orderDetail_item_adress dis_flex">
-                        <div style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                        <div style="text-align: right">
                             <img src="../assets/img/personal/adress_loaction.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
                             <span>{{address}}</span>
                         </div>
@@ -43,8 +43,8 @@
                     <div class="orderDetail_item  dis_flex" style="line-height: 15px">
                         <div>
                             <div alt="" class="checkImg" style="margin-left: 8px;width: 10px;height: 10px;border-radius: 50%;background: #ED0000;display: inline-block;"></div>
-                            <!--等待确认电话号码-->
-                            <span>في انتظار تأكيد رقم الهاتف</span>
+                            <!--物流状态-->
+                            <span>{{orderList.current_state}}</span>
                         </div>
                     </div>
                 </div>
@@ -53,9 +53,10 @@
                         <div class="dis_flex orderDetail_item_list_right flexone textEllipsis">
                             <div><img :src="item.img_url" alt="" width="75"></div>
                             <div style="line-height: 20px;margin-right:12px;" class="flexone textEllipsis">
-                                <span class="dis_block textEllipsis">{{item.name}}</span>
-                                <span class="dis_block color999 fontSize12 textEllipsis" style="margin-left: 9rem;">({{item.color}}）</span>
-                                <span class="dis_block textEllipsis"  style="margin-left: 9rem;">{{item.new_price}}</span>
+                                <span class="dis_block ">{{item.name}}</span>
+                                <span class="dis_block color999 fontSize12 " style="margin-left: 9rem;">({{item.color}}）</span>
+                                <span class="dis_block "  style="margin-left: 9rem;">{{item.size}}</span>
+                                <span class="dis_block "  style="margin-left: 9rem;">{{item.new_price}}</span>
                             </div>
                         </div>
                         <div style="line-height: 20px;">
@@ -64,25 +65,25 @@
                     </div>
                 </div>
                 <div class="orderDetail_item" style="border:none;">
-                    <!-- 零售价 -->
+                    <!-- 商品折扣价 -->
                     <div class="dis_flex justify-space-between">
                         <div class="flexone textEllipsis">
                             <span class="fontSize12">سعر الوحدة</span>
                         </div>
                         <div>
-                            <span class="text-line-through fontSize12">{{orderList.mark_total_price}}</span>
+                            <span class="text-line-through fontSize12">{{orderList.sub_total_price}}</span>
                         </div>
                     </div>
-                    <!-- 小计 -->
+                    <!--商品原价-->
                     <div class="dis_flex justify-space-between">
                         <div class="flexone textEllipsis">
-                            <span class="fontSize12">إجمالي المبلغ</span>
+                            <span class="fontSize12">سعر الوحدة</span>
                         </div>
                         <div>
-                            <span class="text-line-through fontSize12">S.R.15.00 </span>
+                            <span class="text-line-through fontSize12">{{orderList.sub_total_price}}</span>
                         </div>
                     </div>
-                    <!-- 运费价格 -->
+                    <!-- 运费 -->
                     <div class="dis_flex justify-space-between">
                         <div class="flexone textEllipsis">
                             <span class="fontSize12">سعر الشحن</span>
@@ -100,13 +101,31 @@
                             <span class="fontSize12 colorED0000">{{orderList.total_discount_price}}</span>
                         </div>
                     </div>
+                    <!--cod服务费-->
+                    <div class="dis_flex justify-space-between"  id="cods">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">خصم</span>
+                        </div>
+                        <div>
+                            <span class="fontSize12 colorED0000">{{orderList.cod_service_price}}</span>
+                        </div>
+                    </div>
+                    <!--支付方式优惠金额-->
+                    <div class="dis_flex justify-space-between">
+                        <div class="flexone textEllipsis">
+                            <span class="fontSize12">خصم</span>
+                        </div>
+                        <div>
+                            <span class="fontSize12 colorED0000">{{orderList.total_payment_discount_price}}</span>
+                        </div>
+                    </div>
                     <!-- 总额 -->
                     <div class="dis_flex justify-space-between">
                         <div class="flexone textEllipsis">
                             <span class="fontSize12">المجموع</span>
                         </div>
                         <div>
-                            <span class="fontSize12 colorED0000 fontWeight600">{{orderList.sub_total_price}} </span>
+                            <span class="fontSize12 colorED0000 fontWeight600">{{orderList.total_price}} </span>
                         </div>
                     </div>
                 </div>
@@ -125,6 +144,7 @@
     import router from "vue-router";
     import axios from "axios";
     import store from '../store/store.js'
+    import $ from "jquery"
     export default {
         data(){
             return{
@@ -146,7 +166,10 @@
                     this.orderList = data.data;
                     this.name = data.data.shipping_address.name;
                     this.address = data.data.shipping_address.address;
-                    console.log(this.orderList.add_date)
+                    if( this.orderList.cod_service_price == ""){
+                        console.log(1);
+                        $('#cods').addClass('none');
+                    }
                 }).catch(error => {
                     console.log(error);
                 });
@@ -159,6 +182,9 @@
 </script>
 
 <style lang="scss" scoped>
+    .none{
+        display: none;
+    }
     .dis_flex{
         display: flex;
     }
