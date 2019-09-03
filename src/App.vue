@@ -4,7 +4,7 @@
     <router-view/>
     <!-- 内容主视区 -->
     <!-- 底部导航 -->
-    <BottomBar></BottomBar>
+    <!--<BottomBar></BottomBar>-->
   </div>
 </template>
 <script>
