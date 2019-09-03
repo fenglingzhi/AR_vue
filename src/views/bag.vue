@@ -85,7 +85,7 @@ export default {
         customer_id: 1
       };
       this.$post("/api/cart/getCartProducts", data).then(res => {
-        let data = res.data.data;
+        let data = res.data;
         console.log(data);
         this.data_all = data.productRecommends;
       });
@@ -95,12 +95,13 @@ export default {
 </script>
 <style lang="scss">
 .bag {
-  padding-bottom: 70px;
+  padding-bottom: 114px;
   header {
     position: fixed;
-    overflow: auto;
-    background: #fff;
+    background: white;
     top: 0;
+    left: 0;
+    z-index: 9;
     width: 100%;
     border-bottom: 1px solid #e7e7e7;
     .header_wrap {
@@ -140,6 +141,9 @@ export default {
       padding: 10px 20px;
       background: #fff;
       margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+      }
       .product_list_wrap {
         display: flex;
         .stepper {

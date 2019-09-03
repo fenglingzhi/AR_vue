@@ -60,8 +60,8 @@ export default {
   methods: {
     getCouponList() {
       let data = {
-        currency_id: 1,
-        id_currency: 1
+        customer_id: 1,
+        currency_id: 1
       };
       this.$post("/api/userIdentity/getCartRules", data).then(res => {
         console.log(res);
