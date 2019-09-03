@@ -137,7 +137,7 @@
     </div>
     <!-- 添加进购物车按钮 -->
     <div class="add2bag_box">
-      <button @click="add2bag">الإضافة إلى حقيبة التسوق</button>
+      <button @click="add2bag()">الإضافة إلى حقيبة التسوق</button>
     </div>
 
     <!-- 分享模态框 -->
@@ -216,6 +216,7 @@ export default {
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
         console.log("商品详情", data);
+        this.$set(this.data_all, "id_product", data.id_product);
         this.$set(this.data_all, "name", data.name);
         this.$set(this.data_all, "description", data.description);
         this.$set(this.data_all, "old_price", data.old_price);
@@ -265,11 +266,21 @@ export default {
         this.$toast("请选择尺码");
         return false;
       }
-      //   let data={
-      //   }
-      //   this.$post("/api/cart/setCartProduct",data).then(res=>{
-
-      //   })
+      let data = {
+        id_currency: 1,
+        id_cart: 0,
+        type: "up",
+        id_product: this.data_all.id_product,
+        id_size: this.size_selected,
+        id_color: this.color_selected,
+        quantity: 1
+      };
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast("添加成功");
+        }
+      });
     },
     share_show_event() {
       this.share_show = true;
