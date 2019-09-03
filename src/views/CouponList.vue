@@ -8,6 +8,11 @@
         </div>
       </div>
     </header>
+    <!-- 搜索 -->
+    <!-- <div class="coupon-search">
+      <button class="search-btn">搜索</button>
+      <input type="text" />
+    </div>-->
     <!-- 有优惠券 -->
     <ul class="couponBox" v-if="usable.length>0||unusable.length>0">
       <!-- 循环可用的优惠券 -->
@@ -216,6 +221,26 @@ export default {
     }
     p {
       margin: 0;
+    }
+  }
+  .coupon-search {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-around;
+    .search-btn {
+      border: none;
+      background: black;
+      color: white;
+      width: 25%;
+      line-height: 30px;
+      font-size: 12px;
+    }
+    input {
+      border: none;
+      background: #d1d1d1;
+      width: 70%;
+      border-radius: 3px;
+      text-align: right;
     }
   }
 }

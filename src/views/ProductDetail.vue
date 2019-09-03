@@ -137,7 +137,7 @@
     </div>
     <!-- 添加进购物车按钮 -->
     <div class="add2bag_box">
-      <button @click="add2bag()">الإضافة إلى حقيبة التسوق</button>
+      <button @click="add2bag">الإضافة إلى حقيبة التسوق</button>
     </div>
 
     <!-- 分享模态框 -->
@@ -279,6 +279,8 @@ export default {
         console.log(res);
         if (res.code == 200) {
           this.$toast("添加成功");
+        } else {
+          this.$toast("添加失败，请重试！");
         }
       });
     },
