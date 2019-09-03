@@ -114,10 +114,10 @@
         font-weight: 600;
         padding-right: 3rem;
     }
-    .returnicon{
-        position: absolute;
-        left:21rem;
-    }
+    /*.returnicon{*/
+        /*position: absolute;*/
+        /*left:21rem;*/
+    /*}*/
     .header_return_img{
         width:10px;
     }
