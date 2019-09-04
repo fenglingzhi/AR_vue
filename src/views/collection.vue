@@ -26,7 +26,7 @@
             </van-row>
         </header>
         <van-row class="collectionCon">
-            <van-col span="12" class="productItem" v-for="(v,i) in CL">
+            <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
                     <div class="proTip">ON SALE</div>
                     <img :src="v.img_url" width="100%" alt="">
@@ -160,8 +160,12 @@
                     this.coL = resp.data.colors;
                     this.szL = resp.data.sizes;
                     this.peL = resp.data.prices;
-                    console.log(this.coL)
+                    console.log(this.peL)
                 })
+            },
+            gPdu(data){
+                store.state.product_id = data;
+                router.push('/ProductDetail')
             }
         },
         beforeMount(){
