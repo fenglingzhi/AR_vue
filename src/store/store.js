@@ -11,7 +11,6 @@ export default new Vuex.Store({
     orderId:'',
     langID:'1',
     id_cart:'0',
-    id_cart_not_login:'0',
     id_currency:'1',
     lang_id:'1',
     product_id:''

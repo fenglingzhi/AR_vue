@@ -180,7 +180,10 @@ export default {
       view_more2: false,
       share_show: false,
       //   购物车已选择的商品数量
-      selected_products_num: 0
+      selected_products_num: 0,
+      product_id: this.$store.state.product_id,
+      id_currency: this.$store.state.id_currency,
+      lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -210,9 +213,9 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
-        id_currency: 1,
-        id_product: 26,
-        lang_id: 1
+        id_currency: this.id_currency,
+        id_product: this.product_id,
+        lang_id: this.lang_id
       };
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
@@ -250,7 +253,7 @@ export default {
     // 获取购物车中物品数量
     getSelectedProductsNum() {
       let data = {
-        id_currency: 1,
+        id_currency: this.id_currency,
         customer_id: 1
       };
       this.$post("/api/cart/getCartProducts", data).then(res => {
@@ -267,15 +270,29 @@ export default {
         this.$toast("请选择尺码");
         return false;
       }
-      let data = {
-        id_currency: 1,
-        id_cart: 0,
-        type: "up",
-        id_product: this.data_all.id_product,
-        id_size: this.size_selected,
-        id_color: this.color_selected,
-        quantity: 1
-      };
+      let bag_data = {};
+      if (this.$store.state.token == "") {
+        //   未登录
+        bag_data = {
+          id_cart: 0
+        };
+      } else {
+        // 已登录
+        bag_data = {
+          id_cart: this.$store.state.id_cart
+        };
+      }
+      let data = Object.assign(
+        {
+          id_currency: this.id_currency,
+          type: "up",
+          id_product: this.data_all.id_product,
+          id_size: this.size_selected,
+          id_color: this.color_selected,
+          quantity: 1
+        },
+        bag_data
+      );
       this.$post("/api/cart/setCartProduct", data).then(res => {
         console.log(res);
         if (res.code == 200) {
