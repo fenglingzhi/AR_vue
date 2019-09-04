@@ -3,7 +3,7 @@
     <header>
       <div class="header_wrap">
         <div class="title">عنوان الشحن&nbsp;</div>
-        <div class="announce">
+        <div class="announce" @click="$router.go(-1)">
           <img src="../assets/img/return.png" alt />
         </div>
       </div>

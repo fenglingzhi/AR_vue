@@ -43,7 +43,8 @@
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
-            <img :src="color.color_image_url" :alt="color.name" />
+            <!-- <img :src="color.color_image_url" /> -->
+            {{color.name}}
           </div>
         </div>
       </div>
@@ -216,6 +217,7 @@ export default {
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
         console.log("商品详情", data);
+        this.$set(this.data_all, "id_product", data.id_product);
         this.$set(this.data_all, "name", data.name);
         this.$set(this.data_all, "description", data.description);
         this.$set(this.data_all, "old_price", data.old_price);
@@ -265,11 +267,23 @@ export default {
         this.$toast("请选择尺码");
         return false;
       }
-      //   let data={
-      //   }
-      //   this.$post("/api/cart/setCartProduct",data).then(res=>{
-
-      //   })
+      let data = {
+        id_currency: 1,
+        id_cart: 0,
+        type: "up",
+        id_product: this.data_all.id_product,
+        id_size: this.size_selected,
+        id_color: this.color_selected,
+        quantity: 1
+      };
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast("添加成功");
+        } else {
+          this.$toast("添加失败，请重试！");
+        }
+      });
     },
     share_show_event() {
       this.share_show = true;
@@ -381,7 +395,7 @@ export default {
       }
       .color_list {
         float: right;
-        width: 36px;
+        // width: 36px;
         padding: 5px;
         margin: 10px;
         border: 1px solid white;
@@ -467,7 +481,7 @@ export default {
                 padding: 20px 0;
               }
               .policy_text {
-                height: 50px;
+                max-height: 50px;
                 overflow: hidden;
                 line-height: 20px;
               }

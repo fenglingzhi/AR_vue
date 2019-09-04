@@ -3,42 +3,55 @@
     <header>
       <div class="header_wrap">
         <div class="title">عنوان الشحن&nbsp;</div>
-        <div class="announce">
+        <div class="announce" @click="$router.go(-1)">
           <img src="../assets/img/return.png" alt />
         </div>
       </div>
     </header>
-    <!-- 优惠券 -->
-    <ul class="couponBox" v-if="data_all.length>0">
-      <li class="coupon active">
+    <!-- 搜索 -->
+    <!-- <div class="coupon-search">
+      <button class="search-btn">搜索</button>
+      <input type="text" />
+    </div>-->
+    <!-- 有优惠券 -->
+    <ul class="couponBox" v-if="usable.length>0||unusable.length>0">
+      <!-- 循环可用的优惠券 -->
+      <li
+        class="coupon"
+        v-for="(coupon,index) in usable"
+        :key="index"
+        @click="coupon_selected=coupon.id_cart_rule"
+        :class="{'active':coupon_selected==coupon.id_cart_rule}"
+      >
         <div class="left">
-          <p>kul15</p>
+          <p>{{coupon.name}}</p>
         </div>
         <div class="right">
           <div class="right-top">
-            <h2>15%</h2>
-            <p>具体的内容</p>
+            <h2>{{coupon.reduction_amount}}</h2>
+            <p>{{coupon.minimum_amount}}</p>
           </div>
-          <div class="right-bottom">2019/10/12-2020/10/12</div>
+          <div class="right-bottom">{{coupon.date_to}}-{{coupon.date_from}}</div>
         </div>
         <img src="../assets/img/coupon/active.png" alt class="active-img" />
       </li>
-      <li class="coupon unuseable">
+      <!-- 循环不可用的优惠券 -->
+      <li class="coupon unusable" v-for="(coupon,index) in unusable" :key="index">
         <div class="left">
-          <p>kul15</p>
+          <p>{{coupon.name}}</p>
         </div>
         <div class="right">
           <div class="right-top">
-            <h2>15%</h2>
-            <p>具体的内容</p>
+            <h2>{{coupon.reduction_amount}}</h2>
+            <p>{{coupon.minimum_amount}}</p>
           </div>
-          <div class="right-bottom">2019/10/12-2020/10/12</div>
+          <div class="right-bottom">{{coupon.date_to}}-{{coupon.date_from}}</div>
         </div>
         <img src="../assets/img/coupon/active.png" alt class="active-img" />
       </li>
     </ul>
-    <!-- 无优惠券 -->
-    <div class="no-coupon" v-if="data_all.length==0">
+    <!-- 没有优惠券 -->
+    <div class="no-coupon" v-if="usable.length==0&&unusable.length==0">
       <img src="../assets/img/coupon/no.png" alt />
       <p>暂无优惠券</p>
     </div>
@@ -50,7 +63,9 @@ import { METHODS } from "http";
 export default {
   data() {
     return {
-      data_all: []
+      usable: [],
+      unusable: [],
+      coupon_selected: ""
     };
   },
   components: {},
@@ -65,6 +80,18 @@ export default {
       };
       this.$post("/api/userIdentity/getCartRules", data).then(res => {
         console.log(res);
+        // 不可用
+        res.data.unusable.forEach(item => {
+          if (item.active == 1) {
+            this.unusable.push(item);
+          }
+        });
+        // 可用
+        res.data.usable.forEach(item => {
+          if (item.active == 1) {
+            this.usable.push(item);
+          }
+        });
       });
     }
   }
@@ -79,6 +106,7 @@ export default {
     background: #fff;
     top: 0;
     width: 100%;
+    z-index: 99;
     border-bottom: 1px solid #e7e7e7;
     .header_wrap {
       height: 44px;
@@ -105,10 +133,10 @@ export default {
     .coupon {
       background: url("../assets/img/coupon/coupon.png") center/contain
         no-repeat;
-      width: 351px;
+      max-width: 351px;
+      min-width: 320px;
       height: 146px;
-      // margin: 0 auto;
-      margin: -25px 12px;
+      margin: -25px auto;
       overflow: hidden;
       padding: 20px 10px;
       box-sizing: border-box;
@@ -162,7 +190,7 @@ export default {
         display: block;
       }
     }
-    .coupon.unuseable {
+    .coupon.unusable {
       background: url("../assets/img/coupon/coupon-grey.png") center/contain
         no-repeat;
       .left {
@@ -193,6 +221,26 @@ export default {
     }
     p {
       margin: 0;
+    }
+  }
+  .coupon-search {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-around;
+    .search-btn {
+      border: none;
+      background: black;
+      color: white;
+      width: 25%;
+      line-height: 30px;
+      font-size: 12px;
+    }
+    input {
+      border: none;
+      background: #d1d1d1;
+      width: 70%;
+      border-radius: 3px;
+      text-align: right;
     }
   }
 }
