@@ -2,14 +2,14 @@
   <div class="productDetail_zd">
     <header>
       <div class="header_wrap">
-        <div class="bag">
+        <div class="bag-img" @click="$router.push('Bag')">
           <img src="../assets/img/index/bag.png" alt />
-          <div class="num">12</div>
+          <div class="num">{{selected_products_num}}</div>
         </div>
         <div class="logo">
           <img src="../assets/img/index/AR-logo.png" alt />
         </div>
-        <div class="back_logo">
+        <div class="back_logo" @click="$router.go(-1)">
           <div class="back">
             <img src="../assets/img/return.png" alt />
           </div>
@@ -24,7 +24,7 @@
     </van-swipe>
     <div class="category_info">
       <div class="share_title">
-        <div class="share">
+        <div class="share" @click="share_show_event">
           <img src="../assets/img/product_detail/share.png" alt />
         </div>
         <div class="title">{{data_all.name}}</div>
@@ -38,6 +38,8 @@
         <div class="color">
           <div
             class="color_list"
+            @click="color_selected=color.id_color"
+            :class="{'active':color_selected==color.id_color}"
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
@@ -46,10 +48,12 @@
         </div>
       </div>
       <div class="size_wrap">
-        <div class="size_title">نتبلي :</div>
+        <div class="size_title">الحجم :</div>
         <div class="size">
           <div
             class="size_list"
+            @click="size_selected=size.id_size"
+            :class="{'active':size_selected==size.id_size}"
             v-for="(size,index) in data_all.product_attribute_sizes"
             :key="index"
           >{{size.name}}</div>
@@ -58,9 +62,9 @@
       <!-- 产品信息 -->
       <div class="product_info">
         <div class="size_guide">
-          <div class="size_guide_icon">
+          <!-- <div class="size_guide_icon">
             <img src="../assets/img/choseMore.png" alt />
-          </div>
+          </div>-->
           <div class="size_guide_title">نتبرالت،رل نتمياستلمظ</div>
         </div>
         <div class="material_policy">
@@ -69,12 +73,12 @@
               class="material"
               @click="material_content_show_change2t"
               :class="{'material_policy_active':material_content_show}"
-            >نتبرالت،رل</div>
+            >الوصف</div>
             <div
               class="policy"
               @click="material_content_show_change2f"
               :class="{'material_policy_active':!material_content_show}"
-            >نتبراماتسبس / اتنلشست،رل</div>
+            >سياسة الشحن/سياسة الإرجاع</div>
           </div>
           <div class="material_policy_wrap">
             <!-- 描述 -->
@@ -131,6 +135,33 @@
         </div>
       </div>
     </div>
+    <!-- 添加进购物车按钮 -->
+    <div class="add2bag_box">
+      <button @click="add2bag">الإضافة إلى حقيبة التسوق</button>
+    </div>
+
+    <!-- 分享模态框 -->
+    <van-popup v-model="share_show" position="bottom">
+      <div class="social_box">
+        <div class="social_wrap">
+          <div class="social_title">مشاركة مع</div>
+          <div class="social_item_wrap">
+            <div class="social_item" @click="share('fb')">
+              <img src="../assets/img/product_detail/Facebook.png" alt />
+            </div>
+            <!-- <div class="social_item">
+              <img src="../assets/img/product_detail/ins.png" alt />
+            </div>-->
+            <div class="social_item" @click="share('pinterest')">
+              <img src="../assets/img/product_detail/pinterest.png" alt />
+            </div>
+            <!-- <div class="social_item">
+              <img src="../assets/img/product_detail/message.png" alt />
+            </div>-->
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -139,18 +170,22 @@ import { METHODS } from "http";
 export default {
   data() {
     return {
-      // 获取语言id
       color_selected: "",
       size_selected: "",
       material_content_show: true,
+      //   详情数据
       data_all: {},
       view_more1: false,
-      view_more2: false
+      view_more2: false,
+      share_show: false,
+      //   购物车已选择的商品数量
+      selected_products_num: 0
     };
   },
   components: {},
   mounted() {
     this.getDetailInfo();
+    this.getSelectedProductsNum();
   },
   methods: {
     material_content_show_change2f() {
@@ -171,6 +206,7 @@ export default {
     view_more2_change2f() {
       this.view_more2 = false;
     },
+    // 获取商品详情
     getDetailInfo() {
       let data = {
         id_currency: 1,
@@ -178,8 +214,9 @@ export default {
         lang_id: 1
       };
       this.$post("/api/product/getProduct", data).then(res => {
-        let data = res.data.data;
-        console.log(data);
+        let data = res.data;
+        console.log("商品详情", data);
+        this.$set(this.data_all, "id_product", data.id_product);
         this.$set(this.data_all, "name", data.name);
         this.$set(this.data_all, "description", data.description);
         this.$set(this.data_all, "old_price", data.old_price);
@@ -208,14 +245,77 @@ export default {
           data.product_attribute_sizes
         );
       });
+    },
+    // 获取购物车中物品数量
+    getSelectedProductsNum() {
+      let data = {
+        id_currency: 1,
+        customer_id: 1
+      };
+      this.$post("/api/cart/getCartProducts", data).then(res => {
+        this.selected_products_num = res.data.productRecommends.length;
+      });
+    },
+    // 添加商品进购物车
+    add2bag() {
+      if (this.color_selected == "") {
+        this.$toast("请选择颜色");
+        return false;
+      }
+      if (this.size_selected == "") {
+        this.$toast("请选择尺码");
+        return false;
+      }
+      let data = {
+        id_currency: 1,
+        id_cart: 0,
+        type: "up",
+        id_product: this.data_all.id_product,
+        id_size: this.size_selected,
+        id_color: this.color_selected,
+        quantity: 1
+      };
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast("添加成功");
+        } else {
+          this.$toast("添加失败，请重试！");
+        }
+      });
+    },
+    share_show_event() {
+      this.share_show = true;
+    },
+    // 分享事件
+    share(type) {
+      let share_url = window.location.href;
+      switch (type) {
+        case "fb":
+          let fb_url = "http://www.facebook.com/sharer/sharer.php?u=";
+          window.open(fb_url + share_url);
+          break;
+        case "pinterest":
+          let pinterest_url =
+            "https://www.pinterest.com/pin/create/button/?url=";
+          window.open(pinterest_url + share_url);
+          break;
+      }
     }
   }
 };
 </script>
 <style lang="scss">
 .productDetail_zd {
-  padding-bottom: 70px;
+  padding-top: 44px;
+  padding-bottom: 67px;
   header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    background: white;
     .header_wrap {
       height: 44px;
       display: flex;
@@ -294,16 +394,17 @@ export default {
       }
       .color_list {
         float: right;
-        width: 36px;
+        // width: 36px;
         padding: 5px;
         margin: 10px;
+        border: 1px solid white;
         img {
           width: 100%;
           height: 100%;
           vertical-align: middle;
         }
       }
-      .color_list_active {
+      .color_list.active {
         border: 1px solid #333;
       }
     }
@@ -322,7 +423,7 @@ export default {
         margin: 10px;
         width: 50px;
       }
-      .size_list_active {
+      .size_list.active {
         background: #333333;
         color: #fff;
       }
@@ -334,7 +435,7 @@ export default {
       background: #fff;
       .size_guide {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         padding: 20px 0;
         .size_guide_icon {
           height: 14px;
@@ -379,7 +480,7 @@ export default {
                 padding: 20px 0;
               }
               .policy_text {
-                height: 50px;
+                max-height: 50px;
                 overflow: hidden;
                 line-height: 20px;
               }
@@ -405,6 +506,38 @@ export default {
           }
         }
       }
+    }
+  }
+  .social_wrap {
+    padding: 0 20px 20px 20px;
+    .social_title {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #d8d8d8;
+      color: #999999;
+      margin-bottom: 10px;
+    }
+    .social_item_wrap {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .add2bag_box {
+    border-top: 1px solid black;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    background: white;
+    box-sizing: border-box;
+    button {
+      width: 100%;
+      border: none;
+      background: #000;
+      color: white;
+      font-size: 14px;
+      padding: 10px;
     }
   }
 }

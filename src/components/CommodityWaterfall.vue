@@ -100,6 +100,7 @@ export default {
         width: 50%;
         float: left;
         padding: 5px 5px;
+        height: 355px;
     }
     .van-cell img{
         width: 100%;
