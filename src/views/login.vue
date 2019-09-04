@@ -136,6 +136,10 @@ export default {
                 Toast.fail(data.message);
             }
             if (data.code == 200) {
+                // this.$store.state.access_token = data.data.token;
+                this.$router.push({
+                    name: `Home`
+                })
                 Toast.success(data.message)
             }
             console.log("list",data)
