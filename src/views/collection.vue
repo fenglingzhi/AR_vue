@@ -165,7 +165,7 @@
             },
             gPdu(data){
                 store.state.product_id = data;
-                router.push('/ProductDetail')
+                this.$router.push('/ProductDetail')
             }
         },
         beforeMount(){
