@@ -43,7 +43,8 @@
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
-            <img :src="color.color_image_url" :alt="color.name" />
+            <!-- <img :src="color.color_image_url" /> -->
+            {{color.name}}
           </div>
         </div>
       </div>
@@ -394,7 +395,7 @@ export default {
       }
       .color_list {
         float: right;
-        width: 36px;
+        // width: 36px;
         padding: 5px;
         margin: 10px;
         border: 1px solid white;
@@ -480,7 +481,7 @@ export default {
                 padding: 20px 0;
               }
               .policy_text {
-                height: 50px;
+                max-height: 50px;
                 overflow: hidden;
                 line-height: 20px;
               }
