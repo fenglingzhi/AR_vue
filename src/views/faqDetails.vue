@@ -6,7 +6,7 @@
         <span></span>
         <span>
             <span class="fontSize12 color000000" style="margin-right:10px;font-weight: 600;">شصيسضصثذبد</span>
-            <img src="@/assets/img/personal/faq_back.png" alt="" width="16">
+            <img src="@/assets/img/personal/faq_back.png" alt="" width="16" @click="back()">
         </span>
     </header>
     
@@ -53,7 +53,10 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
-        }
+        },
+        back(){
+            this.$router.go(-1);//返回上一层
+        },
     },
     mounted() {
         this.listData.id_faq = this.$route.params.page;

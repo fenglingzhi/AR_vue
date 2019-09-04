@@ -6,7 +6,7 @@
         <span></span>
         <span>
             <span class="fontSize12 color000000" style="margin-right:10px;font-weight: 600;">شصيسضصثذبد</span>
-            <img src="@/assets/img/personal/faq_back.png" alt="" width="16">
+            <img src="@/assets/img/personal/faq_back.png" alt="" width="16" @click="back()">
         </span>
     </header>
     
@@ -75,7 +75,10 @@ export default {
     searchResBtn(){
       this.listData ={ ...this.$store.state.defaultData,...this.listData}
       this.searchRes(this.listData)
-    }
+    },
+    back(){
+        this.$router.go(-1);//返回上一层
+    },
 
     
   },

@@ -43,8 +43,7 @@
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
-            <!-- <img :src="color.color_image_url" /> -->
-            {{color.name}}
+            <img :src="color.color_image_url" :alt="color.name" />
           </div>
         </div>
       </div>

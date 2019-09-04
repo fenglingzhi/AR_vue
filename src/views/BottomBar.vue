@@ -1,10 +1,10 @@
 <template>
     <div class="bottom-box">
-        <router-link to="" tag="div" class="item">
+        <router-link to="/personal" tag="div" class="item">
             <img src="../assets/img/index/me.png" alt="">
             <span> مستعمل </span>
         </router-link>
-        <router-link to="" tag="div" class="item">
+        <router-link to="/Bag" tag="div" class="item">
            <img src="../assets/img/index/bag.png" alt="">
             <span>  التسوق </span>
         </router-link>
@@ -12,7 +12,7 @@
             <img src="../assets/img/index/category.png" alt="">
             <span> الرئيسية </span>
         </router-link>
-        <router-link to="/home" tag="div" class="item">
+        <router-link to="/" tag="div" class="item">
             <img src="../assets/img/index/home.png" alt="">
             <span> الرئيسية </span>
         </router-link>
