@@ -9,6 +9,7 @@ export default new Vuex.Store({
     unshow:true,
     access_token:'cb99f6e8efa4fe871e8eb4325c5ce50f',
     orderId:'',
+    langID:'1'
   },
   mutations: {
       changeStore(state,data){

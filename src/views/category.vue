@@ -17,7 +17,8 @@
                             <div class="level_third_list_wrap">
                                 <van-row  class="level_third_list">
                                     <van-col span="8"  class="level_third_list_item" v-for="(v,i) in category_second_list">
-                                        <div @click="getCollection(v.category_id)">
+                                        <div @click="getCollection(v.category_id)" style="height: 120px;">
+                                            <!--<img src="" alt="">-->
                                             <img :src=v.category_url alt="">
                                             <p>{{v.name}}</p>
                                         </div>
@@ -96,6 +97,7 @@
 <style scoped lang="scss">
     p{
         margin: 0;
+        font-size: 12px;
     }
     img{
         width: 100%;
@@ -145,7 +147,7 @@
             /*padding: 0 10px;*/
         }
         .menu_left img{
-            height: auto;
+            /*height: auto;*/
         }
         .level_second_title{
             text-align: right;
@@ -162,9 +164,14 @@
         }
         .level_third_list_item{
             /*width: 33.3333%;*/
+            height: 120px;
             float: right;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             padding: 0 5px;
+            img{
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 </style>
