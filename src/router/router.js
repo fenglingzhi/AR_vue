@@ -15,7 +15,7 @@ const CouponList = resolve => require(['../views/CouponList.vue'], resolve);
 const SearchHot = resolve => require(['../components/SearchHot.vue'], resolve);
 const Category = resolve => require(['../views/category.vue'], resolve);
 const Collection = resolve => require(['../views/collection.vue'], resolve);
-
+const checkoutAddressChose = resolve => require(['../views/checkoutAddressChose.vue'], resolve);
 const Login = resolve => require(['../views/login.vue'], resolve);
 const wishlist = resolve => require(['../views/wishlist.vue'], resolve);
 const Faq = resolve => require(['../views/faq.vue'], resolve);
@@ -53,6 +53,10 @@ var routerMaps = [
     {name:'personalSetup', path:'/personalSetup',component:personalSetup,meta:{name:'personalSetup'}},
     {name:'personalCurrency', path:'/personalCurrency',component:personalCurrency,meta:{name:'personalCurrency'}},
     {name:'personalAdress', path:'/personalAdress',component:personalAdress,meta:{name:'personalAdress'}},
+    {name:'checkoutAddressChose', path:'/checkoutAddressChose',component:checkoutAddressChose,meta:{name:'checkoutAddressChose'}},
+    {name:'checkout', path:'/checkout',component:checkout,meta:{name:'checkout'}},
+
+
 ];
 
 const router = new Router({

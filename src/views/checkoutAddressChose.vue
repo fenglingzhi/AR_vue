@@ -10,7 +10,8 @@
             <img @click="goBack()" src="../assets/img/Path.png" width="20" alt="">
         </span>
             </div>
-        </div>        <div class="checkoutCon">
+        </div>
+        <div class="checkoutCon">
             <div class="shippingChose">
                 <div class="choseAddress">
                     <div class="lineColor"></div>
