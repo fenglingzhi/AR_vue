@@ -107,7 +107,8 @@ export default {
     }
     .van-cell{
         width: 50%;
-        float: left;
+        // float: left;
+        display: inline-block;
         padding: 5px 5px;
         height: 355px;
     }
