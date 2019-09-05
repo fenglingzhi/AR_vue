@@ -79,9 +79,17 @@
       </div>
       <div class="countdownlist">
           <div class="countlists" :style="{width:contentWidth}">
-
-              <div class="countdown"  v-for="(m,n) in countdown" :key="n">
-                  <img  :src="m.img_url" alt="" class="countimg">
+              <div class="countdown"  v-for="(m,n) in countdown" :key="n" @click="detail(m.id_product)">
+                  <div class="imgbox">
+                      <img  :src="m.img_url" alt="" class="countimg">
+                  </div>
+                  <div>
+                      <p class="message">{{ m.saleMessage }}</p>
+                      <p class="price">
+                          <span class="newprice">{{ m.newprice }}</span>
+                          <span class="oldprice">{{ m.oldprice }}</span>
+                      </p>
+                  </div>
               </div>
           </div>
       </div>
@@ -170,6 +178,11 @@ export default {
           console.log(error);
         });
     },
+       //详情页跳转
+       detail(item){
+           this.$store.state.product_id = item;
+           this.$router.push('productDetail');
+       }
   },
   mounted() {
     this.loadhomehearder();
@@ -186,7 +199,7 @@ export default {
 }
 img {
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
 }
 header {
   position: fixed;
@@ -295,6 +308,34 @@ header {
 .banner5,.banner7,.banner8{
   margin: 10px 10px;
 }
+.price{
+   font-weight: bold;
+   font-size: 14px;
+   text-align: right;
+}
+.message{
+  font-size: 22px;
+  font-weight: bold;
+  text-align: right;
+  line-height: 20px;
+  height: 20px;
+}
+.imgbox{
+  overflow: hidden;
+  height: 255px;
+  text-align: center;
+}
+.imgbox img{
+  transform: translateY(-50%);
+  position: relative;
+  top: 50%;
+}
+    .newprice{
+        color:#444040;
+    }
+    .oldprice{
+        color:red;
+    }
 }
 
 </style>

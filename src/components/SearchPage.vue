@@ -2,13 +2,15 @@
     <div class="collection">
         <div class="head">
             <div class="collectionHead">
-                <span class="fl">
+                <span class="fl" @click="$router.push('Bag')">
                     <img src="../assets/img/bag.png" width="20"  alt="">
                     <div class="cartNum">2</div>
                 </span>
-                <span class="fl">
+                <router-link to="/SearchHot">
+                    <span class="fl">
                     <img src="../assets/img/search.png" width="20" alt="">
                 </span>
+                </router-link>
                 <span class="fr">
                     <img src="../assets/img/more3x.png" width="20" alt="">
                 </span>
@@ -30,20 +32,24 @@
             <div class="headStroke" style="border: none;height: 32px;padding: 10px 8px;">
                 <div class="fr">
                       <span class="des desed">تالاب بذتزر </span>
-                      <span class="des">التزر،وو3600  يع</span>
+                      <span class="des">التزر،وو{{total}}  يع</span>
                 </div>
             </div>
         </div>
         <div class="pages_ar">
-            <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="300">
-                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
+            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="300">
+                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail(v.id_product)">
                     <div class="countimg">
-                        <img :src="v.img_url" alt="">
-                        <p class="message">{{ v.saleMessage }}</p>
-                        <p class="price">
-                            <span class="newprice">{{ v.newprice }}</span>
-                            <span class="oldprice">{{ v.oldprice }}</span>
-                        </p>
+                       <div class="imgbox" >
+                           <img :src="v.img_url" alt="">
+                       </div>
+                       <div>
+                           <p class="message">{{ v.saleMessage }}</p>
+                           <p class="price">
+                               <span class="newprice">{{ v.newprice }}</span>
+                               <span class="oldprice">{{ v.oldprice }}</span>
+                           </p>
+                       </div>
                     </div>
                 </div>
             </van-list>
@@ -70,6 +76,7 @@
                 page:"1"
             },
             total_page:"" ,
+            total:"",
         }
     },
      components:{
@@ -87,7 +94,8 @@
              }).then(redata=>{
                  this.Lists = this.Lists.concat(redata.data.products);
                  this.total_page = redata.data.total_page;
-                 console.log(data)
+                 this.total = redata.data.total;
+                 console.log(redata)
              }).catch(error => {
                  console.log(error);
              });
@@ -108,6 +116,11 @@
                  }
              }, 3000);
          },
+         //详情页跳转
+         detail(item){
+             this.$store.state.product_id = item;
+             this.$router.push('productDetail');
+         }
      },
      mounted(){
          this.loadsearpage(this.listData);
@@ -173,6 +186,16 @@
         color: black;
         font-weight: bold;
     }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
+    }
 }
 .pages_ar{
     margin-bottom: 5rem;
@@ -204,6 +227,7 @@
         font-size: 22px;
         font-weight: bold;
         text-align: right;
+        height: 20px;
     }
     .countimg{
         width: 100%;
@@ -211,6 +235,16 @@
     button{
         border-radius: 5px;
         background-color: lightblue;
+    }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
     }
 }
 
