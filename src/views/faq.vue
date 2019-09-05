@@ -6,7 +6,7 @@
         <span></span>
         <span>
             <span class="fontSize12 color000000" style="margin-right:10px;font-weight: 600;">شصيسضصثذبد</span>
-            <img src="@/assets/img/personal/faq_back.png" alt="" width="16">
+            <img src="@/assets/img/personal/faq_back.png" alt="" width="16" @click="back()">
         </span>
     </header>
     
@@ -25,7 +25,7 @@
                 <div class="faq_item_one">
                     <img :src="item.img_url" alt="" width="20">
                     <span>{{item.name}}</span>
-                    <!-- <img src="@/assets/img/personal/order_down.png" width="20" alt=""> -->
+                    <img src="../assets/img/down.png" width="15" class="active-img"  :class="{activedSel:item.active && index == j }" srcset="">
                 </div>
             </div>
             <div class="faq_item_two" :class="{active:item.active && index == j }">
@@ -79,6 +79,9 @@ export default {
         console.log(error);
       });
     },
+    back(){
+        this.$router.go(-1);//返回上一层
+    },
     // 转开面板
     selectItem(item,index){
         this.j = index;
@@ -131,6 +134,14 @@ export default {
     padding: 0 15px;
     box-sizing: border-box;
     justify-content: space-between;
+  }
+   .faq_item_one .active-img{
+    float: left;
+    margin: 0;
+    margin-top: 17px;
+  }
+  .activedSel{
+    transform: rotate(180deg);
   }
 
   .faq_content{
@@ -206,6 +217,7 @@ export default {
       margin-bottom:0;
   }
   .faq_item_two_list li{
+      text-align: right;
       border-top:1px solid #D8D8D8;
   }
   .faq_item_two_list li:first-child{

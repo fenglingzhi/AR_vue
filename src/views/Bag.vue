@@ -3,7 +3,7 @@
     <header>
       <div class="header_wrap">
         <div class="title">عنوان الشحن&nbsp;</div>
-        <div class="announce">
+        <div class="announce" @click="$router.go(-1)">
           <img src="../assets/img/return.png" alt />
         </div>
       </div>
@@ -71,7 +71,9 @@ import { METHODS } from "http";
 export default {
   data() {
     return {
-      data_all: []
+      data_all: [],
+      id_currency: this.$store.state.id_currency,
+      lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -81,6 +83,7 @@ export default {
   methods: {
     getBagInfo() {
       let data = {
+        // id_currency: this.id_currency,
         id_currency: 1,
         customer_id: 1
       };

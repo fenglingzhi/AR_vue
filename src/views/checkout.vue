@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="checkoutCon">
-            <div class="choseAddress">
+            <div class="choseAddress" @click="choseAddress()">
                 <div class="fr addressInformation">
                     <div>Jiaoyang zhang SA 541236984</div>
                     <div>Flat 15</div>
@@ -54,30 +54,27 @@
             </div>
             <div class="lineColor"></div>
             <div class="shippingChose">
-                <div class="shippingWay" @click="choseShippingWay(0)" style="">
+                <div class="shippingWay" @click="choseShippingWay(index,item.carrier_id)" v-for="(item,index) in shippingWayObj" style="">
                     <div class="fr addressInformation">
-                        <div style="color: black">يبثذاذيليييب  S.R.30.00 </div>
-                        <div style="color: #999">سيسيشثسيسيشثسيسيشث</div>
-                        <div style="color: #999">ضبلاذيليثذبد لابيسد</div>
+                        <div style="color: black;margin: 10px 0;" >{{item.shipping_price}}</div>
+                        <div style="color: #999"> {{item.name}} </div>
                     </div>
                     <div class="fl">
-                        <img class="checkImg" v-if="shippingWayObj[0].select"  style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">
-                        <img class="checkImg" v-if="shippingWayObj[0].option"  style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">
-
+                        <img class="checkImg" v-if="shippingWayObj[index].select"  style="margin-top: 18px;" src="../assets/img/select.png" width="20" alt="">
+                        <img class="checkImg" v-if="shippingWayObj[index].option"  style="margin-top: 18px;" src="../assets/img/option.png" width="20" alt="">
                     </div>
                 </div>
-                <div class="shippingWay" @click="choseShippingWay(1)"  style="">
-                    <div class="fr addressInformation">
-                        <div style="color: black">يبثذاذيليييب  S.R.30.00 </div>
-                        <div style="color: #999">سيسيشثسيسيشثسيسيشث</div>
-                        <div style="color: #999">ضبلاذيليثذبد لابيسد</div>
-                    </div>
-                    <div class="fl">
-                        <img class="checkImg" v-if="shippingWayObj[1].select"  style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">
-                        <img class="checkImg" v-if="shippingWayObj[1].option"  style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">
-
-                    </div>
-                </div>
+                <!--<div class="shippingWay" @click="choseShippingWay(1)"  style="">-->
+                    <!--<div class="fr addressInformation">-->
+                        <!--<div style="color: black">يبثذاذيليييب  S.R.30.00 </div>-->
+                        <!--<div style="color: #999">سيسيشثسيسيشثسيسيشث</div>-->
+                        <!--<div style="color: #999">ضبلاذيليثذبد لابيسد</div>-->
+                    <!--</div>-->
+                    <!--<div class="fl">-->
+                        <!--<img class="checkImg" v-if="shippingWayObj[1].select"  style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">-->
+                        <!--<img class="checkImg" v-if="shippingWayObj[1].option"  style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="code">
                 <div class="codeShow">
@@ -131,6 +128,7 @@
     import router from "vue-router";
     import axios from "axios";
     import $ from 'jquery'
+    import store from '../store/store.js'
 
 
 export default {
@@ -151,16 +149,7 @@ export default {
                     option:true
                 }
             ],
-          shippingWayObj:[
-              {
-                  select:true,
-                  option:false
-              },
-              {
-                  select:false,
-                  option:true
-              }
-          ]
+          shippingWayObj:[]
       }
     },
    components: {
@@ -187,18 +176,49 @@ export default {
            }
        },
        // 物流方式选择
-       choseShippingWay(index){
-               this.shippingWayObj.forEach(function (val) {
+       choseShippingWay(index,carrierId){
+           this.$post('/api/payment/setCartCarrier',{id_cart:this.$store.state.id_cart,id_carrier:carrierId}).then(redata => {
+
+           })
+           this.shippingWayObj.forEach(function (val) {
                    val.select=false
                    val.option=true
                })
                this.shippingWayObj[index].select=true
                this.shippingWayObj[index].option=false
+       },
+       //获取物流列表
+       getCartCarriers(){
+           var vm = this
+           this.$post('/api/payment/getCartCarriers',{id_cart:this.$store.state.id_cart}).then(redata => {
+                    redata.data.forEach(function (val,index) {
+                        if(index==0){
+                            val.select=true
+                            val.option=false
+                            vm.shippingWayObj.push(val)
+                        }else {
+                            val.select=false
+                            val.option=true
+                            vm.shippingWayObj.push(val)
+                        }
+                    })
+           })
+       },
+       //获取支付详情
+       getCartDetail(){
+           this.$post('/api/payment/getCartDetail',{id_cart:this.$store.state.id_cart,id_currency:this.$store.state.id_currency}).then(redata => {
 
-       }
-
+           })
+       },
+       //选择地址
+       choseAddress(){
+           this.$router.push('/checkoutAddressChose')
+       },
   },
   mounted() {
+
+        this.getCartCarriers()
+        this.getCartDetail()
       // 点击显示输入折扣券
       $(".codeShow").click(function () {
           $(".downIco").toggleClass("add_transform")
@@ -246,6 +266,7 @@ export default {
     }
     .choseAddress{
         padding: 16px;
+        height: 53px;
     }
     .addressInformation{
         width: 90%;

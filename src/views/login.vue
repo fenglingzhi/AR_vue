@@ -4,7 +4,7 @@
       <div class="logIco">
           <img src="@/assets/img/logo.png" width="83" alt="">
           <div class="close_">
-              <img src="@/assets/img/close.png" alt="">
+              <img src="@/assets/img/close.png" alt="" @click="back()">
           </div>
       </div>
       <div class="changeTabs">
@@ -17,21 +17,21 @@
       </div>
       <div class="loginPart" v-if="tapIndex === 0">
           <div class="formInput">
-              <input type="text" placeholder="طلبنممنثمقكرده هتسثتي">
-              <input type="text" placeholder="بطاقة هدية">
+              <input type="text" placeholder="طلبنممنثمقكرده هتسثتي" v-model="logName">
+              <input type="password" placeholder="بطاقة هدية" v-model="logPwd">
           </div>
           <div class="loginText">
               <span>بطاقة يمنكنتكترببيصثدهدية</span>
           </div>
           <div style="text-align: center">
-              <button class="loginButton"> افحص الآن</button>
+              <button type="button" class="loginButton" @click="login()"> افحص الآن</button>
           </div>
       </div>
 
       <div class="registerPart" v-if="tapIndex === 1">
           <div class="formInput">
-              <input type="text" placeholder="طلبنممنثمقكرده هتسثتي">
-              <input type="text" placeholder="بطاقة هدية">
+              <input type="text" placeholder="طلبنممنثمقكرده هتسثتي" v-model="regName" @blur="resName()">
+              <input type="password" placeholder="بطاقة هدية" v-model="regPwd" @blur="respwd()">
           </div>
           <div class="registerText">
               <span>بطاقة يمنكنتكترببيصثدهدية</span>
@@ -40,7 +40,7 @@
               <span>بل٤ثسيسردهدية</span>
           </div>
           <div style="text-align: center">
-              <button class="loginButton"> افحص الآن</button>
+              <button type="button" class="loginButton" @click="regiest()"> افحص الآن</button>
           </div>
           <div class="loginTip">
               تهتشخهساعب( ارنتيعنا%15تخهاي )
@@ -54,18 +54,98 @@
 
 import * as api from "../api/commonApi";
 import router from "vue-router";
+import { Dialog, Swipe, SwipeItem, CountDown, List,Toast } from 'vant';
 import axios from "axios";
 import store from '../store/store.js'
 export default {
   data() {
     return {
       tapIndex:0,
-      
+      regName:'',
+      regPwd:'',
+      logName:'',
+      logPwd:''
     }
   },
+   components: {
+       Swipe,
+       Dialog,
+       SwipeItem,
+       router,
+       CountDown,
+       Toast
+   },
   methods: {
     changeTable(index) {
       this.$data.tapIndex = index;
+    },
+    respwd(){
+
+    },
+    resName(){
+
+    },
+    back(){
+        this.$router.go(-1);//返回上一层
+    },
+    // 登录
+    login(){
+        console.log("11111",this.logName,this.logPwd)
+        var data = {...this.$store.state.defaultData};
+        data.email = this.logName;
+        data.passwd = this.logPwd;
+        if (this.logName == '') {
+            Toast.fail("email不能为空")
+            return;
+        }
+         if (this.logPwd == '') {
+            Toast.fail("密码不能为空")
+            return;
+        }
+        this.$post('/api/user/login',data).then(data => {
+            console.log("list",data)
+            if (data.code == 200) {
+                // this.$store.state.access_token = data.data.token;
+                this.$router.push({
+                    name: `Home`
+                })
+            }
+            if (data.code == 400) {
+                Toast.fail(data.message)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    },
+    // 注册
+    regiest(){
+        console.log("222",this.regName,this.regPwd)
+        var data = {...this.$store.state.defaultData};
+        data.email = this.regName;
+        data.passwd = this.regPwd;
+        if (this.regName == '') {
+            Toast.fail("email不能为空")
+            return;
+        }
+         if (this.regPwd == '') {
+            Toast.fail("密码不能为空")
+            return;
+        }
+        this.$post('/api/user/register',data).then(data => {
+            if(data.code == 400){
+                Toast.fail(data.message);
+            }
+            if (data.code == 200) {
+                // this.$store.state.access_token = data.data.token;
+                this.$router.push({
+                    name: `Home`
+                })
+                Toast.success(data.message)
+            }
+            console.log("list",data)
+        }).catch(error => {
+            console.log(error);
+        });
     }
   },
 }
@@ -143,6 +223,7 @@ export default {
       width: 80%;
       direction: rtl;
       margin: 30px auto;
+      text-align: right;
   }
   .registerText span{
       display: block;

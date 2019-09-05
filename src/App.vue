@@ -29,6 +29,9 @@ import store from './store/store.js'
     }
 </script>
 <style lang="scss">
+  .van-collapse-item__content{
+    overflow: auto;
+  }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

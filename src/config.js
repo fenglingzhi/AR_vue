@@ -36,7 +36,6 @@ axios.interceptors.request.use(config => {
         id_currency:'1',
         access_token:store.state.access_token
     }
-    console.log(config)
     return config;
 
 },
