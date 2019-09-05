@@ -1,9 +1,11 @@
 <template>
     <div :class="unshow?'pages_ar':'pages_en'" >
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="300">
-            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
+            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail()">
                 <div class="countimg">
-                    <img :src="v.img_url" alt="">
+                   <div class="imgbox">
+                       <img :src="v.img_url" alt="">
+                   </div>
                     <p class="message">{{ v.saleMessage }}</p>
                     <p class="price">
                         <span class="newprice">{{ v.newprice }}</span>
@@ -74,6 +76,9 @@ export default {
                 }
             }, 3000);
         },
+        detail(){
+
+        }
 
     },
     mounted(){
@@ -121,6 +126,16 @@ export default {
     button{
         border-radius: 5px;
         background-color: lightblue;
+    }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
     }
 }
 .pages_en{

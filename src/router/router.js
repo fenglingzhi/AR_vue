@@ -10,7 +10,7 @@ const SearchPage = resolve => require(['../components/SearchPage.vue'],resolve);
 const PersonHistoryOrder = resolve => require(['../components/PersonHistoryOrder.vue'],resolve);
 const PersonOrderDetail = resolve => require(['../components/PersonOrderDetail.vue'],resolve);
 const ProductDetail = resolve => require(['../views/ProductDetail.vue'], resolve);
-const Bag = resolve => require(['../views/bag.vue'], resolve);
+const Bag = resolve => require(['../views/Bag.vue'], resolve);
 const CouponList = resolve => require(['../views/CouponList.vue'], resolve);
 const SearchHot = resolve => require(['../components/SearchHot.vue'], resolve);
 const Category = resolve => require(['../views/category.vue'], resolve);
