@@ -78,6 +78,7 @@ export default {
                 }
             }, 3000);
         },
+        //详情页跳转
         detail(item){
             this.$store.state.product_id = item;
             this.$router.push('productDetail');
@@ -142,9 +143,6 @@ export default {
         position: relative;
         top: 50%;
     }
-    .van-list__finished-text{
-        display: none;
-    }
 }
 .pages_en{
     margin-bottom: 5rem;
@@ -175,6 +173,7 @@ export default {
         font-size: 22px;
         font-weight: bold;
         text-align: left;
+        height: 20px;
     }
     .countimg{
         width: 100%;
@@ -182,6 +181,19 @@ export default {
     button{
         border-radius: 5px;
         background-color: lightblue;
+    }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
+    }
+    .van-list__finished-text{
+        display: none;
     }
 }
 
