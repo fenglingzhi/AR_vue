@@ -65,7 +65,9 @@ export default {
     return {
       usable: [],
       unusable: [],
-      coupon_selected: ""
+      coupon_selected: "",
+      id_currency: this.$store.state.id_currency,
+      lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -76,7 +78,7 @@ export default {
     getCouponList() {
       let data = {
         customer_id: 1,
-        currency_id: 1
+        currency_id: this.id_currency
       };
       this.$post("/api/userIdentity/getCartRules", data).then(res => {
         console.log(res);
