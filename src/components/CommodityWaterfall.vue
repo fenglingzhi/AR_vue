@@ -1,16 +1,18 @@
 <template>
     <div :class="unshow?'pages_ar':'pages_en'" >
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="300">
-            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail()">
+        <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="300">
+            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail(v.id_product)">
                 <div class="countimg">
                    <div class="imgbox">
                        <img :src="v.img_url" alt="">
                    </div>
-                    <p class="message">{{ v.saleMessage }}</p>
-                    <p class="price">
-                        <span class="newprice">{{ v.newprice }}</span>
-                        <span class="oldprice">{{ v.oldprice }}</span>
-                    </p>
+                   <div>
+                       <p class="message">{{ v.saleMessage }}</p>
+                       <p class="price">
+                           <span class="newprice">{{ v.newprice }}</span>
+                           <span class="oldprice">{{ v.oldprice }}</span>
+                       </p>
+                   </div>
                 </div>
             </div>       
        </van-list>
@@ -76,8 +78,9 @@ export default {
                 }
             }, 3000);
         },
-        detail(){
-
+        detail(item){
+            this.$store.state.product_id = item;
+            this.$router.push('productDetail');
         }
 
     },
@@ -119,6 +122,8 @@ export default {
         font-size: 22px;
         font-weight: bold;
         text-align: right;
+        line-height: 20px;
+        height: 20px;
     }
     .countimg{
         width: 100%;
@@ -136,6 +141,9 @@ export default {
         transform: translateY(-50%);
         position: relative;
         top: 50%;
+    }
+    .van-list__finished-text{
+        display: none;
     }
 }
 .pages_en{

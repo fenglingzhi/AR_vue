@@ -170,7 +170,8 @@
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
+
         },
         mounted(){
             this.loadorderdetail();
