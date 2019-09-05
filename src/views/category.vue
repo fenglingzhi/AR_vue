@@ -12,14 +12,14 @@
                 <van-col span="16">
                     <div class="menu_left">
                         <!--<div class="menu_left_img"><img src="../assets/img/category/ab20515_0794(1).png" alt=""></div>-->
-                        <div class="level_second_list" >
-                            <!--<div class="level_second_title">تتسانستم</div>-->
+                        <div class="level_second_list" v-for="(v,i) in category_second_list">
+                            <div class="level_second_title" @click="getCollection(v.id_category)">{{v.name}}</div>
                             <div class="level_third_list_wrap">
                                 <van-row  class="level_third_list">
-                                    <van-col span="8"  class="level_third_list_item" v-for="(v,i) in category_second_list">
-                                        <div @click="getCollection(v.category_id)" style="height: 120px;">
+                                    <van-col span="8"  class="level_third_list_item" v-for="(v,i) in v.lists2">
+                                        <div @click="getCollection(v.id_category)" style="height: 120px;">
                                             <!--<img src="" alt="">-->
-                                            <img :src=v.category_url alt="">
+                                            <img :src=v.img_url alt="">
                                             <p>{{v.name}}</p>
                                         </div>
                                     </van-col>
@@ -32,7 +32,7 @@
                     <div class="menu_right" v-for="(v,i) in category_list">
                         <div class="level_one_list"
                              :class="{level_one_active:i==class_show}"
-                             @click="changeCategory(i,v.category_id)"
+                             @click="changeCategory(i,v.id_category)"
                              >{{v.name}}</div>
                     </div>
                 </van-col>
@@ -69,21 +69,22 @@
                     this.category_list = resp.data;
                     console.log(this.category_list)
                 }).then(() =>{
-                    this.$post('/api/navigation/getSecondLists',{id_category:this.category_list[0].category_id}).then(resp => {
-                        this.category_second_list = resp.data;
+                    this.$post('/api/navigation/getSecondLists',{id_category:this.category_list[0].id_category}).then(resp => {
+                        this.category_second_list = resp.data.lists;
                         console.log(this.category_second_list)
                     })
                 })
             },
             changeCategory(i,id){
+                console.log('111',id)
                 this.class_show = i;
                 console.log(this.category_list[0])
                 this.$post('/api/navigation/getSecondLists',{id_category:id}).then(resp => {
-                    this.category_second_list = resp.data;
-                    console.log(this.category_second_list)
+                    this.category_second_list = resp.data.lists;
                 })
             },
             getCollection(data){
+                console.log(data)
                 store.state.collection_id = data
                 this.$router.push({path:'/Collection'})
             }
@@ -142,9 +143,9 @@
             color: #000;
         }
         .menu_left{
-            float: left;
+            /*float: left;*/
             overflow: auto;
-            /*padding: 0 10px;*/
+            padding: 0 10px;
         }
         .menu_left img{
             /*height: auto;*/

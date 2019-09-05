@@ -13,7 +13,8 @@ export default new Vuex.Store({
     id_cart:'0',
     id_currency:'1',
     lang_id:'1',
-    product_id:''
+    product_id:'',
+    collection_id:''
   },
   mutations: {
       changeStore(state,data){
