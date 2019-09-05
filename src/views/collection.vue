@@ -62,24 +62,79 @@
                 v-model="fiS">
             <div class="filter_box">
                 <div class="filter_title">تصفية</div>
+                <!--<van-collapse v-model="aN" class="filter_content">-->
+                    <!--<van-collapse-item value="color" name="1">-->
+                        <!--<div class="filter_item" v-for="(v,i) in coL"-->
+                             <!--@click="sFi(v.id_color,i)"-->
+                             <!--:class="{filter_item_active:fs===true}">-->
+                            <!--{{v.name}}-->
+                        <!--</div>-->
+                    <!--</van-collapse-item>-->
+                    <!--<van-collapse-item value="price" >-->
+                        <!--<div class="filter_item" v-for="(v,i) in peL">-->
+                            <!--{{v.name}}-->
+                        <!--</div>-->
+                    <!--</van-collapse-item>-->
+                    <!--<van-collapse-item value="size" >-->
+                        <!--<div class="filter_item" v-for="(v,i) in szL">-->
+                            <!--{{v.name}}-->
+                        <!--</div>-->
+                    <!--</van-collapse-item>-->
+                <!--</van-collapse>-->
+                <div class="filter_wrap">
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(index)">
+                            <van-icon name="arrow-down" /><div class="name">color</div>
+                        </div>
+                        <div class="filter_item_wrap" v-if="fnw">
+                            <div class="filter_item filter_item_active"  @click="sFi()">
+                                1
+                            </div>
+                            <div class="filter_item">
+                                12312321
+                            </div>
+                            <div class="filter_item">
+                                1231
+                            </div>
+                            <div class="filter_item">
+                                12313123
+                            </div>
+                            <div class="filter_item">
+                                12312
+                            </div>
+                            <div class="filter_item">
+                                123123
+                            </div>
+                            <div class="filter_item">
+                                12312
+                            </div>
+                            <div class="filter_item">
+                                123123123123
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(index)">
+                            <van-icon name="arrow-down" /><div class="name">size</div>
+                        </div>
+                        <div class="filter_item_wrap" v-show="fnw">
+                            <div class="filter_item">
+                                2
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(index)">
+                            <van-icon name="arrow-down" /><div class="name">price</div>
+                        </div>
+                        <div class="filter_item_wrap" v-show="fnw">
+                            <div class="filter_item">
+                                3
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <van-collapse>
-                <van-collapse-item value="color" >
-                    <div class="filter_item" v-for="(v,i) in coL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-                <van-collapse-item value="price" >
-                    <div class="filter_item" v-for="(v,i) in peL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-                <van-collapse-item value="size" >
-                    <div class="filter_item" v-for="(v,i) in szL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-            </van-collapse>
         </van-popup>
 
     </div>
@@ -119,15 +174,18 @@
                 fiS:false,
                 coL:[],
                 szL:[],
-                peL:[]
+                peL:[],
+                aN: [],
+                fs:false,
+                fnw:false
             }
         },
         methods: {
-            gL(data){
+            gL(a){
                 this.$post('/api/category/getCategoryProducts',
                     {
                         id_category:store.state.collection_id,
-                        sort:data,
+                        sort:a,
                         page:this.pN.curPa,
                         lang_id:store.state.langID
                     }).then(resp => {
@@ -145,11 +203,11 @@
                 this.CL.sort = d;
                 this.gL(d);
             },
-            sP(data) {
-                this.srS = data;
+            sP(t) {
+                this.srS = t;
             },
-            fiSw(data){
-                this.fiS = data;
+            fiSw(e){
+                this.fiS = e;
             },
             gF(){
                 this.$post('/api/category/getCategoryFilters',
@@ -157,15 +215,28 @@
                         id_category:store.state.collection_id,
                         lang_id:store.state.langID
                     }).then(resp => {
-                    this.coL = resp.data.colors;
-                    this.szL = resp.data.sizes;
-                    this.peL = resp.data.prices;
+                    this.coL = resp.data.colors.slice(0);
+                    this.szL = resp.data.sizes.slice(0);
+                    this.peL = resp.data.prices.slice(0);
                     console.log(this.peL)
                 })
             },
-            gPdu(data){
-                store.state.product_id = data;
+            gPdu(d){
+                store.state.product_id = d;
                 this.$router.push('/ProductDetail')
+            },
+            chnFlt(d){
+                // alert(d)
+                if(d.fnw === true){
+                    this.fnw = false
+                } else {
+                    this.fnw = true
+                }
+
+            },
+            sFi(d,i){
+                alert(1)
+                this.fs = true
             }
         },
         beforeMount(){
@@ -228,7 +299,6 @@
                 }
             }
         }
-
         .collectionCon{
             margin-top: 124px;
             .loadMore{
@@ -298,6 +368,42 @@
                 text-align: center;
                 font-weight: bold;
                 color: #000;
+            }
+            .filter_wrap{
+                .filter_content{
+                    /*margin: 10px 0;*/
+                    overflow: auto;
+                    padding: 0 10px;
+                    .filter_content_title{
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 10px;
+                        .name{
+
+                        }
+                    }
+                    .filter_item_wrap{
+                        overflow: auto;
+                        /*display: none;*/
+                        .filter_item{
+                            font-size: 12px;
+                            padding: 5px;
+                            overflow: auto;
+                            width: auto;
+                            display: inline-block;
+                            border: 1px solid #999;
+                            float: right;
+                            margin: 4px;
+                        }
+                        .filter_item_active{
+                            color: #fff;
+                            background: #333;
+                        }
+                    }
+                    .show{
+                        display: block;
+                    }
+                }
             }
         }
 
