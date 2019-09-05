@@ -29,7 +29,7 @@
             <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
                     <div class="proTip">ON SALE</div>
-                    <img :src="v.img_url" width="100%" alt="">
+                    <img :src="v.img_url" width="100%" height="222px" alt="">
                 </div>
                 <div class="proText">
                     <div class="productName">{{v.saleMessage}}</div>
@@ -81,12 +81,12 @@
                         <!--</div>-->
                     <!--</van-collapse-item>-->
                 <!--</van-collapse>-->
-                <div class="filter_wrap">
+                <div class="filter_wrap" v-for="(v,i) in fc">
                     <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">color</div>
+                        <div class="filter_content_title" @click="chnFlt(v.s,i)">
+                            <van-icon name="arrow-down" /><div class="name">{{v.n}}</div>
                         </div>
-                        <div class="filter_item_wrap" v-if="fnw">
+                        <div class="filter_item_wrap" v-if="v.s" v-for="(v,i) in filC">
                             <div class="filter_item filter_item_active"  @click="sFi()">
                                 1
                             </div>
@@ -113,30 +113,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">size</div>
-                        </div>
-                        <div class="filter_item_wrap" v-show="fnw">
-                            <div class="filter_item">
-                                2
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">price</div>
-                        </div>
-                        <div class="filter_item_wrap" v-show="fnw">
-                            <div class="filter_item">
-                                3
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </van-popup>
-
     </div>
 </template>
 
@@ -172,12 +151,33 @@
                 sS:0,
                 srS:false,
                 fiS:false,
-                coL:[],
-                szL:[],
-                peL:[],
+                // coL:[],
+                // szL:[],
+                // peL:[],
+                filC:{
+                    color:[
+                        {id:1,name:'black'},
+                        {id:2,name:'blue'},
+                        {id:3,name:'yellow'}
+                    ],
+                    size:[
+                        {id:1,name:'x'},
+                        {id:2,name:'l'},
+                        {id:3,name:'s'}
+                    ],
+                    price:[
+                        {id:1,name:'12'},
+                        {id:2,name:'23'},
+                        {id:3,name:'32'}
+                    ]
+                },
                 aN: [],
-                fs:false,
-                fnw:false
+                fits:false,
+                fc:[
+                    {n:'color', s:false},
+                    {n:'size', s:false},
+                    {n:'price', s:false}
+                ]
             }
         },
         methods: {
@@ -187,7 +187,6 @@
                         id_category:store.state.collection_id,
                         sort:a,
                         page:this.pN.curPa,
-                        lang_id:store.state.langID
                     }).then(resp => {
                     this.CL = resp.data.products;
                 })
@@ -213,30 +212,30 @@
                 this.$post('/api/category/getCategoryFilters',
                     {
                         id_category:store.state.collection_id,
-                        lang_id:store.state.langID
                     }).then(resp => {
-                    this.coL = resp.data.colors.slice(0);
-                    this.szL = resp.data.sizes.slice(0);
-                    this.peL = resp.data.prices.slice(0);
-                    console.log(this.peL)
+                        this.filC = resp.data
+                    // this.coL = resp.data.colors.slice(0);
+                    // this.szL = resp.data.sizes.slice(0);
+                    // this.peL = resp.data.prices.slice(0);
+                    console.log(this.filC)
                 })
             },
             gPdu(d){
                 store.state.product_id = d;
                 this.$router.push('/ProductDetail')
             },
-            chnFlt(d){
+            chnFlt(d,i){
                 // alert(d)
-                if(d.fnw === true){
-                    this.fnw = false
+                if(d === true){
+                    this.fc[i].s = false
                 } else {
-                    this.fnw = true
+                    this.fc[i].s = true
                 }
 
             },
             sFi(d,i){
                 alert(1)
-                this.fs = true
+                this.fits = true
             }
         },
         beforeMount(){
@@ -318,6 +317,9 @@
                 text-align: center;
                 color: white;
                 padding: 2px 5px;
+                img{
+                    height: 222px;
+                }
             }
             .productName{
                 font-weight: bold;
