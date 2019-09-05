@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="setup_item dis_flex">
-                <router-link to="">
+                <router-link to="/personalInfo">
                     <div class="flexone textEllipsis">
                         <img src="@/assets/img/personal/setup_Stroke.png" width="22" alt="">
                         <span class="fontSize12 color000000 setup_item_rightWord">عنوان الشذسيحن</span>
@@ -36,10 +36,12 @@
             </div>
             <!-- 更改密码 -->
             <div class="setup_item dis_flex" style="border:none;">
-                <div class="flexone textEllipsis">
-                    <img src="@/assets/img/personal/setup_key.png" width="22" alt="">
-                    <span class="fontSize12 color000000 setup_item_rightWord">تغيير كلمة المرور</span>
-                </div>
+                <router-link to="/personalPwd">
+                    <div class="flexone textEllipsis">
+                        <img src="@/assets/img/personal/setup_key.png" width="22" alt="">
+                        <span class="fontSize12 color000000 setup_item_rightWord">تغيير كلمة المرور</span>
+                    </div>
+                </router-link>
             </div>
         </div>
         <div class="setup_container">
@@ -113,14 +115,14 @@ export default {
         getDefaultCurrency(data){
             this.$post('/api/currency/getDefaultCurrency',data).then(data => {
                 console.log("list",data)
-               this.currency = data.data.iso_code;
+                this.currency = data.data.iso_code;
             }).catch(error => {
                 console.log(error);
             });
         }
     },
     mounted() {
-        var data = {...this.actions,...this.$store.state.defaultData}
+        var data = {...this.actions,...this.$store.state}
         this.getDefaultCurrency(data)
     },
 }

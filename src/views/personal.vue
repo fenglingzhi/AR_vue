@@ -3,7 +3,7 @@
     <header>
         <div class="person_detail dis_flex">
             <img src="@/assets/img/personal/user_img.png" alt="" class="person_detail_img">
-            <span class="person_detail_name" @click="back()">John</span>
+            <span class="person_detail_name">John</span>
         </div>
         <div class="person_menu">
             <ul class="person_menu_ul dis_flex">
@@ -59,6 +59,7 @@ import router from "vue-router";
 import axios from "axios";
 import { Dialog, List  } from 'vant';
 import store from '../store/store.js'
+import $ from "jquery"
 import BottomBar from "./BottomBar"
 export default {
   data() {

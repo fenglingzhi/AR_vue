@@ -20,9 +20,11 @@
               <input type="text" placeholder="طلبنممنثمقكرده هتسثتي" v-model="logName">
               <input type="password" placeholder="بطاقة هدية" v-model="logPwd">
           </div>
-          <div class="loginText">
-              <span>بطاقة يمنكنتكترببيصثدهدية</span>
-          </div>
+          <router-link to="/fogetPwd">
+            <div class="loginText">
+                <span>بطاقة يمنكنتكترببيصثدهدية</span>
+            </div>
+          </router-link>
           <div style="text-align: center">
               <button type="button" class="loginButton" @click="login()"> افحص الآن</button>
           </div>
@@ -103,12 +105,17 @@ export default {
             return;
         }
         this.$post('/api/user/login',data).then(data => {
+            var that = this;
             console.log("list",data)
             if (data.code == 200) {
-                // this.$store.state.access_token = data.data.token;
-                this.$router.push({
-                    name: `Home`
-                })
+                this.$store.state.access_token = data.data.token;
+                Toast.success(data.message)
+                localStorage.setItem('token',data.data.token)
+                setTimeout(() => {
+                    that.$router.push({
+                        name: `Home`
+                    })
+                }, 1000);
             }
             if (data.code == 400) {
                 Toast.fail(data.message)
@@ -132,15 +139,20 @@ export default {
             return;
         }
         this.$post('/api/user/register',data).then(data => {
+            var that = this;
             if(data.code == 400){
                 Toast.fail(data.message);
             }
             if (data.code == 200) {
-                // this.$store.state.access_token = data.data.token;
-                this.$router.push({
-                    name: `Home`
-                })
+                this.$store.state.access_token = data.data.token;
                 Toast.success(data.message)
+                localStorage.setItem('token',data.data.token)
+                setTimeout(() => {
+                    that.$router.push({
+                        name: `Home`
+                    })
+                }, 1000);
+
             }
             console.log("list",data)
         }).catch(error => {
