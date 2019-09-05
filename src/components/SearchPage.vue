@@ -11,13 +11,7 @@
                     <img src="../assets/img/search.png" width="20" alt="">
                 </span>
                 </router-link>
-                <span class="fr">
-                    <img src="../assets/img/more3x.png" width="20" alt="">
-                </span>
-                <span class="fr" style="width: 14px;"></span>
-                <span class="fr">
-                    <img src="../assets/img/logo.png" width="60" alt="">
-                </span>
+                <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="goback"/></span>
             </div>
             <div class="headStroke">
                  <div class="fl fitterBut">
@@ -37,9 +31,9 @@
             </div>
         </div>
         <div class="pages_ar">
-            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="300">
-                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail(v.id_product)">
-                    <div class="countimg">
+            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="0">
+                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
+                    <div class="countimg" @click="detail(v.id_product)">
                        <div class="imgbox" >
                            <img :src="v.img_url" alt="">
                        </div>
@@ -118,9 +112,14 @@
          },
          //详情页跳转
          detail(item){
+             console.log(111111);
              this.$store.state.product_id = item;
              this.$router.push('productDetail');
-         }
+         },
+         //返回上一级
+         goback(){
+             this.$router.go(-1)
+         },
      },
      mounted(){
          this.loadsearpage(this.listData);
@@ -195,6 +194,12 @@
         transform: translateY(-50%);
         position: relative;
         top: 50%;
+    }
+    .searchicon{
+        .vanicon{
+            font-size: 1.5rem;
+            left: 8.3rem;
+        }
     }
 }
 .pages_ar{
