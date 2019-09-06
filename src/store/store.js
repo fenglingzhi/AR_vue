@@ -14,12 +14,13 @@ export default new Vuex.Store({
     id_currency:'1',
     lang_id:'1',
     product_id:'',
+    collection_id: '',
     photo:require('@/assets/img/personal/user_img.png')
   },
   mutations: {
-      changeStore(state,data){
-          state[data.key] = data.val
-      }
+    changeStore(state, data) {
+      state[data.key] = data.val
+    }
   },
   actions: {
     changeStore(state,data){

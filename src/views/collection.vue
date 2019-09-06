@@ -29,7 +29,7 @@
             <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
                     <div class="proTip">ON SALE</div>
-                    <img :src="v.img_url" width="100%" alt="">
+                    <img :src="v.img_url" width="100%" height="222px" alt="">
                 </div>
                 <div class="proText">
                     <div class="productName">{{v.saleMessage}}</div>
@@ -62,81 +62,45 @@
                 v-model="fiS">
             <div class="filter_box">
                 <div class="filter_title">تصفية</div>
-                <!--<van-collapse v-model="aN" class="filter_content">-->
-                    <!--<van-collapse-item value="color" name="1">-->
-                        <!--<div class="filter_item" v-for="(v,i) in coL"-->
-                             <!--@click="sFi(v.id_color,i)"-->
-                             <!--:class="{filter_item_active:fs===true}">-->
-                            <!--{{v.name}}-->
-                        <!--</div>-->
-                    <!--</van-collapse-item>-->
-                    <!--<van-collapse-item value="price" >-->
-                        <!--<div class="filter_item" v-for="(v,i) in peL">-->
-                            <!--{{v.name}}-->
-                        <!--</div>-->
-                    <!--</van-collapse-item>-->
-                    <!--<van-collapse-item value="size" >-->
-                        <!--<div class="filter_item" v-for="(v,i) in szL">-->
-                            <!--{{v.name}}-->
-                        <!--</div>-->
-                    <!--</van-collapse-item>-->
-                <!--</van-collapse>-->
                 <div class="filter_wrap">
                     <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">color</div>
+                        <div class="filter_content_title" @click="chnFlt(fc[0].s,0)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[0].n}}</div>
                         </div>
-                        <div class="filter_item_wrap" v-if="fnw">
-                            <div class="filter_item filter_item_active"  @click="sFi()">
-                                1
-                            </div>
-                            <div class="filter_item">
-                                12312321
-                            </div>
-                            <div class="filter_item">
-                                1231
-                            </div>
-                            <div class="filter_item">
-                                12313123
-                            </div>
-                            <div class="filter_item">
-                                12312
-                            </div>
-                            <div class="filter_item">
-                                123123
-                            </div>
-                            <div class="filter_item">
-                                12312
-                            </div>
-                            <div class="filter_item">
-                                123123123123
+                        <div class="filter_item_wrap" v-if="fc[0].s" v-for="(a,i) in fcc">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_color,i,a)">
+                                {{a.name}}
                             </div>
                         </div>
                     </div>
                     <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">size</div>
+                        <div class="filter_content_title" @click="chnFlt(fc[1].s,1)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[1].n}}</div>
                         </div>
-                        <div class="filter_item_wrap" v-show="fnw">
-                            <div class="filter_item">
-                                2
+                        <div class="filter_item_wrap" v-if="fc[1].s" v-for="(a,i) in fcs">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_size,i,a)">
+                                {{a.name}}
                             </div>
                         </div>
                     </div>
                     <div class="filter_content">
-                        <div class="filter_content_title" @click="chnFlt(index)">
-                            <van-icon name="arrow-down" /><div class="name">price</div>
+                        <div class="filter_content_title" @click="chnFlt(fc[2].s,2)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[2].n}}</div>
                         </div>
-                        <div class="filter_item_wrap" v-show="fnw">
-                            <div class="filter_item">
-                                3
+                        <div class="filter_item_wrap" v-if="fc[2].s" v-for="(a,i) in fcp">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_price,i,a)">
+                                {{a.name}}
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="fitterFoot">
+                    <div class="fitterSub">حسناً</div>
+                    <div style="width: 20px"></div>
+                    <img class="reset" src="../assets/img/reset.png" alt="" width="25px">
+                </div>
             </div>
         </van-popup>
-
     </div>
 </template>
 
@@ -172,12 +136,25 @@
                 sS:0,
                 srS:false,
                 fiS:false,
-                coL:[],
-                szL:[],
-                peL:[],
                 aN: [],
-                fs:false,
-                fnw:false
+                fits:false,
+                fcc:[],
+                fcs:[],
+                fcp:[],
+                fc:[
+                    {
+                        n:'color',
+                        s:false,
+                    },
+                    {
+                        n:'size',
+                        s:false,
+                    },
+                    {
+                        n:'price',
+                        s:false,
+                    }
+                ]
             }
         },
         methods: {
@@ -187,7 +164,6 @@
                         id_category:store.state.collection_id,
                         sort:a,
                         page:this.pN.curPa,
-                        lang_id:store.state.langID
                     }).then(resp => {
                     this.CL = resp.data.products;
                 })
@@ -210,33 +186,45 @@
                 this.fiS = e;
             },
             gF(){
-                this.$post('/api/category/getCategoryFilters',
-                    {
-                        id_category:store.state.collection_id,
-                        lang_id:store.state.langID
-                    }).then(resp => {
-                    this.coL = resp.data.colors.slice(0);
-                    this.szL = resp.data.sizes.slice(0);
-                    this.peL = resp.data.prices.slice(0);
-                    console.log(this.peL)
+                this.$post('/api/category/getCategoryFilters', {
+                    id_category:store.state.collection_id,
+                }).then(resp => {
+                    this.fcc = resp.data.colors.splice(0)
+                    this.fcs = resp.data.sizes.splice(0)
+                    this.fcp = resp.data.prices.splice(0)
+                    this.fcc.forEach(function (v,i) {
+                        v.s = false
+                    })
+                    console.log(this.fcc)
+                    this.fcs.forEach(function (v,i) {
+                        v.s = false
+                    })
+                    this.fcp.forEach(function (v,i) {
+                        v.s = false
+                    })
                 })
             },
             gPdu(d){
                 store.state.product_id = d;
                 this.$router.push('/ProductDetail')
             },
-            chnFlt(d){
-                // alert(d)
-                if(d.fnw === true){
-                    this.fnw = false
+            chnFlt(d,i){
+                if(d === true){
+                    this.fc[i].s = false
                 } else {
-                    this.fnw = true
+                    this.fc[i].s = true
                 }
 
             },
-            sFi(d,i){
-                alert(1)
-                this.fs = true
+            sFi(d,i,as){
+                alert(d)
+                if(as.s === true){
+                    as.s = false
+                } else {
+                    as.s = true
+                }
+                console.log('ssssssssss',as.s)
+
             }
         },
         beforeMount(){
@@ -318,6 +306,9 @@
                 text-align: center;
                 color: white;
                 padding: 2px 5px;
+                img{
+                    height: 222px;
+                }
             }
             .productName{
                 font-weight: bold;
@@ -371,7 +362,6 @@
             }
             .filter_wrap{
                 .filter_content{
-                    /*margin: 10px 0;*/
                     overflow: auto;
                     padding: 0 10px;
                     .filter_content_title{
@@ -384,7 +374,7 @@
                     }
                     .filter_item_wrap{
                         overflow: auto;
-                        /*display: none;*/
+                        display: inline;
                         .filter_item{
                             font-size: 12px;
                             padding: 5px;
@@ -519,7 +509,9 @@
             overflow: auto;
         }
         .reset{
-            margin: -3px 22px;
+            margin: 17px 22px;
+            vertical-align: middle;
+            float: left;
         }
         .fitterPart{
             display: none;
