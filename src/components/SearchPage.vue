@@ -115,9 +115,10 @@
              let data;
              if (this.$store.state.token == "") {
                  //   未登录并且没本地没有购物车id
-                 if (localStorage.cart_id == "") {
+                 if (typeof localStorage.cart_id == "undefined") {
+                     localStorage.cart_id = 0;
                      data = {
-                         id_cart: 0
+                         id_cart: localStorage.cart_id
                      };
                  } else {
                      // 未登录但是本地有了购物车id
@@ -132,7 +133,13 @@
                  };
              }
              this.$post("/api/cart/getCartProducts", data).then(res => {
-                 this.selected_products_num = res.data.cart_quantity_total;
+                 if("cart_quantity_total" in res.data){
+                     this.selected_products_num = res.data.cart_quantity_total;
+                 }
+                 else{
+                     this.selected_products_num=0
+                 }
+
              });
          },
          //详情页跳转
