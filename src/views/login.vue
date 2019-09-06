@@ -111,6 +111,7 @@ export default {
                 this.$store.state.access_token = data.data.token;
                 Toast.success(data.message)
                 localStorage.setItem('token',data.data.token)
+                localStorage.setItem('id_cart',data.data.id_cart)
                 setTimeout(() => {
                     that.$router.push({
                         name: `Home`

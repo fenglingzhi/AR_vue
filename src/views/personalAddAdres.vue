@@ -12,7 +12,7 @@
                 <div class="addAdress_content_item_right">
                     <label for="" class="addAdress_content_item_title">*البلد /   المنطقة</label>
                     <div class="addAdress_content_item_input">
-                        <input type="text" style="font-weight: 600;background:#fff;" disabled  value="" id="country_select_input">
+                        <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCountry" id="country_select_input">
                     </div>
                 </div>
                 <div class="addAdress_content_item_left">
@@ -345,32 +345,16 @@
         <div class="Popup_content">
             <div class="Popup_content_location">
                 <img src="@/assets/img/personal/adress_loaction.png" alt="" width="12" >
-                <span>Macau</span>
+                <span>{{selCountry}}</span>
             </div>
             <div class="Popup_content_title">
                 <span>مناسن/ تنالسخهشامنتالط</span>
             </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Qatar</span>
+            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country"
+             v-for="(item, index) in countryList" :key="index"  @click="selectCountry(item.name,item.country_id)">
+                <span>{{item.name}}</span>
             </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Kuwait</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Oman</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Bahrain</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Israel</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Morocco</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_country">
-                <span>Algeria</span>
-            </div>
+            
         </div>
     </div>
     <!-- 沙特 省份/州 弹窗 -->
@@ -473,8 +457,12 @@ import store from '../store/store.js'
 export default {
   data() {
     return {
-      countryList:[]
-      
+      countryList:[],
+      selCountry:'',
+      id_country:'',
+      stateList:[],
+      selState:'',
+      id_state:'',
     }
   },
   methods: {
@@ -488,6 +476,51 @@ export default {
     back(){
       this.$router.go(-1);//返回上一层
     },
+    selectCountry(name,id){
+        this.selCountry = name;
+        this.id_country = id;
+        var data = {...this.$store.state.defaultData};
+        data.action = 'getStates';
+        data.id_country = id;
+        this.getState(data);
+        $("#Mask_country").css("top","100%");
+    },
+    selectState(name,id){
+        console.log(111111)
+        this.selCountry = name;
+        this.id_country = id;
+       
+    },
+    getCountry(data){
+        var that = this;
+        that.$post('/api/country/getCountries',data).then(data => {
+            console.log("list",data)
+            if (data.code == 200) {
+                that.countryList = data.data;
+            }
+            if (data.code == 400) {
+                Toast.fail(data.message)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    },
+    getState(data){
+        console.log("省州",data)
+        var that = this;
+        that.$post('/api/country/getStates',data).then(data => {
+            console.log("list",data)
+            if (data.code == 200) {
+                that.stateList = data.data;
+            }
+            if (data.code == 400) {
+                Toast.fail(data.message)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    },
+
   },
   mounted() {
      $(function () {
@@ -559,6 +592,10 @@ export default {
         })
         $('.Mask_saudi_id_card').height($(window).height())
     })
+
+    var data = {...this.$store.state.defaultData};
+    data.action = 'getCountries';
+    this.getCountry(data)
   },
 }
 </script>
@@ -723,6 +760,8 @@ export default {
       position: fixed;
       top:100%;
       z-index: 999;
+      text-align: right;
+      overflow: auto;
       transition: all 450ms cubic-bezier(.23,1,.32,1) 0s;
       -webkit-transition: all 450ms cubic-bezier(.23,1,.32,1) 0s;
   }
@@ -733,6 +772,8 @@ export default {
       top: 0;
       z-index: 999;
       line-height: 44px;
+      display: flex;
+      box-sizing: border-box;
       padding: 0 18px;
       justify-content: space-between;
       border: 1px solid #D8D8D8;
