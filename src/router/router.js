@@ -41,7 +41,6 @@ var routerMaps = [
     { name: 'SearchHot', path: '/SearchHot', component: SearchHot, meta: { name: 'searchHot' } },
     { name: 'Category', path: '/Category', component: Category, meta: { name: 'Category' } },
     { name: 'Collection', path: '/Collection', component: Collection, meta: { name: 'Collection' } },
-
     {name:'SearchHot', path:'/SearchHot',component:SearchHot,meta:{name:'searchHot'}},
     {name:'Login', path:'/login',component:Login,meta:{name:'Login'}},
     {name:'wishlist', path:'/wishlist',component:wishlist,meta:{name:'wishlist'}},

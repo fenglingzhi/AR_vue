@@ -210,7 +210,7 @@ export default {
     getDetailInfo() {
       let data = {
         id_currency: 1,
-        id_product: 26,
+        id_product:23,
         lang_id: 1
       };
       this.$post("/api/product/getProduct", data).then(res => {
