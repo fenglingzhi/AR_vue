@@ -255,9 +255,10 @@ export default {
       let data;
       if (this.$store.state.token == "") {
         //   未登录并且没本地没有购物车id
-        if (localStorage.cart_id == "") {
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
           data = {
-            id_cart: 0
+            id_cart: localStorage.cart_id
           };
         } else {
           // 未登录但是本地有了购物车id
@@ -288,9 +289,10 @@ export default {
       let bag_data = {};
       if (this.$store.state.token == "") {
         //   未登录并且本地也没有购物车id
-        if (localStorage.cart_id == "") {
-          bag_data = {
-            id_cart: 0
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
+          data = {
+            id_cart: localStorage.cart_id
           };
         } else {
           // 没有登录，但是本地已经有购物车id
