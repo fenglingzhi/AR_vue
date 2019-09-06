@@ -72,7 +72,7 @@
                     <div style="clear: both"></div>
                 </div>
                 <div class="writeCode">
-                    <input class="codeInput" type="text">
+                    <input class="codeInputs" type="text">
                     <div class="but">add</div>
                     <div style="clear: both"></div>
                 </div>
@@ -107,16 +107,12 @@
         </div>
         <div v-show="isPaypal" id="paypal-button"></div>
         <!--信用卡弹出层-->
-        <!--<van-popup v-model="showCreditCard" :style="{ height: '80%' ,width: '100%' }">-->
-
-        <!--</van-popup>-->
-        <div class="creditCardBg" v-model="showCreditCard">
-            <div class="creditCardCon">
+        <div class="creditCardBg" v-show="showCreditCard">
                 <div id="addCredit">
                     <form action="" method="" id="payment-form">
                         <div class="form-row">
                             <label for="card-element">
-                                Credit or debit card
+                                Credit
                             </label>
                             <div id="card-element">
 
@@ -124,17 +120,29 @@
 
                             <div id="card-errors" role="alert"></div>
                         </div>
-                        <button class="submit">Add Your Card</button>
+                        <button class="submit">Pay</button>
+
+
                     </form>
+                    <button class="submit" @click="creditCancel()" style="background: #d588fb">Cancel</button>
                     <div class="loading" v-if="isloading">
                         <van-loading color="#ff2a4f" />
                     </div>
                 </div>
-            </div>
         </div>
         <!--COD弹出层-->
-        <van-popup v-model="showCod">
-
+        <van-popup v-model="showCod"  :style="{ height: '50%',width:'100%',top:'40%' }">
+            <h3>Cash on Delivery</h3>
+            <hr>
+            <div class="mbNub">
+                <div class="phoneArea fr"> SA +966</div>
+                <div class="phoneNum fr"><input type="text" placeholder="phone number" value="145878545478"></div>
+                <div class="sand fr" v-if="!isShowCode" @click="sandCode()">إرسال</div>
+                <div class="sand fr" v-if="isShowCode">{{sec}}s</div>
+            </div>
+            <div class="lineColor">يجب أن يتكون رقم الهاتف من تسعة أرقام وتبدأ ب5. </div>
+            <input type="text" class="codeHere" placeholder="Please enter the code.">
+            <div class="submitBut" style="margin: 0px auto;">submit</div>
         </van-popup>
     </div>
 </template>
@@ -153,6 +161,8 @@
 export default {
     data(){
       return{
+          isShowCode:false,
+          sec:60,
           isloading:false,
             showCreditCard:false,
             showCod:false,
@@ -180,6 +190,24 @@ export default {
    components: {
    },
    methods: {
+        //发送验证码
+       sandCode(){
+           var vm=this
+           vm.isShowCode = true
+           var codeStar = setInterval(function () {
+               if(vm.sec==0){
+                   vm.isShowCode = false
+
+                   clearInterval(codeStar)
+               }else {
+                   vm.sec = vm.sec-1
+               }
+           },1000)
+       },
+       // 关闭信用卡弹框
+       creditCancel(){
+           this.showCreditCard = false
+       },
         //点击提交
        clickSubmit(){
             if(this.isCod==true){
@@ -404,7 +432,7 @@ export default {
                    lineHeight: '18px',
                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                    fontSmoothing: 'antialiased',
-                   fontSize: '16px',
+                   fontSize: '14px',
                    '::placeholder': {
                        color: '#aab7c4'
                    }
@@ -585,7 +613,7 @@ export default {
         padding: 12px 16px;
 
     }
-    .codeInput{
+    .codeInputs{
         float: right;
         outline: none;
         border: none;
@@ -692,7 +720,10 @@ export default {
     #addCredit{
         padding: 10px;
         background: #f5f5f5;
-        text-align: left;}
+        text-align: left;
+        height: 230px;
+        margin-top: 136px;
+    }
     label{
         font-size: 12px;
         color: #999;
@@ -751,7 +782,7 @@ export default {
         border: none;
         background: #ff2a4f;
         color: #fff;
-        /*margin-top: 20px;*/
+        margin-top: 25px;
     }
     .loading{
         position: absolute;
@@ -764,7 +795,87 @@ export default {
     .creditCardBg{
         width: 100%;
         height: 100%;
-        background: black;
+        background: rgba(0, 0, 0, 0.7);
+        position: fixed;
+        top: 50px;
     }
+
+
+
+
+    .mbNub{
+        height: 26px;
+        width: 90%;
+        text-align: right;
+        margin: 20px auto;
+    }
+    .phoneArea{
+        color: #999;
+        border-left: 1px solid #999;
+        padding: 0 6px;
+        margin-left: 10px;
+    }
+    .phoneNum input{
+        width: 100%;
+        outline: none;
+        border: none;
+    }
+    .phoneNum{
+        width: 110px;
+    }
+    .timeShow{
+        display:none;
+        color:#999
+    }
+    .sand{
+        color: #999;
+        margin: 3px 14px;
+    }
+    .codeWrite{
+        text-align: center;
+        color: #999;
+        padding: 16px;
+    }
+    .codeInput{
+        text-align: center;
+        width: 35px;
+        margin: 8px 3px;
+        height: 34px;
+        border: 1px solid #999;
+        float: right;
+        line-height: 33px;
+
+    }
+    .codeHere{
+        direction: rtl;
+        text-indent: 10px;
+        margin: 27px 0;
+        border: none;
+        border-bottom: 1px solid #ada5a5;
+    }
+    .tips{
+        padding: 41px;
+        direction: rtl;
+        width: 100%;
+        height: 9999999px;
+        background: #F6F6F6;
+        color: #999;
+    }
+    .codeInputed{
+        text-align: center;
+        width: 35px;
+        margin: 8px 3px;
+        height: 34px;
+        border: 1px solid #a6c32f;
+        float: right;
+        line-height: 33px;
+    }
+    .codeInputHid{
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+
 
 </style>
