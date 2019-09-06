@@ -331,7 +331,7 @@ export default {
           // 更新购物车商品总量
           this.getSelectedProductsNum();
         } else {
-          this.$toast("添加失败，请重试！");
+          this.$toast(res.message);
         }
       });
     },
