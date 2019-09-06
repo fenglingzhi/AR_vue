@@ -46,10 +46,9 @@
                 <div class="payWay" @click="chosePayWay(2)">
                     <img src="../assets/img/paypal.png" width="22" alt="">
                     <span>PayPal</span>
-                    <img src="../assets/img/wen.png" width="18" alt="">
+                    <!--<img src="../assets/img/wen.png" width="18" alt="">-->
                     <img class="checkImg" v-if="payWayObj[2].select" src="../assets/img/select.png" width="20" alt="">
                     <img class="checkImg" v-if="payWayObj[2].option" src="../assets/img/option.png" width="20" alt="">
-
                 </div>
             </div>
             <div class="lineColor"></div>
@@ -64,17 +63,6 @@
                         <img class="checkImg" v-if="shippingWayObj[index].option"  style="margin-top: 18px;" src="../assets/img/option.png" width="20" alt="">
                     </div>
                 </div>
-                <!--<div class="shippingWay" @click="choseShippingWay(1)"  style="">-->
-                    <!--<div class="fr addressInformation">-->
-                        <!--<div style="color: black">يبثذاذيليييب  S.R.30.00 </div>-->
-                        <!--<div style="color: #999">سيسيشثسيسيشثسيسيشث</div>-->
-                        <!--<div style="color: #999">ضبلاذيليثذبد لابيسد</div>-->
-                    <!--</div>-->
-                    <!--<div class="fl">-->
-                        <!--<img class="checkImg" v-if="shippingWayObj[1].select"  style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">-->
-                        <!--<img class="checkImg" v-if="shippingWayObj[1].option"  style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
             <div class="code">
                 <div class="codeShow">
@@ -113,28 +101,65 @@
                     <span class="fr"> دصثق  </span>
                 </div>
             </div>
-            <div class="submitBut">
+            <div v-show="!isPaypal" @click="clickSubmit()" class="submitBut">
                 افحص الآن
             </div>
-
         </div>
+        <div v-show="isPaypal" id="paypal-button"></div>
+        <!--信用卡弹出层-->
+        <!--<van-popup v-model="showCreditCard" :style="{ height: '80%' ,width: '100%' }">-->
 
+        <!--</van-popup>-->
+        <div class="creditCardBg" v-model="showCreditCard">
+            <div class="creditCardCon">
+                <div id="addCredit">
+                    <form action="" method="" id="payment-form">
+                        <div class="form-row">
+                            <label for="card-element">
+                                Credit or debit card
+                            </label>
+                            <div id="card-element">
+
+                            </div>
+
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                        <button class="submit">Add Your Card</button>
+                    </form>
+                    <div class="loading" v-if="isloading">
+                        <van-loading color="#ff2a4f" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--COD弹出层-->
+        <van-popup v-model="showCod">
+
+        </van-popup>
     </div>
 </template>
 
 <script>
+
     import { Dialog } from 'vant';
     import { Toast } from 'vant';
     import router from "vue-router";
     import axios from "axios";
     import $ from 'jquery'
     import store from '../store/store.js'
-
+    import { Popup } from 'vant';
+    // Vue.use(Popup)
 
 export default {
     data(){
       return{
-            canNotODC:false,
+          isloading:false,
+            showCreditCard:false,
+            showCod:false,
+            isCod:false,
+            isCreditCard:true,
+            isPaypal:false,
+            canNotODC:true,
             payWayObj:[
                 {
                     select:false,
@@ -155,8 +180,33 @@ export default {
    components: {
    },
    methods: {
+        //点击提交
+       clickSubmit(){
+            if(this.isCod==true){
+                this.showCod=true
+                this.showCreditCard=false
+            }else if(this.isCreditCard==true){
+                this.showCreditCard=true
+                this.showCod=false
+
+            }
+       },
        // 支付方式选择
        chosePayWay(index){
+           if(index==2){
+               this.isPaypal = true
+               this.isCod=false
+               this.isCreditCard=false
+           }else if(index==0){
+               this.isPaypal = false
+               this.isCod=true
+               this.isCreditCard=false
+           }else if(index == 1){
+               this.isPaypal = false
+               this.isCod=false
+               this.isCreditCard=true
+           }
+
            if(index==0 && this.canNotODC ){
                this.payWayObj.forEach(function (val) {
                    val.select=false
@@ -214,11 +264,218 @@ export default {
        choseAddress(){
            this.$router.push('/checkoutAddressChose')
        },
-  },
+       // paypal支付页面
+       paypal_pay(transaction_id,value,shipping,coupon,items,content_ids,contents,num_items){
+           var access_token = this.$store.state.access_token;
+           var id_cart = this.$store.state.id_cart;
+           setTimeout(function () {
+               var vm = this
+               paypal.Button.render({
+                   // env: 'sandbox', // Or 'production'
+                   env: 'production', // Or 'sandbox'
+                   // Set up the payment:
+                   // 1. Add a payment callback
+                   payment: function(data, actions) {
+                       // 2. Make a request to your server
+
+                       // alert( vm.$store.state.access_token)
+                       return actions.request.post('https://newappapi.cupshe.com/modules/paypal/payment.php',{
+                           action : 'createPayment',
+                           id_cart :id_cart,
+                           access_token : access_token
+                       })
+                           .then(function(res) {
+
+                               // 3. Return res.id from the response
+                               return res.id;
+                           });
+                   },
+                   style: {
+                       size: 'large',
+                       color: 'blue',
+                       shape: 'rect',
+                       label: 'checkout',
+                       tagline: 'false'
+                   },
+                   // Execute the payment:
+                   // 1. Add an onAuthorize callback
+                   onAuthorize: function(data, actions) {
+                       // 2. Make a request to your server
+                       return actions.request.post('https://newappapi.cupshe.com/modules/paypal/payment.php', {
+                           paymentID: data.paymentID,
+                           payerID:   data.payerID,
+                           id_cart : id_cart,
+                           action :'executePayment',
+                           access_token :  access_token
+                       })
+                           .then(function(res) {
+                               console.log(res);
+                               if(res.code==200){
+                                   gtag("event", "purchase", {
+                                       "transaction_id": transaction_id,
+                                       "affiliation": "cupshe",
+                                       "value":value,
+                                       "currency": "USD",
+                                       "tax": "0",
+                                       "shipping": shipping,
+                                       "coupon": coupon,
+                                       "items": items
+                                   });
+                                   store.commit('changeStore',{key:'id_cart',val:'0'});
+                                   store.commit('changeStore',{key:'add_cart_num',val:0});
+                                   localStorage.setItem('id_cart',0)
+                                   localStorage.setItem('cart_quantity',0)
+                                   Dialog.confirm({
+                                       title: ' Thank you for your order!',
+                                       message: ' Your payment has been successfully processed. Your package will be shipped out ASAP.',
+                                       confirmButtonText:" Order Details",
+                                       cancelButtonText:"Continue Shopping"
+                                   }).then(() => {
+                                       // on confirm
+                                       router.push('/orderHistory')
+
+                                   }).catch(() => {
+                                       // on cancel
+                                       router.push('/')
+
+                                   });
+                                   // vm.logPurchaseEvent(vm.product_ids,vm.product_nums,'pay success')
+                                   // var params = {};
+                                   // params[FB.AppEvents.ParameterNames.NUM_ITEMS] = product_nums;
+                                   // params[FB.AppEvents.ParameterNames.CONTENT_ID] = product_ids;
+                                   // params[FB.AppEvents.ParameterNames.CONTENT_TYPE] = 'pay success';
+                                   // FB.AppEvents.logPurchase(purchaseAmount,'usd', params);
+                                   fbq('track', 'Purchase',
+                                       // begin required parameter object
+                                       {
+                                           currency: 'USD',
+                                           content_ids: content_ids,
+                                           content_category: 'checkout',
+                                           contents:contents,
+                                           num_items: num_items,
+                                       }
+                                       // end required parameter object
+                                   );
+
+                               }else if(res.code==80003){
+                                   store.commit('changeStore',{key:'id_cart',val:'0'});
+                                   store.commit('changeStore',{key:'add_cart_num',val:0});
+                                   localStorage.setItem('id_cart',0)
+                                   localStorage.setItem('cart_quantity',0)
+                                   Dialog.confirm({
+                                       title: ' Sorry, fail to pay!',
+                                       message: ' If you want to proceed your payment, please go to \'order history\' section to complete your purchase.',
+                                       confirmButtonText:" Order Details",
+                                       cancelButtonText:"Continue Shopping"
+                                   }).then(() => {
+                                       // on confirm
+                                       router.push('/orderHistory')
+                                   }).catch(() => {
+                                       router.push('/')
+                                       // on cancel
+                                   });
+                               }else{
+                                   Dialog.alert({
+                                       message: res.message
+                                   }).then(() => {
+                                       // on close
+                                   });
+                               }
+                               // 3. Show the buyer a confirmation message.
+                           });
+                   }
+               }, '#paypal-button');
+
+           },1000)
+       },
+       //strip支付
+       strip(){
+           let vm = this;
+           // Create a Stripe client.
+           // var stripe = Stripe('pk_test_acn6UjYLPpHy9hqbZD4UYulr');
+           var stripe = Stripe('pk_live_GuZobfbVMuFlXknW6OVdgMjw');
+           // Create an instance of Elements.
+           var elements = stripe.elements();
+           // Custom styling can be passed to options when creating an Element.
+           // (Note that this demo uses a wider set of styles than the guide below.)
+           var style = {
+               base: {
+                   color: '#32325d',
+                   lineHeight: '18px',
+                   fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                   fontSmoothing: 'antialiased',
+                   fontSize: '16px',
+                   '::placeholder': {
+                       color: '#aab7c4'
+                   }
+               },
+               invalid: {
+                   color: '#fa755a',
+                   iconColor: '#fa755a'
+               }
+           };
+
+           // Create an instance of the card Element.
+           var card = elements.create('card', {style: style});
+           // Add an instance of the card Element into the `card-element` <div>.
+           card.mount('#card-element');
+
+           // Handle real-time validation errors from the card Element.
+           card.addEventListener('change', function(event) {
+               var displayError = document.getElementById('card-errors');
+               if (event.error) {
+                   displayError.textContent = event.error.message;
+               } else {
+                   displayError.textContent = '';
+               }
+           });
+
+           // Handle form submission.
+           var form = document.getElementById('payment-form');
+           form.addEventListener('submit', function(event) {
+               event.preventDefault();
+               // vm.isloading = true;
+               stripe.createToken(card).then(function(result) {
+                   if (result.error) {
+                       // Inform the user if there was an error.
+                       var errorElement = document.getElementById('card-errors');
+                       errorElement.textContent = result.error.message;
+                   } else {
+                       // Send the token to your server.
+                       // $.ajax({
+                       //     type: "post",
+                       //     url: vm.$store.state.ipConfig+"/api/bcard.php",
+                       //     data:{
+                       //         action:'addCard',
+                       //         access_token:vm.$store.state.access_token,
+                       //         stripe_token:result.token.id
+                       //     },
+                       //     dataType: "json",
+                       //     success: function(data){
+                       //         if(data.code === 200){
+                       //             vm.isloading = false;
+                       //             // vm.$router.push('/creditCart')
+                       //             vm.$router.back(-1)
+                       //             console.log(data)
+                       //         } else {
+                       //             //Facebook 追踪代码
+                       //             // vm.logAddedPaymentInfoEvent(0)
+                       //         }
+                       //     }
+                       // });
+                   }
+               });
+           });
+       },
+
+
+   },
   mounted() {
 
         this.getCartCarriers()
         this.getCartDetail()
+        this.paypal_pay()
+        this.strip()
       // 点击显示输入折扣券
       $(".codeShow").click(function () {
           $(".downIco").toggleClass("add_transform")
@@ -392,10 +649,14 @@ export default {
         height: 45px;
         text-align: center;
         direction: rtl;
-        width: 80%;
+        width: 68%;
         line-height: 42px;
         margin: 34px auto;
         background: #333333;
+    }
+
+    #paypal-button{
+        margin: 42px auto;
     }
 
 
@@ -427,6 +688,83 @@ export default {
         color: white;
         padding: 10px;
         background: #333333;
+    }
+    #addCredit{
+        padding: 10px;
+        background: #f5f5f5;
+        text-align: left;}
+    label{
+        font-size: 12px;
+        color: #999;
+    }
+    .StripeElement {
+        background-color: white;
+        padding: 10px 12px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+        margin: 10px 0;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+    .credit_wrap{
+        background: pink;
+        padding: 10px;
+        text-align: left;
+    .title{
+        color: #fff;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 4px;
+    }
+    input{
+        width: 100%;
+        border: none;
+        outline: none;
+        height: 30px;
+        font-size: 12px;
+        text-indent: 10px;
+    }
+    .set_default{
+        overflow: auto;
+        font-size: 12px;
+        text-align: right;
+        margin-top: 10px;
+    }
+    }
+    .submit{
+        padding: 10px;
+        width: 100%;
+        outline: none;
+        border: none;
+        background: #ff2a4f;
+        color: #fff;
+        /*margin-top: 20px;*/
+    }
+    .loading{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        /*background: rgba(0,0,0,0.5);*/
+    }
+
+
+    .creditCardBg{
+        width: 100%;
+        height: 100%;
+        background: black;
     }
 
 </style>

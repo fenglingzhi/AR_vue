@@ -52,12 +52,16 @@ export default {
     },
     // 选择币种
     selectCurrency(index,id_currency){
+      console.log("2211",id_currency)
       this.activeIndex = index
       var data ={...this.$store.state.defaultData};
       data.id_currency = id_currency;
       data.action = 'changeCurrency';
       this.$post('/api/currency/changeCurrency',data).then(data => {
          console.log("list",data)
+         if(data.code == 200){
+           this.$store.state.id_currency = id_currency;
+         }
       }).catch(error => {
         console.log(error);
       });

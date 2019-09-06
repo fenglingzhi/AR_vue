@@ -24,10 +24,10 @@
     </van-swipe>
     <div class="category_info">
       <div class="share_title">
+        <div class="title">{{data_all.name}}</div>
         <div class="share" @click="share_show_event">
           <img src="../assets/img/product_detail/share.png" alt />
         </div>
-        <div class="title">{{data_all.name}}</div>
       </div>
       <div class="price">
         <span class="old_price">{{data_all.old_price}}</span>
@@ -39,12 +39,12 @@
           <div
             class="color_list"
             @click="color_selected=color.id_color"
-            :class="{'active':color_selected==color.id_color}"
+            :class="{'active':color_selected==color.id_color,'no-img':color.color_image_url==''}"
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
-            <!-- <img :src="color.color_image_url" :alt="color.name" /> -->
-            {{color.name}}
+            <img :src="color.color_image_url" v-if="color.color_image_url!=''" />
+            <span v-else>{{color.name}}</span>
           </div>
         </div>
       </div>
@@ -213,13 +213,14 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
+
         // id_currency: this.id_currency,
         id_product: this.product_id
         // lang_id: this.lang_id
       };
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
-        // console.log("商品详情", data);
+        console.log("商品详情", data);
         this.$set(this.data_all, "id_product", data.id_product);
         this.$set(this.data_all, "name", data.name);
         this.$set(this.data_all, "description", data.description);
@@ -353,7 +354,6 @@ export default {
 </script>
 <style lang="scss">
 .productDetail_zd {
-  padding-top: 44px;
   padding-bottom: 67px;
   header {
     position: fixed;
@@ -390,6 +390,7 @@ export default {
   }
   #swiper {
     max-height: 500px;
+    padding-top: 44px;
     img {
       max-width: 100%;
     }
@@ -405,6 +406,7 @@ export default {
     padding: 10px;
     background: #fff;
     margin-bottom: 10px;
+    direction: rtl;
     .share_title {
       display: flex;
       justify-content: space-between;
@@ -443,18 +445,25 @@ export default {
       }
       .color_list {
         float: right;
-        // width: 36px;
+        width: 36px;
+        height: 36px;
         padding: 5px;
         margin: 10px;
         border: 1px solid white;
+        overflow: hidden;
         img {
-          width: 100%;
-          height: 100%;
-          vertical-align: middle;
+          max-width: 100%;
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
       .color_list.active {
         border: 1px solid #333;
+      }
+      .color_list.no-img {
+        width: auto;
+        height: auto;
       }
     }
     .size_wrap {
