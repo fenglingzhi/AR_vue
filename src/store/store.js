@@ -7,19 +7,25 @@ export default new Vuex.Store({
   state: {
     token:'',
     unshow:true,
-    access_token:'cb99f6e8efa4fe871e8eb4325c5ce50f',
+    access_token:'42a7759723164462acf9f33ece622c08',
     orderId:'',
     langID:'1',
-    id_cart:'1',
+    id_cart:'0',
     id_currency:'1',
-    lang_id:'1'
+    lang_id:'1',
+    product_id:'',
+    collection_id: '',
+    photo:require('@/assets/img/personal/user_img.png')
   },
   mutations: {
-      changeStore(state,data){
-          state[data.key] = data.val
-      }
+    changeStore(state, data) {
+      state[data.key] = data.val
+    }
   },
   actions: {
+    changeStore(state,data){
+        state[data.key] = data.val
+    }
 
   }
 })

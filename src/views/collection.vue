@@ -26,10 +26,10 @@
             </van-row>
         </header>
         <van-row class="collectionCon">
-            <van-col span="12" class="productItem" v-for="(v,i) in CL">
+            <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
                     <div class="proTip">ON SALE</div>
-                    <img :src="v.img_url" width="100%" alt="">
+                    <img :src="v.img_url" width="100%" height="222px" alt="">
                 </div>
                 <div class="proText">
                     <div class="productName">{{v.saleMessage}}</div>
@@ -62,26 +62,45 @@
                 v-model="fiS">
             <div class="filter_box">
                 <div class="filter_title">تصفية</div>
+                <div class="filter_wrap">
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(fc[0].s,0)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[0].n}}</div>
+                        </div>
+                        <div class="filter_item_wrap" v-if="fc[0].s" v-for="(a,i) in fcc">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_color,i,a)">
+                                {{a.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(fc[1].s,1)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[1].n}}</div>
+                        </div>
+                        <div class="filter_item_wrap" v-if="fc[1].s" v-for="(a,i) in fcs">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_size,i,a)">
+                                {{a.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter_content">
+                        <div class="filter_content_title" @click="chnFlt(fc[2].s,2)">
+                            <van-icon name="arrow-down" /><div class="name">{{fc[2].n}}</div>
+                        </div>
+                        <div class="filter_item_wrap" v-if="fc[2].s" v-for="(a,i) in fcp">
+                            <div class="filter_item" :class="{filter_item_active:a.s}" @click="sFi(a.id_price,i,a)">
+                                {{a.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fitterFoot">
+                    <div class="fitterSub">حسناً</div>
+                    <div style="width: 20px"></div>
+                    <img class="reset" src="../assets/img/reset.png" alt="" width="25px">
+                </div>
             </div>
-            <van-collapse>
-                <van-collapse-item value="color" >
-                    <div class="filter_item" v-for="(v,i) in coL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-                <van-collapse-item value="price" >
-                    <div class="filter_item" v-for="(v,i) in peL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-                <van-collapse-item value="size" >
-                    <div class="filter_item" v-for="(v,i) in szL">
-                        {{}}
-                    </div>
-                </van-collapse-item>
-            </van-collapse>
         </van-popup>
-
     </div>
 </template>
 
@@ -117,19 +136,34 @@
                 sS:0,
                 srS:false,
                 fiS:false,
-                coL:[],
-                szL:[],
-                peL:[]
+                aN: [],
+                fits:false,
+                fcc:[],
+                fcs:[],
+                fcp:[],
+                fc:[
+                    {
+                        n:'color',
+                        s:false,
+                    },
+                    {
+                        n:'size',
+                        s:false,
+                    },
+                    {
+                        n:'price',
+                        s:false,
+                    }
+                ]
             }
         },
         methods: {
-            gL(data){
+            gL(a){
                 this.$post('/api/category/getCategoryProducts',
                     {
                         id_category:store.state.collection_id,
-                        sort:data,
+                        sort:a,
                         page:this.pN.curPa,
-                        lang_id:store.state.langID
                     }).then(resp => {
                     this.CL = resp.data.products;
                 })
@@ -145,23 +179,52 @@
                 this.CL.sort = d;
                 this.gL(d);
             },
-            sP(data) {
-                this.srS = data;
+            sP(t) {
+                this.srS = t;
             },
-            fiSw(data){
-                this.fiS = data;
+            fiSw(e){
+                this.fiS = e;
             },
             gF(){
-                this.$post('/api/category/getCategoryFilters',
-                    {
-                        id_category:store.state.collection_id,
-                        lang_id:store.state.langID
-                    }).then(resp => {
-                    this.coL = resp.data.colors;
-                    this.szL = resp.data.sizes;
-                    this.peL = resp.data.prices;
-                    console.log(this.coL)
+                this.$post('/api/category/getCategoryFilters', {
+                    id_category:store.state.collection_id,
+                }).then(resp => {
+                    this.fcc = resp.data.colors.splice(0)
+                    this.fcs = resp.data.sizes.splice(0)
+                    this.fcp = resp.data.prices.splice(0)
+                    this.fcc.forEach(function (v,i) {
+                        v.s = false
+                    })
+                    console.log(this.fcc)
+                    this.fcs.forEach(function (v,i) {
+                        v.s = false
+                    })
+                    this.fcp.forEach(function (v,i) {
+                        v.s = false
+                    })
                 })
+            },
+            gPdu(d){
+                store.state.product_id = d;
+                this.$router.push('/ProductDetail')
+            },
+            chnFlt(d,i){
+                if(d === true){
+                    this.fc[i].s = false
+                } else {
+                    this.fc[i].s = true
+                }
+
+            },
+            sFi(d,i,as){
+                alert(d)
+                if(as.s === true){
+                    as.s = false
+                } else {
+                    as.s = true
+                }
+                console.log('ssssssssss',as.s)
+
             }
         },
         beforeMount(){
@@ -224,7 +287,6 @@
                 }
             }
         }
-
         .collectionCon{
             margin-top: 124px;
             .loadMore{
@@ -244,6 +306,9 @@
                 text-align: center;
                 color: white;
                 padding: 2px 5px;
+                img{
+                    height: 222px;
+                }
             }
             .productName{
                 font-weight: bold;
@@ -294,6 +359,41 @@
                 text-align: center;
                 font-weight: bold;
                 color: #000;
+            }
+            .filter_wrap{
+                .filter_content{
+                    overflow: auto;
+                    padding: 0 10px;
+                    .filter_content_title{
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 10px;
+                        .name{
+
+                        }
+                    }
+                    .filter_item_wrap{
+                        overflow: auto;
+                        display: inline;
+                        .filter_item{
+                            font-size: 12px;
+                            padding: 5px;
+                            overflow: auto;
+                            width: auto;
+                            display: inline-block;
+                            border: 1px solid #999;
+                            float: right;
+                            margin: 4px;
+                        }
+                        .filter_item_active{
+                            color: #fff;
+                            background: #333;
+                        }
+                    }
+                    .show{
+                        display: block;
+                    }
+                }
             }
         }
 
@@ -409,7 +509,9 @@
             overflow: auto;
         }
         .reset{
-            margin: -3px 22px;
+            margin: 17px 22px;
+            vertical-align: middle;
+            float: left;
         }
         .fitterPart{
             display: none;

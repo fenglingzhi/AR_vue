@@ -43,7 +43,8 @@
             v-for="(color,index) in data_all.product_attribute_colors"
             :key="index"
           >
-            <img :src="color.color_image_url" :alt="color.name" />
+            <!-- <img :src="color.color_image_url" :alt="color.name" /> -->
+            {{color.name}}
           </div>
         </div>
       </div>
@@ -179,7 +180,10 @@ export default {
       view_more2: false,
       share_show: false,
       //   购物车已选择的商品数量
-      selected_products_num: 0
+      selected_products_num: 0,
+      product_id: this.$store.state.product_id
+      // id_currency: this.$store.state.id_currency,
+      // lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -209,13 +213,14 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
-        id_currency: 1,
-        id_product:23,
-        lang_id: 1
+
+        // id_currency: this.id_currency,
+        id_product: this.product_id
+        // lang_id: this.lang_id
       };
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
-        console.log("商品详情", data);
+        // console.log("商品详情", data);
         this.$set(this.data_all, "id_product", data.id_product);
         this.$set(this.data_all, "name", data.name);
         this.$set(this.data_all, "description", data.description);
@@ -248,12 +253,27 @@ export default {
     },
     // 获取购物车中物品数量
     getSelectedProductsNum() {
-      let data = {
-        id_currency: 1,
-        customer_id: 1
-      };
+      let data;
+      if (this.$store.state.token == "") {
+        //   未登录并且没本地没有购物车id
+        if (localStorage.cart_id == "") {
+          data = {
+            id_cart: 0
+          };
+        } else {
+          // 未登录但是本地有了购物车id
+          data = {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        data = {
+          id_cart: localStorage.cart_id
+        };
+      }
       this.$post("/api/cart/getCartProducts", data).then(res => {
-        this.selected_products_num = res.data.productRecommends.length;
+        this.selected_products_num = res.data.cart_quantity_total;
       });
     },
     // 添加商品进购物车
@@ -266,19 +286,46 @@ export default {
         this.$toast("请选择尺码");
         return false;
       }
-      let data = {
-        id_currency: 1,
-        id_cart: 0,
-        type: "up",
-        id_product: this.data_all.id_product,
-        id_size: this.size_selected,
-        id_color: this.color_selected,
-        quantity: 1
-      };
+      let bag_data = {};
+      if (this.$store.state.token == "") {
+        //   未登录并且本地也没有购物车id
+        if (localStorage.cart_id == "") {
+          bag_data = {
+            id_cart: 0
+          };
+        } else {
+          // 没有登录，但是本地已经有购物车id
+          bag_data = {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        bag_data = {
+          id_cart: localStorage.cart_id
+        };
+      }
+      let data = Object.assign(
+        {
+          id_currency: this.id_currency,
+          type: "up",
+          id_product: this.data_all.id_product,
+          id_size: this.size_selected,
+          id_color: this.color_selected,
+          quantity: 1
+        },
+        bag_data
+      );
       this.$post("/api/cart/setCartProduct", data).then(res => {
         console.log(res);
         if (res.code == 200) {
           this.$toast("添加成功");
+          // 写购物车id到session
+          if (res.data.cart_id != 0) {
+            localStorage.cart_id = res.data.cart_id;
+          }
+          // 更新购物车商品总量
+          this.getSelectedProductsNum();
         } else {
           this.$toast("添加失败，请重试！");
         }
@@ -344,6 +391,9 @@ export default {
   }
   #swiper {
     max-height: 500px;
+    img {
+      max-width: 100%;
+    }
     .van-swipe__indicators {
       .van-swipe__indicator {
         background-color: transparent;

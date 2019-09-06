@@ -26,7 +26,9 @@ const personal = resolve => require(['../views/personal.vue'], resolve);
 const personalSetup = resolve => require(['../views/personalSetup.vue'], resolve);
 const personalCurrency = resolve => require(['../views/personalCurrency.vue'], resolve);
 const personalAdress = resolve => require(['../views/personalAdress.vue'], resolve);
-
+const personalInfo = resolve => require(['../views/personalInfo.vue'], resolve);
+const personalAddAdres = resolve => require(['../views/personalAddAdres.vue'], resolve);
+const personalPwd = resolve => require(['../views/personalPwd.vue'], resolve);
 
 var routerMaps = [
     { name: 'Home', path: '/', component: Home, meta: { name: 'home' } },
@@ -54,6 +56,9 @@ var routerMaps = [
     {name:'personalAdress', path:'/personalAdress',component:personalAdress,meta:{name:'personalAdress'}},
     {name:'checkoutAddressChose', path:'/checkoutAddressChose',component:checkoutAddressChose,meta:{name:'checkoutAddressChose'}},
     {name:'checkout', path:'/checkout',component:checkout,meta:{name:'checkout'}},
+    {name:'personalInfo', path:'/personalInfo',component:personalInfo,meta:{name:'personalInfo'}},
+    {name:'personalAddAdres', path:'/personalAddAdres',component:personalAddAdres,meta:{name:'personalAddAdres'}},
+    {name:'personalPwd', path:'/personalPwd',component:personalPwd,meta:{name:'personalPwd'}},
 
 
 ];

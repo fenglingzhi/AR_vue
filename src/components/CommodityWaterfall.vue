@@ -1,14 +1,18 @@
 <template>
     <div :class="unshow?'pages_ar':'pages_en'" >
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="300">
-            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
+        <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="300">
+            <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail(v.id_product)">
                 <div class="countimg">
-                    <img :src="v.img_url" alt="">
-                    <p class="message">{{ v.saleMessage }}</p>
-                    <p class="price">
-                        <span class="newprice">{{ v.newprice }}</span>
-                        <span class="oldprice">{{ v.oldprice }}</span>
-                    </p>
+                   <div class="imgbox">
+                       <img :src="v.img_url" alt="">
+                   </div>
+                   <div>
+                       <p class="message">{{ v.saleMessage }}</p>
+                       <p class="price">
+                           <span class="newprice">{{ v.newprice }}</span>
+                           <span class="oldprice">{{ v.oldprice }}</span>
+                       </p>
+                   </div>
                 </div>
             </div>       
        </van-list>
@@ -74,6 +78,11 @@ export default {
                 }
             }, 3000);
         },
+        //详情页跳转
+        detail(item){
+            this.$store.state.product_id = item;
+            this.$router.push('productDetail');
+        }
 
     },
     mounted(){
@@ -98,7 +107,8 @@ export default {
     }
     .van-cell{
         width: 50%;
-        float: left;
+        // float: left;
+        display: inline-block;
         padding: 5px 5px;
         height: 355px;
     }
@@ -114,6 +124,8 @@ export default {
         font-size: 22px;
         font-weight: bold;
         text-align: right;
+        line-height: 20px;
+        height: 20px;
     }
     .countimg{
         width: 100%;
@@ -121,6 +133,16 @@ export default {
     button{
         border-radius: 5px;
         background-color: lightblue;
+    }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
     }
 }
 .pages_en{
@@ -152,6 +174,7 @@ export default {
         font-size: 22px;
         font-weight: bold;
         text-align: left;
+        height: 20px;
     }
     .countimg{
         width: 100%;
@@ -159,6 +182,19 @@ export default {
     button{
         border-radius: 5px;
         background-color: lightblue;
+    }
+    .imgbox{
+        overflow: hidden;
+        height: 255px;
+        text-align: center;
+    }
+    .imgbox img{
+        transform: translateY(-50%);
+        position: relative;
+        top: 50%;
+    }
+    .van-list__finished-text{
+        display: none;
     }
 }
 

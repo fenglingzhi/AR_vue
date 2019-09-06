@@ -71,7 +71,9 @@ import { METHODS } from "http";
 export default {
   data() {
     return {
-      data_all: []
+      data_all: [],
+      // id_currency: this.$store.state.id_currency,
+      // lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -81,13 +83,15 @@ export default {
   methods: {
     getBagInfo() {
       let data = {
-        id_currency: 1,
-        customer_id: 1
+        // id_currency: this.id_currency,
+        // id_currency: 1,
+        // customer_id: 1
+        id_cart:0
       };
       this.$post("/api/cart/getCartProducts", data).then(res => {
         let data = res.data;
         console.log(data);
-        this.data_all = data.productRecommends;
+        // this.data_all = data.productRecommends;
       });
     }
   }

@@ -33,8 +33,10 @@
                         </div>
                     </div>
                     <div class="orderDetail_item orderDetail_item_adress dis_flex">
-                        <div style="text-align: right">
+                        <div>
                             <img src="../assets/img/personal/adress_loaction.png" width="14" alt="" class="checkImg" style="margin-left: 8px;">
+                        </div>
+                        <div style="text-align: right">
                             <span>{{address}}</span>
                         </div>
                     </div>
@@ -53,9 +55,8 @@
                         <div class="dis_flex orderDetail_item_list_right flexone textEllipsis">
                             <div><img :src="item.img_url" alt="" width="75"></div>
                             <div style="line-height: 20px;margin-right:12px;" class="flexone textEllipsis">
-                                <span class="dis_block ">{{item.name}}</span>
-                                <span class="dis_block color999 fontSize12 " style="margin-left: 9rem;">({{item.color}}）</span>
-                                <span class="dis_block "  style="margin-left: 9rem;">{{item.size}}</span>
+                                <span class="dis_block " style="margin-left: 9rem;">{{item.name}}</span>
+                                <span class="dis_block color999 fontSize12 " style="margin-left: 9rem;">{{item.color}} {{item.size}}</span>
                                 <span class="dis_block "  style="margin-left: 9rem;">{{item.new_price}}</span>
                             </div>
                         </div>
@@ -102,7 +103,7 @@
                         </div>
                     </div>
                     <!--cod服务费-->
-                    <div class="dis_flex justify-space-between"  id="cods">
+                    <div class="dis_flex justify-space-between"  v-if="orderList.length>0&&orderList.cod_service_price!=''">
                         <div class="flexone textEllipsis">
                             <span class="fontSize12">خصم</span>
                         </div>
@@ -166,14 +167,11 @@
                     this.orderList = data.data;
                     this.name = data.data.shipping_address.name;
                     this.address = data.data.shipping_address.address;
-                    if( this.orderList.cod_service_price == ""){
-                        console.log(1);
-                        $('#cods').addClass('none');
-                    }
                 }).catch(error => {
                     console.log(error);
                 });
-            }
+            },
+
         },
         mounted(){
             this.loadorderdetail();
@@ -239,9 +237,9 @@
         color: #999999;
         font-size: 12px;
     }
-    .orderDetail_item_right{
-        flex: 1
-    }
+    /*.orderDetail_item_right{*/
+        /*flex: 1*/
+    /*}*/
     .orderDetail_item_left{
     }
     .orderDetail_item_name{
