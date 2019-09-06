@@ -34,7 +34,7 @@
         <span class="now_price">{{data_all.new_price}}</span>
       </div>
       <div class="color_wrap">
-        <div class="color_title">س :</div>
+        <div class="color_title">س :{{color_selected}}</div>
         <div class="color">
           <div
             class="color_list"
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="size_wrap">
-        <div class="size_title">الحجم :</div>
+        <div class="size_title">الحجم :{{size_selected}}</div>
         <div class="size">
           <div
             class="size_list"
@@ -62,12 +62,12 @@
       </div>
       <!-- 产品信息 -->
       <div class="product_info">
-        <div class="size_guide">
-          <!-- <div class="size_guide_icon">
+        <!-- <div class="size_guide">
+          <div class="size_guide_icon">
             <img src="../assets/img/choseMore.png" alt />
-          </div>-->
+          </div>
           <div class="size_guide_title">نتبرالت،رل نتمياستلمظ</div>
-        </div>
+        </div>-->
         <div class="material_policy">
           <div class="material_policy_title">
             <div
@@ -213,7 +213,6 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
-
         // id_currency: this.id_currency,
         id_product: this.product_id
         // lang_id: this.lang_id
