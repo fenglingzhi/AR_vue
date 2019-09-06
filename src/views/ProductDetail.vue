@@ -34,7 +34,7 @@
         <span class="now_price">{{data_all.new_price}}</span>
       </div>
       <div class="color_wrap">
-        <div class="color_title">س :{{color_selected}}</div>
+        <div class="color_title">س :</div>
         <div class="color">
           <div
             class="color_list"
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="size_wrap">
-        <div class="size_title">الحجم :{{size_selected}}</div>
+        <div class="size_title">الحجم :</div>
         <div class="size">
           <div
             class="size_list"
@@ -273,7 +273,11 @@ export default {
         };
       }
       this.$post("/api/cart/getCartProducts", data).then(res => {
-        this.selected_products_num = res.data.cart_quantity_total;
+        if ("cart_quantity_total" in res.data) {
+          this.selected_products_num = res.data.cart_quantity_total;
+        } else {
+          this.selected_products_num = 0;
+        }
       });
     },
     // 添加商品进购物车
@@ -308,8 +312,7 @@ export default {
       }
       let data = Object.assign(
         {
-          id_currency: this.id_currency,
-          type: "up",
+          type: "add",
           id_product: this.data_all.id_product,
           id_size: this.size_selected,
           id_color: this.color_selected,
@@ -351,6 +354,17 @@ export default {
       }
     }
   }
+  // computed: {
+  //   color_selected_cop: function() {
+  //     if ("product_attribute_colors" in this.data_all) {
+  //       this.data_all.product_attribute_colors.forEach((item, index) => {
+  //         if (item.id_color == this.color_selected) {
+  //           return item.name;
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 };
 </script>
 <style lang="scss">

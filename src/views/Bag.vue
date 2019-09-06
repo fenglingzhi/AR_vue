@@ -22,13 +22,13 @@
           <div class="product_list_wrap">
             <div class="stepper">
               <div class="stepper_wrap">
-                <div class="add">
+                <div class="add" @click="add_product_num(product)">
                   <img src="../assets/img/bag/add.png" alt />
                 </div>
                 <div class="num">
                   <input type="text" v-model="product.quantity" />
                 </div>
-                <div class="minus">
+                <div class="minus" @click="minus_product_num(product)">
                   <img src="../assets/img/bag/minus.png" alt />
                 </div>
               </div>
@@ -36,8 +36,8 @@
             <div class="product_info">
               <div class="price">{{product.new_price}}</div>
               <div class="title">{{product.name}}</div>
-              <div class="size">الحجم:{{product.size}}</div>
-              <div class="color">أخضر:{{product.color}}</div>
+              <div class="size">الحجم: {{product.size}}</div>
+              <div class="color">أخضر: {{product.color}}</div>
               <div class="delete">
                 <img src="../assets/img/bag/delete.png" alt />
               </div>
@@ -68,6 +68,7 @@
 <script>
 import router from "vue-router";
 import { METHODS } from "http";
+import { type } from "os";
 export default {
   data() {
     return {
@@ -108,7 +109,54 @@ export default {
         this.total_price = res.data.total_price;
         this.cart_quantity_total = res.data.cart_quantity_total;
       });
-    }
+    },
+    add_product_num(product) {
+      let bag_data;
+      if (this.$store.state.token == "") {
+        //   未登录并且本地也没有购物车id
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
+          data = {
+            id_cart: localStorage.cart_id
+          };
+        } else {
+          // 没有登录，但是本地已经有购物车id
+          bag_data = {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        bag_data = {
+          id_cart: localStorage.cart_id
+        };
+      }
+      let data = Object.assign(
+        {
+          id_product: product.id_product,
+          id_product_attribute: product.id_product_attribute,
+          quantity: 1,
+          type: "add"
+        },
+        bag_data
+      );
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast("添加成功");
+          // 写购物车id到session
+          // if (res.data.cart_id != 0) {
+          //   localStorage.cart_id = res.data.cart_id;
+          // }
+          // 更新购物车商品总量
+          // this.getSelectedProductsNum();
+          this.getBagInfo();
+        } else {
+          this.$toast("添加失败，请重试！");
+        }
+      });
+    },
+    minus_product_num() {}
   }
 };
 </script>
@@ -188,6 +236,7 @@ export default {
           flex: 1;
           margin-right: 10px;
           position: relative;
+          direction: rtl;
           .delete {
             width: 18px;
             position: absolute;
