@@ -92,10 +92,7 @@
               <div class="policy_list">
                 <div class="policy_title">نتبراماتاتنلت،رل :</div>
                 <div class="policy_text" :class="{'policy_text_active':view_more1}">
-                  <a
-                    :href="data_all.return_policy"
-                    target="_blank"
-                  >{{data_all.return_policy_message}}</a>
+                  <a @click="$router.push('PolicyReturn')">{{data_all.return_policy_message}}</a>
                 </div>
                 <div class="view_more" v-show="!view_more1" @click="view_more1_change2t">
                   <div class="view_more_icon">
@@ -113,10 +110,7 @@
               <div class="policy_list">
                 <div class="policy_title">نتبراماتاتنلت،رل :</div>
                 <div class="policy_text" :class="{'policy_text_active':view_more2}">
-                  <a
-                    :href="data_all.shipping_policy"
-                    target="_blank"
-                  >{{data_all.shipping_policy_message}}</a>
+                  <a @click="$router.push('PolicyShipping')">{{data_all.shipping_policy_message}}</a>
                 </div>
                 <div class="view_more" v-show="!view_more2" @click="view_more2_change2t">
                   <div class="view_more_icon">
@@ -568,7 +562,7 @@ export default {
                 .view_more_icon {
                   width: 14px;
                   height: 10px;
-                  margin-right: 20px;
+                  margin-left: 5px;
                   img {
                     width: 100%;
                     height: 100%;
