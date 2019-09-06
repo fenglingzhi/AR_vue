@@ -6,7 +6,6 @@
             </router-link>
             <span class="searchinput"><input  type="text" v-model="$store.state.searchInput"></span>
             <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="goback"/></span>
-
         </div>
         <div class="searchhistory">
             <div class="history">
