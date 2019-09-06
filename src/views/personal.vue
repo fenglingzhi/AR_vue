@@ -2,7 +2,10 @@
   <div>
     <header>
         <div class="person_detail dis_flex">
-            <img src="@/assets/img/personal/user_img.png" alt="" class="person_detail_img">
+            <label for="upfile" class="pTitleRight" @click="IDRecognition">
+                <img :src="imageUrl" alt="" class="person_detail_img">
+                <input ref="filElem" type="file" accept="image/*" id="upfile" name="upfile" style="display: none;" @change="uploadPic($event)">
+            </label>
             <span class="person_detail_name">John</span>
         </div>
         <div class="person_menu">
@@ -57,31 +60,36 @@ import Vue from 'vue'
 import * as api from "../api/commonApi";
 import router from "vue-router";
 import axios from "axios";
-import { Dialog, List  } from 'vant';
+import { Dialog, Swipe, SwipeItem, CountDown, List,Toast } from 'vant';
 import store from '../store/store.js'
 import $ from "jquery"
 import BottomBar from "./BottomBar"
 export default {
-  data() {
-    return {
-      lists:[1,1,1,1],
-      loading: false,
-      finished: false,
-      listData:{
-        action:'getWishlists',
-        id_currency:"1",
-        page:"1"
-      },
-      total_page:"" ,
-    }
-  },
-  components:{
-    router,
-    List,
-    Dialog,
-    BottomBar
-  },
-  methods: {
+    data() {
+        return {
+            lists:[1,1,1,1],
+            loading: false,
+            finished: false,
+            listData:{
+                action:'getWishlists',
+                id_currency:"1",
+                page:"1"
+            },
+            total_page:"" ,
+            imageUrl: this.$store.state.photo,     //图片base64码
+        }
+    },
+    components:{
+        router,
+        Swipe,
+        Dialog,
+        SwipeItem,
+        router,
+        CountDown, 
+        Toast,
+        BottomBar
+    },
+    methods: {
      getWishlist(data){
       this.$post('/api/wishlist/getWishlists',data).then(data => {
          console.log("list",data)
@@ -90,6 +98,53 @@ export default {
       }).catch(error => {
         console.log(error);
       });
+    },
+    IDRecognition: function() {},  //触发事件 
+    uploadPic: function(e) {
+        console.log(e.target.files)
+        this.beforeUpload (e.target.files[0])
+        
+    },
+    beforeUpload (file) {
+        console.log("111",file)
+        const isJPG = file.type.indexOf("image") != -1 ;
+        if (!isJPG) {
+            Toast.fail("只能上传图片")
+        }
+
+        const isLt2M = file.size / 1024 / 1024 <2
+        if (!isLt2M) {
+           Toast.fail("图片不能大于2M")
+        }else {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            let that = this;
+            reader.onloadend = function () {
+                that.imageUrl = reader.result;
+                console.log("111",that.imageUrl)
+                var data = {...that.$store.state.defaultData};
+                data.action = 'uploadPhoto';
+                data.photo = that.imageUrl;
+                that.$post('/api/user_identity/uploadPhoto',data).then(data => {
+                    console.log("list",data)
+                    if (data.code == 200) {
+                        that.$store.state.photo = require(data.data.photo);
+                        store.commit('changeStore',{key:'photo',val:require(data.data.photo)});
+                    }
+                    if (data.code == 400) {
+                        Toast.fail(data.message)
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            }
+           
+
+
+
+            return false;
+        }
+
     },
     loadMore() {
     // 异步更新数据
@@ -145,6 +200,7 @@ export default {
   .person_detail_img{
       width: 62px;
       height: 62px;
+      border-radius: 50%;
   }
   .person_detail_name{
       font-size: 34px;

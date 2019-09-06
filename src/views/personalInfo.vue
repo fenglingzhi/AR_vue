@@ -12,14 +12,14 @@
                 <!-- 用户名 -->
                 <label for="">*اسم المستخدم:</label>
                 <div class="info_item_inputone">
-                    <input type="text" placeholder="jie.ding@kapeixi.com">
+                    <input type="text" placeholder="jie.ding@kapeixi.com" v-model="personalInfo.email" readonly>
                 </div>
             </div>
             <div class="info_item">
                 <!-- 昵称 -->
                 <label for="">*اسم الشهرة:</label>
                 <div class="info_item_inputone">
-                    <input type="text">
+                    <input type="text" v-model="personalInfo.nickname">
                 </div>
             </div>
             <div class="info_item">
@@ -27,11 +27,11 @@
                 <label for="">*تاريخ الميلاد: الرجاء إدخال تاريخ ميلادك</label>
                 <div class="info_item_inputthree">
                     <!-- 年 -->
-                    <input type="text" placeholder="عام">
+                    <input type="text" placeholder="عام" v-model="personalInfo.sl_year">
                     <!-- 月 -->
-                    <input type="text" placeholder="شهر">
+                    <input type="text" placeholder="شهر" v-model="personalInfo.sl_month">
                     <!-- 日 -->
-                    <input type="text" placeholder="يوم">
+                    <input type="text" placeholder="يوم" v-model="personalInfo.sl_day">
                 </div>
             </div>
             <div class="info_item">
@@ -40,19 +40,19 @@
                 <div class="info_item_inputthree">
                     <div class="info_item_radio">
                         <img src="@/assets/img/select.png" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="man" checked="checked">
+                        <input type="radio" name="sex" value="1"  v-model="personalInfo.gender">
                         <!-- 男性 -->
                         <label>ذكر</label>
                     </div>
                     <div class="info_item_radio">
                         <img src="@/assets/img/option.png" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="woman">
+                        <input type="radio" name="sex" value="2" v-model="personalInfo.gender">
                         <!-- 女性 -->
                         <label>أنثى</label>
                     </div>
                     <div class="info_item_radio">
                         <img src="@/assets/img/option.png" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="privacy">
+                        <input type="radio" name="sex" value="3" v-model="personalInfo.gender">
                         <!-- 特殊 -->
                         <label>خاص</label>
                     </div>
@@ -62,14 +62,14 @@
                 <!-- *国家：请输入您的国家 -->
                 <label for="">*الدولة: الرجاء إدخال دولتك</label>
                 <div class="info_item_inputone">
-                    <input type="text">
+                    <input type="text" v-model="personalInfo.country_name">
                 </div>
             </div>
             <div class="info_item">
                 <!-- 电话号码 -->
                 <label for="">رقم الهاتف:</label>
                 <div class="info_item_inputone">
-                    <input type="text">
+                    <input type="text" v-model="personalInfo.phone">
                 </div>
             </div>
             <div class="info_item">
@@ -126,13 +126,20 @@
 </template>
 
 <script>
-
-
+import Vue from 'vue'
+import * as api from "../api/commonApi";
+import router from "vue-router";
+import axios from "axios";
+import { Dialog, List  } from 'vant';
+import store from '../store/store.js'
+import $ from "jquery"
+import BottomBar from "./BottomBar"
 
 export default {
     data() {
         return {
             personalInfo:{
+              email:'',
               nickname:'',
               sl_year:'',
               sl_month:'',
@@ -150,12 +157,49 @@ export default {
         }
     },
     methods: {
+        getInfo(){
+            var data = {...this.$store.state.defaultData}
+            this.$post('/api/user/getIdentity',data).then(data => {
+                console.log("list",data)
+                // this.Lists = this.Lists.concat(redata.data.data.products);
+                // this.total_page = redata.data.data.total_page;
+                this.personalInfo = data.data.identity;
+            }).catch(error => {
+              console.log(error);
+            });
+        },
+
+
         back(){
          this.$router.go(-1);//返回上一层
         },
     },
     mounted() {
-
+        this.getInfo();
+         $(function () {
+            $(".info_item_radio").click(function(){
+                $(".info_item_radio").children("input[name='sex']").each(function(index,item){
+                    $(item).eq(0).removeAttr("checked");
+                })
+                $(".info_item_radio").children("img").each(function(index,item){
+                    $(item).attr('src','@/assets/img/option.png')
+                })
+                $(this).children("input[name='sex']").eq(0).attr("checked","checked");
+                $(this).children("img").attr('src','@/assets/img/select.png')
+                return false;
+            })
+            
+            $(".info_item_checkbox").click(function(){
+                console.log($(this).children("img"))
+                if($(this).children("input[type='checkbox']").prop("checked")){
+                    $(this).children("input[type='checkbox']").prop("checked",false)
+                    $(this).children("img").attr('src','@/assets/img/personal/info_checkbox.png')
+                }else{
+                    $(this).children("input[type='checkbox']").prop("checked",true)
+                    $(this).children("img").attr('src','@/assets/img/personal/info_checkbox_selected.png')
+                }
+            })
+        })
    },
 }
 </script>
@@ -278,6 +322,7 @@ header{
     text-align: center;
     background-color: #F6F6F6;
     z-index:10;
+    box-sizing: border-box;
 }
 .adress_addButton{
     background: #333333;

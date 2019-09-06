@@ -145,8 +145,10 @@ export default {
             }
             if (data.code == 200) {
                 this.$store.state.access_token = data.data.token;
+                store.commit('changeStore',{key:'photo',val:require(data.data.photo)});
                 Toast.success(data.message)
                 localStorage.setItem('token',data.data.token)
+                localStorage.setItem('id_cart',data.data.id_cart)
                 setTimeout(() => {
                     that.$router.push({
                         name: `Home`
