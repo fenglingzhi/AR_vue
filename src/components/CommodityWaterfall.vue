@@ -10,7 +10,7 @@
                        <p class="message">{{ v.saleMessage }}</p>
                        <p class="price">
                            <span class="newprice">{{ v.newprice }}</span>
-                           <span class="oldprice">{{ v.oldprice }}</span>
+                           <span class="oldprice" v-if=" v.oldprice !== v.newprice">{{ v.oldprice }}</span>
                        </p>
                    </div>
                 </div>
@@ -96,6 +96,7 @@ export default {
     margin-bottom: 5rem;
     .newprice{
         color:#444040;
+        margin: 10px;
     }
     .oldprice{
         color:red;
@@ -110,7 +111,7 @@ export default {
         // float: left;
         display: inline-block;
         padding: 5px 5px;
-        height: 355px;
+        height: 320px;
     }
     .van-cell img{
         width: 100%;
@@ -119,6 +120,7 @@ export default {
         font-weight: bold;
         font-size: 14px;
         text-align: right;
+        padding: 0px 2px;
     }
     .message{
         font-size: 22px;
@@ -126,6 +128,7 @@ export default {
         text-align: right;
         line-height: 20px;
         height: 20px;
+        margin: 3px 0 -12px 0;
     }
     .countimg{
         width: 100%;
@@ -149,6 +152,7 @@ export default {
     margin-bottom: 5rem;
     .newprice{
         color:#444040;
+        margin: 10px;
     }
     .oldprice{
         color:red;
@@ -156,11 +160,14 @@ export default {
     .van-list{
         overflow: hidden;
         /*display: flex;*/
+        width: 100%;
     }
     .van-cell{
         width: 50%;
-        float: left;
+        // float: left;
+        display: inline-block;
         padding: 5px 5px;
+        height: 320px;
     }
     .van-cell img{
         width: 100%;
@@ -169,12 +176,15 @@ export default {
         font-weight: bold;
         font-size: 14px;
         text-align: left;
+        padding: 0px 2px;
     }
     .message{
         font-size: 22px;
         font-weight: bold;
         text-align: left;
+        line-height: 20px;
         height: 20px;
+        margin: 3px 0 -12px 0;
     }
     .countimg{
         width: 100%;
@@ -192,9 +202,6 @@ export default {
         transform: translateY(-50%);
         position: relative;
         top: 50%;
-    }
-    .van-list__finished-text{
-        display: none;
     }
 }
 

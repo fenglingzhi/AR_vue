@@ -17,27 +17,27 @@
       </div>
       <!-- 有东西 -->
       <div class="has_product" v-if="data_all.length>0">
-        <div class="policy">منتاتسلتشلمتالمشعمعغصعضلتال</div>
+        <!-- <div class="policy">منتاتسلتشلمتالمشعمعغصعضلتال</div> -->
         <div class="product_list" v-for="(product,index) in data_all" :key="index">
           <div class="product_list_wrap">
             <div class="stepper">
               <div class="stepper_wrap">
-                <div class="add">
+                <div class="add" @click="add_product_num(product)">
                   <img src="../assets/img/bag/add.png" alt />
                 </div>
                 <div class="num">
-                  <input type="text" />
+                  <input type="text" v-model="product.quantity" />
                 </div>
-                <div class="minus">
+                <div class="minus" @click="minus_product_num(product)">
                   <img src="../assets/img/bag/minus.png" alt />
                 </div>
               </div>
             </div>
             <div class="product_info">
-              <div class="price">{{product.newprice}}</div>
-              <div class="title">بطاقة يمنكنت دهدية يثقللقز</div>
-              <div class="size">بطاقة:L</div>
-              <div class="color">بتمقة:تنابن</div>
+              <div class="price">{{product.new_price}}</div>
+              <div class="title">{{product.name}}</div>
+              <div class="size">الحجم: {{product.size}}</div>
+              <div class="color">أخضر: {{product.color}}</div>
               <div class="delete">
                 <img src="../assets/img/bag/delete.png" alt />
               </div>
@@ -46,21 +46,21 @@
               <img :src="product.img_url" alt />
             </div>
           </div>
-          <div class="tips">
+          <!-- <div class="tips">
             بطاقة يظتز،وز،منكنت دهدية يثقللقز
             <img src="../assets/img/bag/alert.png" alt />
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
     <footer class="bag_footer" v-if="data_all.length>0">
       <div class="price_total">
-        S.R. 24.00
-        <span>كتن</span>
+        S.R.{{total_price}}
+        <span>المجموع</span>
       </div>
-      <div class="checkout">تقديم</div>
+      <div class="checkout">({{cart_quantity_total}}) الدفع</div>
       <div class="coupon">
-        <span>منسايتنبسنتانتلتال</span>منسايتنبسنتانتلتال
+        <span>في الصفحة التالية تطبيق كود الكوبون</span>
       </div>
     </footer>
   </div>
@@ -68,12 +68,13 @@
 <script>
 import router from "vue-router";
 import { METHODS } from "http";
+import { type } from "os";
 export default {
   data() {
     return {
       data_all: [],
-      // id_currency: this.$store.state.id_currency,
-      // lang_id: this.$store.state.lang_id
+      total_price: "",
+      cart_quantity_total: 0
     };
   },
   components: {},
@@ -82,18 +83,80 @@ export default {
   },
   methods: {
     getBagInfo() {
-      let data = {
-        // id_currency: this.id_currency,
-        // id_currency: 1,
-        // customer_id: 1
-        id_cart:0
-      };
+      let data;
+      if (this.$store.state.token == "") {
+        //   未登录并且本地也没有购物车id
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
+          data = {
+            id_cart: localStorage.cart_id
+          };
+        } else {
+          // 没有登录，但是本地已经有购物车id
+          data = {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        data = {
+          id_cart: localStorage.cart_id
+        };
+      }
       this.$post("/api/cart/getCartProducts", data).then(res => {
-        let data = res.data;
-        console.log(data);
-        // this.data_all = data.productRecommends;
+        console.log(res);
+        this.data_all = res.data.details;
+        this.total_price = res.data.total_price;
+        this.cart_quantity_total = res.data.cart_quantity_total;
       });
-    }
+    },
+    add_product_num(product) {
+      let bag_data;
+      if (this.$store.state.token == "") {
+        //   未登录并且本地也没有购物车id
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
+          data = {
+            id_cart: localStorage.cart_id
+          };
+        } else {
+          // 没有登录，但是本地已经有购物车id
+          bag_data = {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        bag_data = {
+          id_cart: localStorage.cart_id
+        };
+      }
+      let data = Object.assign(
+        {
+          id_product: product.id_product,
+          id_product_attribute: product.id_product_attribute,
+          quantity: 1,
+          type: "add"
+        },
+        bag_data
+      );
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          this.$toast("添加成功");
+          // 写购物车id到session
+          // if (res.data.cart_id != 0) {
+          //   localStorage.cart_id = res.data.cart_id;
+          // }
+          // 更新购物车商品总量
+          // this.getSelectedProductsNum();
+          this.getBagInfo();
+        } else {
+          this.$toast("添加失败，请重试！");
+        }
+      });
+    },
+    minus_product_num() {}
   }
 };
 </script>
@@ -173,6 +236,7 @@ export default {
           flex: 1;
           margin-right: 10px;
           position: relative;
+          direction: rtl;
           .delete {
             width: 18px;
             position: absolute;

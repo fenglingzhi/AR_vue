@@ -4,20 +4,14 @@
             <div class="collectionHead">
                 <span class="fl" @click="$router.push('Bag')">
                     <img src="../assets/img/bag.png" width="20"  alt="">
-                    <div class="cartNum">2</div>
+                    <div class="cartNum">{{selected_products_num}}</div>
                 </span>
                 <router-link to="/SearchHot">
                     <span class="fl">
                     <img src="../assets/img/search.png" width="20" alt="">
                 </span>
                 </router-link>
-                <span class="fr">
-                    <img src="../assets/img/more3x.png" width="20" alt="">
-                </span>
-                <span class="fr" style="width: 14px;"></span>
-                <span class="fr">
-                    <img src="../assets/img/logo.png" width="60" alt="">
-                </span>
+                <span class="searchicon"><van-icon name="arrow" class="vanicon" @click="goback"/></span>
             </div>
             <div class="headStroke">
                  <div class="fl fitterBut">
@@ -37,9 +31,9 @@
             </div>
         </div>
         <div class="pages_ar">
-            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="300">
-                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell" @click="detail(v.id_product)">
-                    <div class="countimg">
+            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="0">
+                <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
+                    <div class="countimg" @click="detail(v.id_product)">
                        <div class="imgbox" >
                            <img :src="v.img_url" alt="">
                        </div>
@@ -47,7 +41,7 @@
                            <p class="message">{{ v.saleMessage }}</p>
                            <p class="price">
                                <span class="newprice">{{ v.newprice }}</span>
-                               <span class="oldprice">{{ v.oldprice }}</span>
+                               <span class="oldprice" v-if=" v.oldprice !== v.newprice">{{ v.oldprice }}</span>
                            </p>
                        </div>
                     </div>
@@ -77,6 +71,7 @@
             },
             total_page:"" ,
             total:"",
+            selected_products_num: 0,
         }
     },
      components:{
@@ -116,14 +111,51 @@
                  }
              }, 3000);
          },
+         getSelectedProductsNum() {
+             let data;
+             if (this.$store.state.token == "") {
+                 //   未登录并且没本地没有购物车id
+                 if (typeof localStorage.cart_id == "undefined") {
+                     localStorage.cart_id = 0;
+                     data = {
+                         id_cart: localStorage.cart_id
+                     };
+                 } else {
+                     // 未登录但是本地有了购物车id
+                     data = {
+                         id_cart: localStorage.cart_id
+                     };
+                 }
+             } else {
+                 // 已登录
+                 data = {
+                     id_cart: localStorage.cart_id
+                 };
+             }
+             this.$post("/api/cart/getCartProducts", data).then(res => {
+                 if("cart_quantity_total" in res.data){
+                     this.selected_products_num = res.data.cart_quantity_total;
+                 }
+                 else{
+                     this.selected_products_num=0
+                 }
+
+             });
+         },
          //详情页跳转
          detail(item){
+             console.log(111111);
              this.$store.state.product_id = item;
              this.$router.push('productDetail');
-         }
+         },
+         //返回上一级
+         goback(){
+             this.$router.go(-1)
+         },
      },
      mounted(){
          this.loadsearpage(this.listData);
+         this.getSelectedProductsNum();
      }
  }
 </script>
@@ -196,11 +228,18 @@
         position: relative;
         top: 50%;
     }
+    .searchicon{
+        .vanicon{
+            font-size: 1.5rem;
+            left: 8.3rem;
+        }
+    }
 }
 .pages_ar{
     margin-bottom: 5rem;
     .newprice{
         color:#444040;
+        margin: 10px;
     }
     .oldprice{
         color:red;
@@ -229,6 +268,7 @@
         font-weight: bold;
         text-align: right;
         height: 20px;
+        margin: 3px 0 -12px 0;
     }
     .countimg{
         width: 100%;
