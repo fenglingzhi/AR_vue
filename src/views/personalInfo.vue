@@ -38,26 +38,27 @@
                 <!-- 性别 -->
                 <label for="">الجنس</label>
                 <div class="info_item_inputthree">
-                    <div class="info_item_radio">
-                        <img src="@/assets/img/select.png" alt="" width="20" class="info_item_radio_img">
+                    <div class="info_item_radio" v-for="(item, index) in personalInfo.genders" :key="index"  @click="selectSex(index,item.gender_id)">
+                        <img :src="index == sexIndex ? radioSleImg : radioImg" alt="" width="20" class="info_item_radio_img">
                         <input type="radio" name="sex" value="1"  v-model="personalInfo.gender">
                         <!-- 男性 -->
-                        <label>ذكر</label>
-                    </div>
-                    <div class="info_item_radio">
-                        <img src="@/assets/img/option.png" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="2" v-model="personalInfo.gender">
-                        <!-- 女性 -->
-                        <label>أنثى</label>
-                    </div>
-                    <div class="info_item_radio">
-                        <img src="@/assets/img/option.png" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="3" v-model="personalInfo.gender">
-                        <!-- 特殊 -->
-                        <label>خاص</label>
+                        <label>{{item.name}}</label>
                     </div>
                 </div>
             </div>
+            <div class="info_item">
+                <!-- 职业 -->
+                <label for="">الجنس</label>
+                <div class="info_item_inputthree">
+                    <div class="info_item_radio" v-for="(item, index) in personalInfo.genders" :key="index"  @click="selectSex(index,item.gender_id)">
+                        <img :src="index == sexIndex ? radioSleImg : radioImg" alt="" width="20" class="info_item_radio_img">
+                        <input type="radio" name="sex" value="1"  v-model="personalInfo.gender">
+                        <!-- 男性 -->
+                        <label>{{item.name}}</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="info_item">
                 <!-- *国家：请输入您的国家 -->
                 <label for="">*الدولة: الرجاء إدخال دولتك</label>
@@ -134,7 +135,8 @@ import { Dialog, List  } from 'vant';
 import store from '../store/store.js'
 import $ from "jquery"
 import BottomBar from "./BottomBar"
-
+import radioImg from "../assets/img/option.png"
+import radioSleImg from "../assets/img/select.png"
 export default {
     data() {
         return {
@@ -154,21 +156,33 @@ export default {
               phone:'',
               customer_id:''
             },
+            sexIndex:0,
+            radioImg:radioImg,
+            radioSleImg:radioSleImg,
+            
         }
     },
     methods: {
         getInfo(){
             var data = {...this.$store.state.defaultData}
+            var that = this;
             this.$post('/api/user/getIdentity',data).then(data => {
                 console.log("list",data)
-                // this.Lists = this.Lists.concat(redata.data.data.products);
-                // this.total_page = redata.data.data.total_page;
                 this.personalInfo = data.data.identity;
+                var len = that.personalInfo.genders;
+                for (let index = 0; index < len.length; index++) {
+                    if (len[index].checked == 1) {
+                        that.sexIndex = index;
+                    }
+                }
             }).catch(error => {
               console.log(error);
             });
         },
-
+        selectSex(selIndex,id){
+            console.log(selIndex,id)
+            this.sexIndex = selIndex;
+        },
 
         back(){
          this.$router.go(-1);//返回上一层

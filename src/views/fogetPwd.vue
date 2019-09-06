@@ -14,11 +14,11 @@
     </div>
 
     <div class="formInput">
-        <input type="text" placeholder="طلبنممنثمقكرده هتسثتي">
+        <input type="text" placeholder="طلبنممنثمقكرده هتسثتي" v-model="email">
     </div>
 
     <div style="text-align: center">
-        <button class="loginButton"> افحص الآن</button>
+        <button type="button" class="loginButton" @click="submit()"> افحص الآن</button>
     </div>
   </div>
 </template>
@@ -28,16 +28,38 @@ import Vue from 'vue'
 import * as api from "../api/commonApi";
 import router from "vue-router";
 import axios from "axios";
-import { Dialog, List  } from 'vant';
+import { Dialog, List ,Toast } from 'vant';
 import store from '../store/store.js'
 
 export default {
     data() {
       return {
-
+          email:''
       }
     },
+     components:{
+        router,
+        Dialog,
+        router,
+        Toast,
+    },
     methods: {
+        submit(){
+            var that = this;
+            var data = {...that.$store.state.defaultData}
+            data.email = this.email;
+            that.$post('/api/user/forgotpwd',data).then(data => {
+                console.log("list",data)
+                if (data.code == 200) {
+                    Toast.success("邮件已发送请前往重置密码")
+                }
+                if (data.code == 400) {
+                    Toast.fail(data.message)
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        },
         back(){
             this.$router.go(-1);//返回上一层
         },
