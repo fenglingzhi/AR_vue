@@ -2,7 +2,7 @@
   <div>
     <div class="logIco">
         <div class="close_">
-            <img src="@/assets/img/close.png" alt="">
+            <img src="@/assets/img/close.png" alt=""  @click="back()">
         </div>
         <img src="@/assets/img/forgetPassword.png" width="100%" alt="">
 
@@ -32,7 +32,17 @@ import { Dialog, List  } from 'vant';
 import store from '../store/store.js'
 
 export default {
-  
+    data() {
+      return {
+
+      }
+    },
+    methods: {
+        back(){
+            this.$router.go(-1);//返回上一层
+        },
+    },
+
 }
 </script>
 

@@ -213,6 +213,7 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
+
         // id_currency: this.id_currency,
         id_product: this.product_id
         // lang_id: this.lang_id

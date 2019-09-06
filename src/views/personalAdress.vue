@@ -3,42 +3,24 @@
     <header class="dis_flex">
         <span></span>
         <span class="header_titile">عنو اني</span>
-        <span><img src="@/assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
+        <span><img src="@/assets/img/personal/adress_return.png" alt="" class="header_return_img" @click="back()"></span>
     </header>
     <div class="adress_content">
-        <div class="adress_item">
+        <div class="adress_item" v-for="(item, index) in lists" :key="index">
             <div class="adress_item_detail">
-                <p class="adress_item_detail_name">Ding Jie</p>
-                <p class="adress_item_detail_des">Jiaoyang zhang SA 541236984</p>
-                <p class="adress_item_detail_des">Flat 15</p>
-                <p class="adress_item_detail_des">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</p>
+                <p class="adress_item_detail_name">{{item.firstname}} {{item.lastname}}</p>
+                <p class="adress_item_detail_des">{{item.country_code}} {{item.postcode}}</p>
+                <p class="adress_item_detail_des">{{item.phone}}</p>
+                <p class="adress_item_detail_des">{{item.country}} {{item.state}} {{item.city}} {{item.street}} {{item.address1}}{{item.address1}}</p>
             </div>
             <div class="adress_item_deal dis_flex">
                 <div class="adress_item_deal_img">
-                    <img src="@/assets/img/personal/adress_delete.png" width="16" alt="" style="margin-right: 20px;" class="adress_delete">
-                    <img src="@/assets/img/personal/adress_edit.png" width="16" alt="">
+                    <img src="@/assets/img/personal/adress_delete.png" width="16" alt="" style="margin-right: 20px;" class="adress_delete" @click="delateAdres(item.address_id)">
+                    <img src="@/assets/img/personal/adress_edit.png" width="16" alt="" @click="editAdres(item.address_id)">
                 </div>
-                <div class="adress_item_deal_select">
+                <div class="adress_item_deal_select" @click="selectAdres(index,item.address_id)">
                     <span>افتراضي</span>
-                    <img src="@/assets/img/select.png" width="20" alt="" class="checkImg">
-                </div>
-            </div>
-        </div>
-        <div class="adress_item">
-            <div class="adress_item_detail">
-                <p class="adress_item_detail_name">Ding Jie</p>
-                <p class="adress_item_detail_des">Jiaoyang zhang SA 541236984</p>
-                <p class="adress_item_detail_des">Flat 15</p>
-                <p class="adress_item_detail_des">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</p>
-            </div>
-            <div class="adress_item_deal dis_flex">
-                <div class="adress_item_deal_img">
-                    <img src="@/assets/img/personal/adress_delete.png" width="16" alt="" style="margin-right: 20px;" class="adress_delete">
-                    <img src="@/assets/img/personal/adress_edit.png" width="16" alt="">
-                </div>
-                <div class="adress_item_deal_select">
-                    <span>افتراضي</span>
-                    <img src="@/assets/img/option.png" width="20" alt="" class="checkImg">
+                    <img :src="index == activeIndex ? radioSleImg : radioImg" width="20" class="checkImg">
                 </div>
             </div>
         </div>
@@ -48,16 +30,16 @@
             <span>+ افحنستامنمص الآن</span>
         </div>
     </div>
-    <div class="Mask dis_flex">
+    <div class="Mask dis_flex" v-if="maskflag">
         <div class="Popup">
             <div class="Popup_word dis_flex">
                 <span>متاناخهثر متيكتلانتسسرترزازدر ررر نسهتثب</span>
             </div>
             <div class="Popup_buttons dis_flex">
-                <div class="Popup_buttons_item dis_flex Popup_buttons_item_cancel">
+                <div class="Popup_buttons_item dis_flex Popup_buttons_item_cancel" @click="cancelMask()">
                     <span>لا</span>
                 </div>
-                <div class="Popup_buttons_item dis_flex">
+                <div class="Popup_buttons_item dis_flex" @click="confirmMask()">
                     <span>نعم</span>
                 </div>
             </div>
@@ -74,21 +56,97 @@ import axios from "axios";
 import { Dialog, List  } from 'vant';
 import store from '../store/store.js'
 import BottomBar from "./BottomBar"
+import radioImg from "../assets/img/option.png"
+import radioSleImg from "../assets/img/select.png"
 
 export default {
   data() {
     return {
       lists:[],
-      
+      radioImg:radioImg,
+      radioSleImg:radioSleImg,
+      activeIndex:0,
+      maskflag:false,
+      delate_id_address:''
     }
   },
   methods: {
     getAdress(data){
+        var that = this;
+        this.$post('/api/user_address/getAddresses',data).then(data => {
+         console.log("list",data)
+          that.lists = that.lists.concat(data.data);
+          var len = that.lists;
+          for (let index = 0; index < len.length; index++) {
+            if (len[index].is_default == 1) {
+                that.activeIndex = index;
+            }
+          }
+        }).catch(error => {
+        console.log(error);
+      });
+    },
+    back(){
+      this.$router.go(-1);//返回上一层
+    },
+    // 选择地址
+    selectAdres(selIndex,address_id){
+      console.log(selIndex,address_id)
+      this.activeIndex = selIndex;
+      var data = {...this.$store.state.defaultData};
+      data.action = 'setAddressDefault';
+      data.id_address = address_id;
+      this.$post('/api/user_address/setAddressDefault',data).then(data => {
+         console.log("list",data)
+          if (data.code == 200) {
 
+          }
+      }).catch(error => {
+        console.log(error);
+      });
+
+    },
+    // 删除地址
+    delateAdres(id){
+        this.maskflag = true
+        this.delate_id_address = id;
+    },
+    // 关闭弹框
+    cancelMask(){
+        this.maskflag = false;
+    },
+    // 确认删除
+    confirmMask(){
+        var that = this;
+        var data = {...this.$store.state.defaultData};
+        data.action = 'delAddress';
+        data.id_address = this.delate_id_address;
+        this.$post('/api/user_address/delAddress',data).then(data => {
+          console.log("删除",data)
+          if (data.code == 200) {
+            that.lists = [];
+            var data = {...that.$store.state.defaultData}
+            that.maskflag = false;
+            data.action = 'getAddresses'
+            that.getAdress(data)
+          }
+        }).catch(error => {
+            console.log(error);
+        });
+    },
+    editAdres(){
+        this.$router.push({
+            name: `personalAddAdres`,
+            // params: {
+            //     page: that.search_query
+            // }
+        })
     }
   },
   mounted() {
-    
+      var data = {...this.$store.state.defaultData}
+      data.action = 'getAddresses'
+      this.getAdress(data)
   },
 }
 </script>
@@ -180,6 +238,7 @@ body{
   }
   .Mask{
       width:100%;
+      display: flex;
       background: rgba(51,51,51,0.40);
       height: 100%;
       position: fixed;
@@ -187,7 +246,6 @@ body{
       z-index: 999;
       align-items: center;
       justify-content: center;
-      display: none;
   }
   .Popup{
       width:218px;
@@ -205,15 +263,18 @@ body{
       width:50%;
   }
   .Popup_buttons{
+      display: flex;
       height:44px;
       text-align: center;
       border-top: 1px solid #F6F6F6;
   }
   .Popup_buttons_item{
+      display: flex;
       justify-content: center;
       align-items: center;
       font-size: 14px;
       font-weight: 600;
+
   }
   .Popup_buttons .Popup_buttons_item:nth-child(2){
       background: #333333;
