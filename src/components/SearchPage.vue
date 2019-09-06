@@ -4,7 +4,7 @@
             <div class="collectionHead">
                 <span class="fl" @click="$router.push('Bag')">
                     <img src="../assets/img/bag.png" width="20"  alt="">
-                    <div class="cartNum">2</div>
+                    <div class="cartNum">{{selected_products_num}}</div>
                 </span>
                 <router-link to="/SearchHot">
                     <span class="fl">
@@ -41,7 +41,7 @@
                            <p class="message">{{ v.saleMessage }}</p>
                            <p class="price">
                                <span class="newprice">{{ v.newprice }}</span>
-                               <span class="oldprice">{{ v.oldprice }}</span>
+                               <span class="oldprice" v-if=" v.oldprice !== v.newprice">{{ v.oldprice }}</span>
                            </p>
                        </div>
                     </div>
@@ -71,6 +71,7 @@
             },
             total_page:"" ,
             total:"",
+            selected_products_num: 0,
         }
     },
      components:{
@@ -110,6 +111,30 @@
                  }
              }, 3000);
          },
+         getSelectedProductsNum() {
+             let data;
+             if (this.$store.state.token == "") {
+                 //   未登录并且没本地没有购物车id
+                 if (localStorage.cart_id == "") {
+                     data = {
+                         id_cart: 0
+                     };
+                 } else {
+                     // 未登录但是本地有了购物车id
+                     data = {
+                         id_cart: localStorage.cart_id
+                     };
+                 }
+             } else {
+                 // 已登录
+                 data = {
+                     id_cart: localStorage.cart_id
+                 };
+             }
+             this.$post("/api/cart/getCartProducts", data).then(res => {
+                 this.selected_products_num = res.data.cart_quantity_total;
+             });
+         },
          //详情页跳转
          detail(item){
              console.log(111111);
@@ -123,6 +148,7 @@
      },
      mounted(){
          this.loadsearpage(this.listData);
+         this.getSelectedProductsNum();
      }
  }
 </script>
@@ -206,6 +232,7 @@
     margin-bottom: 5rem;
     .newprice{
         color:#444040;
+        margin: 10px;
     }
     .oldprice{
         color:red;
@@ -234,6 +261,7 @@
         font-weight: bold;
         text-align: right;
         height: 20px;
+        margin: 3px 0 -12px 0;
     }
     .countimg{
         width: 100%;
