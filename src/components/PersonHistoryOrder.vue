@@ -77,7 +77,7 @@
         },
         methods:{
             loadorderhistory(){
-                this.$post("/api/userOrder/getOrders",{
+                this.$post("/api/user_order/getOrders",{
                     page:"1"
                 }).then(data=>{
                     this.order = data.data.orders;
