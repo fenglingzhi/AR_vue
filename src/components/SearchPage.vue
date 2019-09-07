@@ -71,6 +71,7 @@
             },
             total_page:"" ,
             total:"",
+            word:'',
             selected_products_num: 0,
         }
     },
@@ -82,8 +83,9 @@
      methods: {
          //搜索详情页请求
          loadsearpage(data){
+             console.log("12112",this.$store.state.word)
              this.$post("/api/search/getSearch",{
-                 search_query:this.$store.state.searchInput,
+                 search_query:this.word,
                  id_currency:"1",
                  page:"1"
              }).then(redata=>{
@@ -111,6 +113,7 @@
                  }
              }, 3000);
          },
+         //购物车数量计算
          getSelectedProductsNum() {
              let data;
              if (this.$store.state.token == "") {
@@ -144,7 +147,6 @@
          },
          //详情页跳转
          detail(item){
-             console.log(111111);
              this.$store.state.product_id = item;
              this.$router.push('productDetail');
          },
@@ -154,6 +156,7 @@
          },
      },
      mounted(){
+         this.word = this.$route.params.q;
          this.loadsearpage(this.listData);
          this.getSelectedProductsNum();
      }
