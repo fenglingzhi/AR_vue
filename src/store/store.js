@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     token:'',
     unshow:true,
+    historyword:"",
     access_token:'42a7759723164462acf9f33ece622c08',
     orderId:'',
     langID:'1',
