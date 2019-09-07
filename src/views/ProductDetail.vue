@@ -34,7 +34,7 @@
         <span class="now_price">{{data_all.new_price}}</span>
       </div>
       <div class="color_wrap">
-        <div class="color_title">س :{{color_selected}}</div>
+        <div class="color_title">س :</div>
         <div class="color">
           <div
             class="color_list"
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="size_wrap">
-        <div class="size_title">الحجم :{{size_selected}}</div>
+        <div class="size_title">الحجم :</div>
         <div class="size">
           <div
             class="size_list"
@@ -92,10 +92,7 @@
               <div class="policy_list">
                 <div class="policy_title">نتبراماتاتنلت،رل :</div>
                 <div class="policy_text" :class="{'policy_text_active':view_more1}">
-                  <a
-                    :href="data_all.return_policy"
-                    target="_blank"
-                  >{{data_all.return_policy_message}}</a>
+                  <a @click="$router.push('PolicyReturn')">{{data_all.return_policy_message}}</a>
                 </div>
                 <div class="view_more" v-show="!view_more1" @click="view_more1_change2t">
                   <div class="view_more_icon">
@@ -113,10 +110,7 @@
               <div class="policy_list">
                 <div class="policy_title">نتبراماتاتنلت،رل :</div>
                 <div class="policy_text" :class="{'policy_text_active':view_more2}">
-                  <a
-                    :href="data_all.shipping_policy"
-                    target="_blank"
-                  >{{data_all.shipping_policy_message}}</a>
+                  <a @click="$router.push('PolicyShipping')">{{data_all.shipping_policy_message}}</a>
                 </div>
                 <div class="view_more" v-show="!view_more2" @click="view_more2_change2t">
                   <div class="view_more_icon">
@@ -273,7 +267,11 @@ export default {
         };
       }
       this.$post("/api/cart/getCartProducts", data).then(res => {
-        this.selected_products_num = res.data.cart_quantity_total;
+        if ("cart_quantity_total" in res.data) {
+          this.selected_products_num = res.data.cart_quantity_total;
+        } else {
+          this.selected_products_num = 0;
+        }
       });
     },
     // 添加商品进购物车
@@ -308,8 +306,7 @@ export default {
       }
       let data = Object.assign(
         {
-          id_currency: this.id_currency,
-          type: "up",
+          type: "add",
           id_product: this.data_all.id_product,
           id_size: this.size_selected,
           id_color: this.color_selected,
@@ -328,7 +325,7 @@ export default {
           // 更新购物车商品总量
           this.getSelectedProductsNum();
         } else {
-          this.$toast("添加失败，请重试！");
+          this.$toast(res.message);
         }
       });
     },
@@ -351,6 +348,17 @@ export default {
       }
     }
   }
+  // computed: {
+  //   color_selected_cop: function() {
+  //     if ("product_attribute_colors" in this.data_all) {
+  //       this.data_all.product_attribute_colors.forEach((item, index) => {
+  //         if (item.id_color == this.color_selected) {
+  //           return item.name;
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 };
 </script>
 <style lang="scss">
@@ -554,7 +562,7 @@ export default {
                 .view_more_icon {
                   width: 14px;
                   height: 10px;
-                  margin-right: 20px;
+                  margin-left: 5px;
                   img {
                     width: 100%;
                     height: 100%;

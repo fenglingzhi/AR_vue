@@ -34,7 +34,7 @@ axios.interceptors.request.use(config => {
         phone_type:'3',
         mobile_version:'1.0.0',
         id_currency:'1',
-        access_token:store.state.access_token,
+        access_token:store.state.token,
         lang_id:store.state.langID,
     }
     return config;

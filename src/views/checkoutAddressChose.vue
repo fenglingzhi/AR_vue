@@ -17,14 +17,14 @@
                     <div class="lineColor"></div>
                     <div class="shippingWay" @click="choseShippingAddress()">
                         <div class="fr addressInformation">
-                            <div  class="name">  Ding Jie </div>
+                            <div  class="name"> Ding Jie </div>
                             <div style="color: #999">Jiaoyang zhang SA 541236984</div>
                             <div style="color: #999">Flat 15</div>
                             <div style="color: #999">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</div>
                         </div>
-                        <div class="fl">
-                            <img class="checkImg" style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">
-                        </div>
+                        <!--<div class="fl">-->
+                            <!--<img class="checkImg" style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">-->
+                        <!--</div>-->
                         <div style="clear: both"></div>
                     </div>
                     <div class="addressEdi">
@@ -42,9 +42,9 @@
                             <div style="color: #999">Flat 15</div>
                             <div style="color: #999">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</div>
                         </div>
-                        <div class="fl">
-                            <img class="checkImg" style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">
-                        </div>
+                        <!--<div class="fl">-->
+                            <!--<img class="checkImg" style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">-->
+                        <!--</div>-->
                         <div style="clear: both"></div>
                     </div>
                     <div class="addressEdi">

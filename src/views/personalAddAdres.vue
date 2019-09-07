@@ -23,6 +23,7 @@
         <!-- common begin -->
         <div class="common_adress">
             <div class="addAdress_content_container">
+                <!-- firstname -->
                 <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثث نطقة</label>
@@ -31,15 +32,17 @@
                         </div>
                     </div>
                 </div>
+                <!-- middlename -->
                 <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
-                        <label for="inputError" class="addAdress_content_item_title">*البلثث نطقة</label>
+                        <label for="inputError" class="addAdress_content_item_title">البلثث نطقة</label>
                         <div class="addAdress_content_item_input">
                             <input type="text" style="background:#fff;">
                         </div>
                     </div>
                 </div>
-                <div class="addAdress_content_item dis_flex">
+                <!-- lastname -->
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
@@ -50,7 +53,32 @@
             </div>
 
             <div class="addAdress_content_container">
-                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
+                <!-- 省州 -->
+                <div class="addAdress_content_item dis_flex" id="state_select" v-if="!stateFlag">
+                    <div class="addAdress_content_item_right">
+                        <label for="" class="addAdress_content_item_title">*البلد /   المنطقة</label>
+                        <div class="addAdress_content_item_input">
+                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCountry">
+                        </div>
+                    </div>
+                    <div class="addAdress_content_item_left">
+                        <img src="@/assets/img/personal/adress_goLeft.png" alt="" width="8">
+                    </div>
+                </div>
+                 <!-- 城市 -->
+                <div class="addAdress_content_item dis_flex" id="city_select" v-if="!cityFlag">
+                    <div class="addAdress_content_item_right">
+                        <label for="" class="addAdress_content_item_title">*البلد /   المنطقة</label>
+                        <div class="addAdress_content_item_input">
+                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCountry">
+                        </div>
+                    </div>
+                    <div class="addAdress_content_item_left">
+                        <img src="@/assets/img/personal/adress_goLeft.png" alt="" width="8">
+                    </div>
+                </div>
+                <!-- 省州输入 -->
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border" v-if="!stateFlag">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلعهع</label>
                         <div class="addAdress_content_item_input">
@@ -58,7 +86,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
+                <!-- 城市输入 -->
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border" v-if="!cityFlag">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس (ظيشبليازوا)</label>
                         <div class="addAdress_content_item_input">
@@ -66,6 +95,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- 街道名称 -->
                 <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
@@ -74,6 +104,25 @@
                         </div>
                     </div>
                 </div>
+                 <!-- 地址1 -->
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
+                    <div class="addAdress_content_item_right flexone">
+                        <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
+                        <div class="addAdress_content_item_input">
+                            <input type="text" style="background:#fff;">
+                        </div>
+                    </div>
+                </div>
+                 <!-- 地址2 -->
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
+                    <div class="addAdress_content_item_right flexone">
+                        <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
+                        <div class="addAdress_content_item_input">
+                            <input type="text" style="background:#fff;">
+                        </div>
+                    </div>
+                </div>
+                <!-- 邮编 -->
                 <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثابتس يشثقز <span class="addAdress_content_item_title_sub"> البلثابتس يشثقز C/O (ظيشبليازوا)</span></label>
@@ -82,6 +131,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- 手机号 -->
+                <div class="addAdress_content_item dis_flex">
+                    <div class="addAdress_content_item_right flexone">
+                        <label for="inputError" class="addAdress_content_item_title">البلثس يتتابيبفبينعب <span class="addAdress_content_item_title_sub"> البلثابتس  الشسيثقز (ستعيلش)</span></label>
+                        <div class="addAdress_content_item_input">
+                            <input type="text" style="background:#fff;">
+                        </div>
+                    </div>
+                </div>
+                 <!-- 备用号 -->
                 <div class="addAdress_content_item dis_flex">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">البلثس يتتابيبفبينعب <span class="addAdress_content_item_title_sub"> البلثابتس  الشسيثقز (ستعيلش)</span></label>
@@ -357,8 +416,8 @@
             
         </div>
     </div>
-    <!-- 沙特 省份/州 弹窗 -->
-    <div class="Mask" id="Mask_saudi">
+    <!--  省份/州 弹窗 -->
+    <div class="Mask" id="Mask_state">
         <div class="dis_flex Popup_header">
             <span></span>
             <span class="header_titile">البلد /   المنطقة</span>
@@ -395,8 +454,8 @@
             </div>
         </div>
     </div>
-    <!-- 阿联酋 省份/州 弹窗 -->
-    <div class="Mask" id="Mask_emirates">
+    <!-- 城市弹窗 -->
+    <div class="Mask" id="Mask_city">
         <div class="dis_flex Popup_header">
             <span></span>
             <span class="header_titile">البلد /   المنطقة</span>
@@ -463,6 +522,10 @@ export default {
       stateList:[],
       selState:'',
       id_state:'',
+      cityList:[],
+      selCity:'',
+      stateFlag: false, // 省州输入标识
+      cityFlag: false, // 城市输入标识
     }
   },
   methods: {
@@ -487,8 +550,8 @@ export default {
     },
     selectState(name,id){
         console.log(111111)
-        this.selCountry = name;
-        this.id_country = id;
+        this.selState = name;
+        this.id_state = id;
        
     },
     getCountry(data){
@@ -520,6 +583,20 @@ export default {
             console.log(error);
         });
     },
+    // 获取城市
+    getCity(data){
+        that.$post('/api/country/getStates',data).then(data => {
+            console.log("list",data)
+            if (data.code == 200) {
+                that.stateList = data.data;
+            }
+            if (data.code == 400) {
+                Toast.fail(data.message)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
   },
   mounted() {
@@ -566,33 +643,32 @@ export default {
             $("#country_select_input").parent().prev().addClass("addAdress_content_item_title_focus");
             $("#Mask_country").css("top","100%");
         })
-        // 沙特 省份/州 选择
-        $("#saudi_state_select").click(function(){
-            $("#Mask_saudi").css("top","0");
+        // 省份/州 选择
+        $("#state_select").click(function(){
+            $("#Mask_state").css("top","0");
         })
         $(".Popup_close_saudi").click(function(){
-            $("#Mask_saudi").css("top","100%");
+            $("#Mask_state").css("top","100%");
         })
         $(".Popup_content_item_saudi").click(function(){
             $("#saudi_state_select_input").attr("value",$(this).find("span").html());
             $("#saudi_state_select_input").parent().prev().addClass("addAdress_content_item_title_focus");
-            $("#Mask_saudi").css("top","100%");
+            $("#Mask_state").css("top","100%");
         })
         // 阿联酋 省份/州 选择
-        $("#emirates_state_select").click(function(){
-            $("#Mask_emirates").css("top","0");
+        $("#city_select").click(function(){
+            $("#Mask_city").css("top","0");
         })
         $(".Popup_close_emirates").click(function(){
-            $("#Mask_emirates").css("top","100%");
+            $("#Mask_city").css("top","100%");
         })
         $(".Popup_content_item_emirates").click(function(){
             $("#emirates_state_select_input").attr("value",$(this).find("span").html());
             $("#emirates_state_select_input").parent().prev().addClass("addAdress_content_item_title_focus");
-            $("#Mask_emirates").css("top","100%");
+            $("#Mask_city").css("top","100%");
         })
         $('.Mask_saudi_id_card').height($(window).height())
     })
-
     var data = {...this.$store.state.defaultData};
     data.action = 'getCountries';
     this.getCountry(data)
@@ -724,13 +800,9 @@ export default {
   .addAdress_content_item_input{
       position: relative;
   }
-  
-
-  
   .addAdress_content_item_border{
       border-bottom: 2px solid #D8D8D8;
   }
-  
   .adress_addContainer{
       padding: 0 15px ;
       position: fixed;
