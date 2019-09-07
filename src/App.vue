@@ -21,7 +21,12 @@ import store from './store/store.js'
             }
         },
         mounted() {
-
+            if(localStorage.getItem('token')){
+                store.commit('changeStore',{key:'token',val:localStorage.getItem('token')});
+            }
+            if(localStorage.getItem('id_cart')){
+                store.commit('changeStore',{key:'id_cart',val:localStorage.getItem('id_cart')});
+            }
         },
         methods: {
 

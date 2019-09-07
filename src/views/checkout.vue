@@ -269,23 +269,31 @@ export default {
        getCartCarriers(){
            var vm = this
            this.$post('/api/payment/getCartCarriers',{id_cart:this.$store.state.id_cart}).then(redata => {
-                    redata.data.forEach(function (val,index) {
-                        if(index==0){
-                            val.select=true
-                            val.option=false
-                            vm.shippingWayObj.push(val)
-                        }else {
-                            val.select=false
-                            val.option=true
-                            vm.shippingWayObj.push(val)
-                        }
-                    })
+               if(redata.code==200){
+                   redata.data.forEach(function (val,index) {
+                       if(index==0){
+                           val.select=true
+                           val.option=false
+                           vm.shippingWayObj.push(val)
+                       }else {
+                           val.select=false
+                           val.option=true
+                           vm.shippingWayObj.push(val)
+                       }
+                   })
+               }else {
+                   Toast({duration:'1000',message:redata.message})
+               }
            })
        },
        //获取支付详情
        getCartDetail(){
            this.$post('/api/payment/getCartDetail',{id_cart:this.$store.state.id_cart,id_currency:this.$store.state.id_currency}).then(redata => {
+               if(redata.code==200){
 
+               }else {
+                   Toast({duration:'1000',message:redata.message})
+               }
            })
        },
        //选择地址
