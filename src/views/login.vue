@@ -108,14 +108,12 @@ export default {
             var that = this;
             console.log("list",data)
             if (data.code == 200) {
-                this.$store.state.access_token = data.data.token;
+                store.commit('changeStore',{key:'token',val:data.data.token});
                 Toast.success(data.message)
                 localStorage.setItem('token',data.data.token)
                 localStorage.setItem('id_cart',data.data.id_cart)
                 setTimeout(() => {
-                    that.$router.push({
-                        name: `Home`
-                    })
+                    that.$router.push('/')
                 }, 1000);
             }
             if (data.code == 400) {
@@ -152,7 +150,7 @@ export default {
                 localStorage.setItem('id_cart',data.data.id_cart)
                 setTimeout(() => {
                     that.$router.push({
-                        name: `Home`
+                        name: 'Home'
                     })
                 }, 1000);
 

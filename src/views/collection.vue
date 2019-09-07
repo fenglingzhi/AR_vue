@@ -28,11 +28,11 @@
         <van-row class="collectionCon">
             <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
-                    <div class="proTip">{{v.name}}</div>
-                    <img :src="v.img_url" width="100%" height="222px" alt="">
+                    <div class="proTip">{{v.saleMessage}}</div>
+                    <img :src="v.img_url" width="100%" alt="">
                 </div>
                 <div class="proText">
-                    <div class="productName">{{v.saleMessage}}</div>
+                    <div class="productName">{{v.name}}</div>
                     <div class="proDes">
                         <span class="newPrice"> {{v.newprice}} </span>
                         <span class="oldPrice"> {{v.oldprice}} </span>
@@ -298,7 +298,28 @@
                 direction: rtl;
                 /*width: 100%;*/
                 padding: 10px;
-                height: 280px;
+                .productImg{
+                    overflow: hidden;
+                    height: 245px;
+                    text-align: center;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    .proTip{
+                        top: 0;
+                    }
+                }
+                .proText{
+                   .proDes{
+                       display: flex;
+                       align-items: center;
+                       margin-top: 10px;
+                       .oldPrice{
+                            margin-right: 15px;
+                       }
+                   }
+
+                }
             }
             .proTip{
                 position: absolute;
