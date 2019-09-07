@@ -85,7 +85,7 @@
         </div>
     </div>
     <div class="adress_addContainer">
-        <div class="adress_addButton">
+        <div class="adress_addButton" @click="signOut()">
             <!-- 登出 -->
             <span>تسجيل الخروج</span>
         </div>
@@ -108,6 +108,9 @@ export default {
           action:'getDefaultCurrency'
        }
     },
+    components:{
+        Dialog,
+    },
     methods: {
         back(){
             this.$router.go(-1);//返回上一层
@@ -119,6 +122,22 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
+        },
+        signOut(){
+            Dialog.confirm({
+                title: '退出',
+                message: '确认要退出？'
+            }).then(() => {
+                // on confirm
+                localStorage.removeItem('token') 
+                this.$router.push({
+                    name: 'Login'
+                })
+            }).catch(() => {
+                // on cancel
+            });
+           
+
         }
     },
     mounted() {
@@ -177,13 +196,12 @@ export default {
       margin-right: 20px;
       color: #2c3e50;
   }
-
-
   .adress_addContainer{
       padding: 0 15px ;
       position: fixed;
       width:100%;
       padding-bottom:26px;
+      box-sizing: border-box;
       bottom:0;
       background-color: #F6F6F6;
   }

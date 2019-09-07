@@ -165,6 +165,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .login{
+        background: #fff;
+    }
   .logIco{
       text-align: center;
       margin-top: 86px;

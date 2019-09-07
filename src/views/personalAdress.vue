@@ -224,6 +224,7 @@ body{
       width:100%;
       padding-bottom:26px;
       bottom:0;
+      box-sizing: border-box;
       background-color: #F6F6F6;
   }
   .adress_addButton{

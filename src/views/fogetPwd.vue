@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="foget">
     <div class="logIco">
         <div class="close_">
             <img src="@/assets/img/close.png" alt=""  @click="back()">
@@ -69,7 +69,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.logIco{
+    .foget{
+        background: #fff;
+    }
+  .logIco{
       text-align: center;
       width: 100%;
   }

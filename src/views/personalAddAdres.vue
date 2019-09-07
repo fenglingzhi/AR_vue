@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <!-- lastname -->
-                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
+                <div class="addAdress_content_item dis_flex">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
@@ -54,11 +54,11 @@
 
             <div class="addAdress_content_container">
                 <!-- 省州 -->
-                <div class="addAdress_content_item dis_flex" id="state_select" v-if="!stateFlag">
+                <div class="addAdress_content_item dis_flex" id="state_select" v-if="stateFlag" @click="selMstate()"> 
                     <div class="addAdress_content_item_right">
                         <label for="" class="addAdress_content_item_title">*البلد /   المنطقة</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCountry">
+                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selState">
                         </div>
                     </div>
                     <div class="addAdress_content_item_left">
@@ -66,11 +66,11 @@
                     </div>
                 </div>
                  <!-- 城市 -->
-                <div class="addAdress_content_item dis_flex" id="city_select" v-if="!cityFlag">
+                <div class="addAdress_content_item dis_flex" id="city_select" v-if="cityFlag" @click="selMcity()">
                     <div class="addAdress_content_item_right">
                         <label for="" class="addAdress_content_item_title">*البلد /   المنطقة</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCountry">
+                            <input type="text" style="font-weight: 600;background:#fff;" disabled  v-model="selCity">
                         </div>
                     </div>
                     <div class="addAdress_content_item_left">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <!-- 手机号 -->
-                <div class="addAdress_content_item dis_flex">
+                <div class="addAdress_content_item dis_flex addAdress_content_item_border">
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">البلثس يتتابيبفبينعب <span class="addAdress_content_item_title_sub"> البلثابتس  الشسيثقز (ستعيلش)</span></label>
                         <div class="addAdress_content_item_input">
@@ -426,31 +426,13 @@
         <div class="Popup_content">
             <div class="Popup_content_location">
                 <img src="@/assets/img/personal/adress_loaction.png" alt="" width="12" >
-                <span>Macau</span>
+                <span>{{selState}}</span>
             </div>
             <div class="Popup_content_title">
                 <span>مناسن/ تنالسخهشامنتالط</span>
             </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Qatar1</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Kuwait2</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Oman3</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Bahrain4</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Israel5</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Morocco6</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi">
-                <span>Algeria7</span>
+            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_saudi" v-for="(item, index) in stateList" :key="index"  @click="selectState(item.name,item.state_id)">
+                <span>{{item.name}}</span>
             </div>
         </div>
     </div>
@@ -464,31 +446,14 @@
         <div class="Popup_content">
             <div class="Popup_content_location">
                 <img src="@/assets/img/personal/adress_loaction.png" alt="" width="12" >
-                <span>Macau</span>
+                <span>{{selCity}}</span>
             </div>
             <div class="Popup_content_title">
                 <span>مناسن/ تنالسخهشامنتالط</span>
             </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Qatar11</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Kuwait22</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Oman33</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Bahrain44</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Israel55</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Morocco66</span>
-            </div>
-            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates">
-                <span>Algeria77</span>
+            <div class="Popup_content_item addAdress_content_item_border Popup_content_item_emirates" v-for="(item, index) in cityList" 
+            :key="index" @click="selectCity(item.name,item.city_id)">
+                <span>{{item.name}}</span>
             </div>
         </div>
     </div>
@@ -516,16 +481,18 @@ import store from '../store/store.js'
 export default {
   data() {
     return {
-      countryList:[],
-      selCountry:'',
-      id_country:'',
-      stateList:[],
-      selState:'',
-      id_state:'',
-      cityList:[],
-      selCity:'',
-      stateFlag: false, // 省州输入标识
-      cityFlag: false, // 城市输入标识
+        addersDetail:[],
+        countryList:[],
+        selCountry:'',
+        id_country:'',
+        stateList:[],
+        selState:'',
+        id_state:'',
+        cityList:[],
+        id_city:'',
+        selCity:'',
+        stateFlag: false, // 省州输入标识
+        cityFlag: false, // 城市输入标识
     }
   },
   methods: {
@@ -539,6 +506,15 @@ export default {
     back(){
       this.$router.go(-1);//返回上一层
     },
+    // 省州弹框打开
+    selMstate(){
+        $("#Mask_state").css("top","0");
+    },
+    // 城市弹框打开
+    selMcity(){
+        $("#Mask_city").css("top","0");
+    },
+    // 国家选择
     selectCountry(name,id){
         this.selCountry = name;
         this.id_country = id;
@@ -548,12 +524,26 @@ export default {
         this.getState(data);
         $("#Mask_country").css("top","100%");
     },
+    // 省州选择
     selectState(name,id){
         console.log(111111)
         this.selState = name;
         this.id_state = id;
-       
+        var data = {...this.$store.state.defaultData};
+        data.action = 'getCitys';
+        data.id_country = this.id_country;
+        data.id_state = id;
+        this.getCity(data);
+        $("#Mask_state").css("top","100%");
     },
+      // 城市选择
+    cityState(name,id){
+        console.log(111111)
+        this.selCity = name;
+        this.id_city = id;
+        $("#Mask_city").css("top","100%");
+    },
+    // 获取国家
     getCountry(data){
         var that = this;
         that.$post('/api/country/getCountries',data).then(data => {
@@ -568,6 +558,7 @@ export default {
             console.log(error);
         });
     },
+    // 获取省州
     getState(data){
         console.log("省州",data)
         var that = this;
@@ -575,6 +566,11 @@ export default {
             console.log("list",data)
             if (data.code == 200) {
                 that.stateList = data.data;
+                if(that.stateList.length > 0){
+                    that.stateFlag = true;
+                }else{
+                    that.stateFlag = false;
+                }
             }
             if (data.code == 400) {
                 Toast.fail(data.message)
@@ -585,10 +581,16 @@ export default {
     },
     // 获取城市
     getCity(data){
-        that.$post('/api/country/getStates',data).then(data => {
+        var that = this;
+        that.$post('/api/country/getCitys',data).then(data => {
             console.log("list",data)
             if (data.code == 200) {
-                that.stateList = data.data;
+                that.cityList = data.data;
+                if(that.cityList.length > 0){
+                    that.cityFlag = true;
+                }else{
+                    that.cityFlag = false;
+                }
             }
             if (data.code == 400) {
                 Toast.fail(data.message)
@@ -596,7 +598,16 @@ export default {
         }).catch(error => {
             console.log(error);
         });
-    }
+    },
+    getAdress(data){
+        var that = this;
+        this.$post('/api/user_address/getAddresses',data).then(data => {
+         console.log("list",data)
+          that.lists = that.lists.concat(data.data);
+        }).catch(error => {
+        console.log(error);
+      });
+    },
 
   },
   mounted() {
@@ -645,6 +656,7 @@ export default {
         })
         // 省份/州 选择
         $("#state_select").click(function(){
+            console.log(11111)
             $("#Mask_state").css("top","0");
         })
         $(".Popup_close_saudi").click(function(){
@@ -672,6 +684,10 @@ export default {
     var data = {...this.$store.state.defaultData};
     data.action = 'getCountries';
     this.getCountry(data)
+
+    var dataAders = {...this.$store.state.defaultData}
+    dataAders.action = 'getAddresses'
+    this.getAdress(dataAders)
   },
 }
 </script>
