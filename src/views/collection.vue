@@ -28,7 +28,7 @@
         <van-row class="collectionCon">
             <van-col span="12" class="productItem" v-for="(v,i) in CL" @click="gPdu(v.id_product)">
                 <div class="productImg">
-                    <div class="proTip">ON SALE</div>
+                    <div class="proTip">{{v.name}}</div>
                     <img :src="v.img_url" width="100%" height="222px" alt="">
                 </div>
                 <div class="proText">
@@ -36,7 +36,7 @@
                     <div class="proDes">
                         <span class="newPrice"> {{v.newprice}} </span>
                         <span class="oldPrice"> {{v.oldprice}} </span>
-                        <span class="moreColor">(الألوان)</span>
+                        <!-- <span class="moreColor">(الألوان)</span> -->
                     </div>
                 </div>
             </van-col>
