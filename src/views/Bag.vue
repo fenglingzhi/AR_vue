@@ -152,7 +152,7 @@ export default {
           // this.getSelectedProductsNum();
           this.getBagInfo();
         } else {
-          this.$toast("添加失败，请重试！");
+          this.$toast(res.message);
         }
       });
     },
