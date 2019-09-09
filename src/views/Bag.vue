@@ -38,7 +38,7 @@
               <div class="title">{{product.name}}</div>
               <div class="size">الحجم: {{product.size}}</div>
               <div class="color">أخضر: {{product.color}}</div>
-              <div class="delete">
+              <div class="delete" @click="delete_product_num(product)">
                 <img src="../assets/img/bag/delete.png" alt />
               </div>
             </div>
@@ -58,7 +58,7 @@
         S.R.{{total_price}}
         <span>المجموع</span>
       </div>
-      <div class="checkout">({{cart_quantity_total}}) الدفع</div>
+      <div class="checkout" @click="$router.push('checkout')">({{cart_quantity_total}}) الدفع</div>
       <div class="coupon">
         <span>في الصفحة التالية تطبيق كود الكوبون</span>
       </div>
@@ -69,6 +69,7 @@
 import router from "vue-router";
 import { METHODS } from "http";
 import { type } from "os";
+import { Dialog } from "vant";
 export default {
   data() {
     return {
@@ -77,60 +78,26 @@ export default {
       cart_quantity_total: 0
     };
   },
-  components: {},
+  components: {
+    [Dialog.Component.name]: Dialog.Component
+  },
   mounted() {
     this.getBagInfo();
   },
   methods: {
+    // 获取购物车列表
     getBagInfo() {
-      let data;
-      if (this.$store.state.token == "") {
-        //   未登录并且本地也没有购物车id
-        if (typeof localStorage.cart_id == "undefined") {
-          localStorage.cart_id = 0;
-          data = {
-            id_cart: localStorage.cart_id
-          };
-        } else {
-          // 没有登录，但是本地已经有购物车id
-          data = {
-            id_cart: localStorage.cart_id
-          };
+      this.$post("/api/cart/getCartProducts", this.return_id_cart()).then(
+        res => {
+          // console.log(res);
+          this.data_all = res.data.details;
+          this.total_price = res.data.total_price;
+          this.cart_quantity_total = res.data.cart_quantity_total;
         }
-      } else {
-        // 已登录
-        data = {
-          id_cart: localStorage.cart_id
-        };
-      }
-      this.$post("/api/cart/getCartProducts", data).then(res => {
-        console.log(res);
-        this.data_all = res.data.details;
-        this.total_price = res.data.total_price;
-        this.cart_quantity_total = res.data.cart_quantity_total;
-      });
+      );
     },
+    // 添加商品到购物车
     add_product_num(product) {
-      let bag_data;
-      if (this.$store.state.token == "") {
-        //   未登录并且本地也没有购物车id
-        if (typeof localStorage.cart_id == "undefined") {
-          localStorage.cart_id = 0;
-          data = {
-            id_cart: localStorage.cart_id
-          };
-        } else {
-          // 没有登录，但是本地已经有购物车id
-          bag_data = {
-            id_cart: localStorage.cart_id
-          };
-        }
-      } else {
-        // 已登录
-        bag_data = {
-          id_cart: localStorage.cart_id
-        };
-      }
       let data = Object.assign(
         {
           id_product: product.id_product,
@@ -138,25 +105,108 @@ export default {
           quantity: 1,
           type: "add"
         },
-        bag_data
+        this.return_id_cart()
       );
       this.$post("/api/cart/setCartProduct", data).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.code == 200) {
           this.$toast("添加成功");
-          // 写购物车id到session
-          // if (res.data.cart_id != 0) {
-          //   localStorage.cart_id = res.data.cart_id;
-          // }
-          // 更新购物车商品总量
-          // this.getSelectedProductsNum();
+          if (res.data.cart_id != 0) {
+            // 写购物车id到session
+            localStorage.cart_id = res.data.cart_id;
+            // 写到vuex
+            this.$store.state.id_cart = res.data.cart_id;
+          }
           this.getBagInfo();
         } else {
           this.$toast(res.message);
         }
       });
     },
-    minus_product_num() {}
+    // 减少商品
+    minus_product_num(product) {
+      let data = Object.assign(
+        {
+          id_product: product.id_product,
+          id_product_attribute: product.id_product_attribute,
+          quantity: 1,
+          type: "down"
+        },
+        this.return_id_cart()
+      );
+      this.$post("/api/cart/setCartProduct", data).then(res => {
+        // console.log(res);
+        if (res.code == 200) {
+          this.$toast("删除成功");
+          if (res.data.cart_id != 0) {
+            // 写购物车id到session
+            localStorage.cart_id = res.data.cart_id;
+            // 写到vuex
+            this.$store.state.id_cart = res.data.cart_id;
+          }
+          this.getBagInfo();
+        } else {
+          this.$toast(res.message);
+        }
+      });
+    },
+    // 从购物车删除这个商品
+    delete_product_num(product) {
+      Dialog.confirm({
+        title: "移出购物车",
+        message: "确认将此商品移除购物车吗？"
+      })
+        .then(() => {
+          let data = Object.assign(
+            {
+              id_product: product.id_product,
+              id_product_attribute: product.id_product_attribute,
+              quantity: product.quantity,
+              type: "down"
+            },
+            this.return_id_cart()
+          );
+          this.$post("/api/cart/setCartProduct", data).then(res => {
+            // console.log(res);
+            if (res.code == 200) {
+              this.$toast("删除成功");
+              if (res.data.cart_id != 0) {
+                // 写购物车id到session
+                localStorage.cart_id = res.data.cart_id;
+                // 写到vuex
+                this.$store.state.id_cart = res.data.cart_id;
+              }
+              this.getBagInfo();
+            } else {
+              this.$toast(res.message);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    //判断购车id
+    return_id_cart() {
+      let data;
+      if (this.$store.state.token == "") {
+        //未登录并且本地也没有购物车id
+        if (typeof localStorage.cart_id == "undefined") {
+          localStorage.cart_id = 0;
+          return {
+            id_cart: localStorage.cart_id
+          };
+        } else {
+          // 没有登录，但是本地已经有购物车id
+          return {
+            id_cart: localStorage.cart_id
+          };
+        }
+      } else {
+        // 已登录
+        return {
+          id_cart: localStorage.cart_id
+        };
+      }
+    }
   }
 };
 </script>
