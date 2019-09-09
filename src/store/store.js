@@ -17,7 +17,7 @@ export default new Vuex.Store({
     product_id:'',
     collection_id: '',
     id_cart:'',
-    photo:require('@/assets/img/personal/user_img.png')
+    photo:''
   },
   mutations: {
     changeStore(state, data) {

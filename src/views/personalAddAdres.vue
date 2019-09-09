@@ -28,7 +28,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثث نطقة</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.firstname">
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">البلثث نطقة</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.middlename">
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.lastname">
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلعهع</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.state_name">
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس (ظيشبليازوا)</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.city">
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.street">
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.address1">
                         </div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثس يشثقز</label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.address2">
                         </div>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">*البلثابتس يشثقز <span class="addAdress_content_item_title_sub"> البلثابتس يشثقز C/O (ظيشبليازوا)</span></label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.postcode">
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">البلثس يتتابيبفبينعب <span class="addAdress_content_item_title_sub"> البلثابتس  الشسيثقز (ستعيلش)</span></label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.phone">
                         </div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                     <div class="addAdress_content_item_right flexone">
                         <label for="inputError" class="addAdress_content_item_title">البلثس يتتابيبفبينعب <span class="addAdress_content_item_title_sub"> البلثابتس  الشسيثقز (ستعيلش)</span></label>
                         <div class="addAdress_content_item_input">
-                            <input type="text" style="background:#fff;">
+                            <input type="text" style="background:#fff;" v-model="submitAdders.alertnate_phone">
                         </div>
                     </div>
                 </div>
@@ -376,7 +376,7 @@
                     <div class="addAdress_content_item_input"></div>
                 </div>
                 <div class="addAdress_content_item_left show-notes-container">
-                    <label for="show-notes"></label>
+                    <label for="show-notes"  :class="{ showChecked : submitAdders.is_default == 1}"  @click="defaultSel()"></label>
                     <div class="addAdress_content_item_input" style="opacity: 0;">
                         <input type="checkbox" style="background:#fff;"  class="addAdress_default_checked">
                     </div>
@@ -386,7 +386,7 @@
     </div>
     <!-- 底部按钮 -->
     <div class="adress_addContainer">
-        <div class="adress_addButton">
+        <div class="adress_addButton" @click="submitAderes()">
             <span>حسناً</span>
         </div>
         <div style="margin-top: 10px;">
@@ -472,29 +472,56 @@
 
 <script>
 import * as api from "../api/commonApi";
-import { Dialog, List  } from 'vant';
+import { Dialog, Swipe, SwipeItem, CountDown, List,Toast } from 'vant';
 import router from "vue-router";
 import axios from "axios";
 import $ from "jquery"
 import store from '../store/store.js'
 
 export default {
-  data() {
-    return {
-        addersDetail:[],
-        countryList:[],
-        selCountry:'',
-        id_country:'',
-        stateList:[],
-        selState:'',
-        id_state:'',
-        cityList:[],
-        id_city:'',
-        selCity:'',
-        stateFlag: false, // 省州输入标识
-        cityFlag: false, // 城市输入标识
-    }
-  },
+    data() {
+        return {
+            addersDetail:{},
+            submitAdders:{
+                id_country:'',
+                firstname:'',
+                middlename:'',
+                lastname:'',
+                address1:'',
+                address2:'',
+                city:'',
+                postcode:'',
+                id_country:'',
+                id_state:'',
+                state_name:'',
+                national_id:'',
+                street:'',
+                phone:'',
+                alertnate_phone:'',
+                is_default:''
+            },
+            countryList:[],
+            selCountry:'',
+            id_country:'',
+            stateList:[],
+            selState:'',
+            id_state:'',
+            cityList:[],
+            id_city:'',
+            selCity:'',
+            stateFlag: false, // 省州输入标识
+            cityFlag: false, // 城市输入标识
+            type:''
+        }
+    },
+    components: {
+       Swipe,
+       Dialog,
+       SwipeItem,
+       router,
+       CountDown,
+       Toast
+    },
   methods: {
     check_id_card() {
       $('.Mask_saudi_id_card').css('display','block')
@@ -506,6 +533,17 @@ export default {
     back(){
       this.$router.go(-1);//返回上一层
     },
+    // 设置默认
+    defaultSel(){
+        console.log
+        if (this.submitAdders.is_default == 1) {
+            this.submitAdders.is_default = 0;
+        }else{
+            this.submitAdders.is_default = 1;
+        }
+         console.log(this.submitAdders.is_default)
+    },
+
     // 省州弹框打开
     selMstate(){
         $("#Mask_state").css("top","0");
@@ -599,15 +637,52 @@ export default {
             console.log(error);
         });
     },
+    // 获取地址详情
     getAdress(data){
         var that = this;
-        this.$post('/api/user_address/getAddresses',data).then(data => {
-         console.log("list",data)
-          that.lists = that.lists.concat(data.data);
+        this.$post('/api/user_address/getAddressById',data).then(data => {
+            console.log("dizhi",data)
+            that.addersDetail = data.data;
+            that.addersDetail.id_address = data.data.address_id;
+            delete  that.addersDetail.address_id;
+            that.addersDetail.id_country = data.data.country_id;
+            delete  that.addersDetail.country_id;
+            that.addersDetail.id_state = data.data.state_id;
+            delete  that.addersDetail.state_id;
+            that.addersDetail.state_name = data.data.state;
+            delete  that.addersDetail.state;
+            that.submitAdders = that.addersDetail;
+            that.selCity = data.data.city;
+            that.selCountry = data.data.country_name;
+            that.selState = data.data.state;
+            if(data.data.is_default == '1'){
+                $(".addAdress_default_checked").parent().prev().addClass("showChecked")
+            }
         }).catch(error => {
         console.log(error);
       });
     },
+    // 提交修改
+    submitAderes(){
+        var data = {...this.$store.state.defaultData,...this.submitAdders};
+        var that = this;
+        if(this.type == 'eidt'){
+            var  url = '/api/user_address/updateAddress';
+        }else{
+            var  url = '/api/user_address/addAddress';
+        }
+        that.$post(url,data).then(data => {
+            console.log("list",data)
+            if (data.code == 200) {
+                Toast.success('成功')
+            }
+            if (data.code == 400) {
+                Toast.fail(data.message)
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
   },
   mounted() {
@@ -623,24 +698,6 @@ export default {
         $("label[for='inputError']").click(function(){
             $(this).addClass("addAdress_content_item_title_focus");
             $(this).next().find('input').focus();
-        })
-        
-        // 选择默认地址checkbox按钮事件
-        $(".addAdress_default_checked").change(function(){
-            if($(this).prop('checked')){
-                $(this).parent().prev().addClass("show-notes-checked")
-            }else{
-                $(this).parent().prev().removeClass("show-notes-checked")
-            }
-        })
-        $("label[for='show-notes']").click(function(){
-            if($(this).next().find('.addAdress_default_checked').prop('checked')){
-                $(this).removeClass("show-notes-checked");
-                $(this).next().find('.addAdress_default_checked').prop('checked',false)
-            }else{
-                $(this).addClass("show-notes-checked");
-                $(this).next().find('.addAdress_default_checked').prop('checked',true)
-            }
         })
         // 国家选择弹窗事件
         $("#country_select").click(function(){
@@ -684,9 +741,10 @@ export default {
     var data = {...this.$store.state.defaultData};
     data.action = 'getCountries';
     this.getCountry(data)
-
+    this.type =  this.$route.params.type;
     var dataAders = {...this.$store.state.defaultData}
-    dataAders.action = 'getAddresses'
+    dataAders.action = 'getAddressById'
+    dataAders.id_address = this.$route.params.id;
     this.getAdress(dataAders)
   },
 }
@@ -729,6 +787,7 @@ export default {
       text-align: right;
       line-height: 20px;
       font-size: 14px;
+      align-items: center;
       flex-direction: row;
       justify-content: space-between;
       padding: 10px  5px;
@@ -736,18 +795,18 @@ export default {
   .addAdress_content_item_right{
       position: relative;
   }
-  .addAdress_content_item_left{
-      line-height: 40px;
-  }
+//   .addAdress_content_item_left{
+//       line-height: 40px;
+//   }
   /* 单选css  begin*/
   .show-notes-container{
       width:40px;
       position: relative;
   }
-  .show-notes-checked{
+  .showChecked{
       background: #999999 !important;
   }
-  .show-notes-checked:after{
+  .showChecked:after{
       left: 22px !important;
   }
   .addAdress_content_item_left label[for="show-notes"]{
@@ -795,7 +854,7 @@ export default {
       color: #999999;
       font-weight: unset;
       position: absolute;
-      top:10px;
+      top:0px;
       transition: all 450ms cubic-bezier(.23,1,.32,1) 0s;
       -webkit-transition: all 450ms cubic-bezier(.23,1,.32,1) 0s;
       overflow: hidden;
