@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="adress_addContainer">
-        <div class="adress_addButton">
+        <div class="adress_addButton" @click="addAddres()">
             <span>+ افحنستامنمص الآن</span>
         </div>
     </div>
@@ -86,6 +86,14 @@ export default {
         console.log(error);
       });
     },
+    addAddres(){
+        this.$router.push({
+            name: `personalAddAdres`,
+            params: {
+                type: 'add'
+            }
+        })
+    },
     back(){
       this.$router.go(-1);//返回上一层
     },
@@ -134,12 +142,14 @@ export default {
             console.log(error);
         });
     },
-    editAdres(){
+    editAdres(id){
+        console.log(id)
         this.$router.push({
             name: `personalAddAdres`,
-            // params: {
-            //     page: that.search_query
-            // }
+            params: {
+                id: id,
+                type:'edit'
+            }
         })
     }
   },
@@ -224,6 +234,7 @@ body{
       width:100%;
       padding-bottom:26px;
       bottom:0;
+      box-sizing: border-box;
       background-color: #F6F6F6;
   }
   .adress_addButton{

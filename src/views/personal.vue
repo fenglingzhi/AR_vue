@@ -16,8 +16,12 @@
                 <router-link to="/personalAdress">
                     <li><img src="@/assets/img/personal/my_address.png" alt=""><p>عنواني</p></li>
                 </router-link>
-                <li><img src="@/assets/img/personal/my_support.png" alt=""><p>دعم</p></li>
-                <li><img src="@/assets/img/personal/my_order.png" alt=""><p>طلبي</p></li>
+                <router-link to="/support">
+                    <li><img src="@/assets/img/personal/my_support.png" alt=""><p>دعم</p></li>
+                </router-link>
+                <router-link to="/PersonHistoryOrder">
+                    <li><img src="@/assets/img/personal/my_order.png" alt=""><p>طلبي</p></li>
+                </router-link>
             </ul>
         </div>
     </header>
@@ -128,8 +132,7 @@ export default {
                 that.$post('/api/user_identity/uploadPhoto',data).then(data => {
                     console.log("list",data)
                     if (data.code == 200) {
-                        that.$store.state.photo = require(data.data.photo);
-                        store.commit('changeStore',{key:'photo',val:require(data.data.photo)});
+                        store.commit('changeStore',{key:'photo',val:data.data.photo});
                     }
                     if (data.code == 400) {
                         Toast.fail(data.message)
