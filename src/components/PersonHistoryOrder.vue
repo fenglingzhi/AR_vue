@@ -1,9 +1,9 @@
 <template>
     <div class="orderhistory">
-        <header class="dis_flex">
+        <header>
             <span></span>
             <span class="header_titile">طلبات</span>
-            <span class="returnicon"><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
+            <span class="returnicon"><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img" @click="back()"></span>
         </header>
         <div class="order_content">
             <div class="order_container"  v-for="(v,i) in order" :key="'h'+i">
@@ -20,8 +20,8 @@
                     </div>
                 </div>
                 <div class="order-item dis_flex2" v-for="(item,index) in v.products" :key="'h'+index">
-                    <div class="dis_flex3 textEllipsis" >
-                        <div><img :src="item.img_url" alt="" width="75" v-model="$store.state.orderId"></div>
+                    <div class="dis_flex3 textEllipsis" @click="orders(item.id_product)">
+                        <div><img :src="item.img_url" alt="" width="75" ></div>
                         <div  class="flex">
                             <span class="dis_block textEllipsis">{{item.name}}</span>
                             <span class="dis_block color999 fontSize12 textEllipsis" style="margin-left: 9rem;">(أكثر الألوان）</span>
@@ -76,6 +76,9 @@
             store
         },
         methods:{
+            back(){
+                this.$router.go(-1);//返回上一层
+            },
             loadorderhistory(){
                 this.$post("/api/user_order/getOrders",{
                     page:"1"
@@ -86,7 +89,13 @@
                 }).catch(error => {
                     console.log(error);
                 });
+            },
+            //点击跳转订单详情
+            orders(item){
+                this.$store.state.id_order = item;
+                this.$router.push('PersonOrderDetail');
             }
+
         },
         mounted(){
             this.loadorderhistory();

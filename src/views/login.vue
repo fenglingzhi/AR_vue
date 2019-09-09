@@ -59,6 +59,7 @@ import router from "vue-router";
 import { Dialog, Swipe, SwipeItem, CountDown, List,Toast } from 'vant';
 import axios from "axios";
 import store from '../store/store.js'
+// import src from '@/assets/img/personal/user_img.png'
 export default {
   data() {
     return {
@@ -108,7 +109,14 @@ export default {
             var that = this;
             console.log("list",data)
             if (data.code == 200) {
+                var src = require('@/assets/img/personal/user_img.png');
                 store.commit('changeStore',{key:'token',val:data.data.token});
+                if (data.data.photo !=='' && (data.data.photo !== null)) {
+                    store.commit('changeStore',{key:'photo',val:data.data.photo});
+                }else{
+                    store.commit('changeStore',{key:'photo',val:src});
+                }
+                console.log('denglu',src,data.data.photo)
                 Toast.success(data.message)
                 localStorage.setItem('token',data.data.token)
                 localStorage.setItem('id_cart',data.data.id_cart)
@@ -143,8 +151,13 @@ export default {
                 Toast.fail(data.message);
             }
             if (data.code == 200) {
-                this.$store.state.access_token = data.data.token;
-                store.commit('changeStore',{key:'photo',val:require(data.data.photo)});
+                var src = require('@/assets/img/personal/user_img.png');
+                store.commit('changeStore',{key:'token',val:data.data.token});
+                if (data.data.photo !=='' && (data.data.photo !== null)) {
+                    store.commit('changeStore',{key:'photo',val:data.data.photo});
+                }else{
+                    store.commit('changeStore',{key:'photo',val:src});
+                }
                 Toast.success(data.message)
                 localStorage.setItem('token',data.data.token)
                 localStorage.setItem('id_cart',data.data.id_cart)
@@ -165,6 +178,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .login{
+        background: #fff;
+    }
   .logIco{
       text-align: center;
       margin-top: 86px;

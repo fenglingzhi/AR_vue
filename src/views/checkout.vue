@@ -72,7 +72,7 @@
                     <div style="clear: both"></div>
                 </div>
                 <div class="writeCode">
-                    <input class="codeInputs" type="text">
+                    <input class="codeInputs" @click="choseCoupon()"  type="text">
                     <div class="but">add</div>
                     <div style="clear: both"></div>
                 </div>
@@ -144,6 +144,18 @@
             <input type="text" class="codeHere" placeholder="Please enter the code.">
             <div class="submitBut" style="margin: 0px auto;">submit</div>
         </van-popup>
+        <!--优惠券弹出层-->
+        <van-popup v-model="isCouponShow"  :style="{ height: '50%',width:'80%',top:'40%' }">
+            <div style="height: 20px;"></div>
+            <div class="couponList" v-for="item in couponList">
+                <div class="couponCon">
+                  <div class="couponName">{{item.name}}</div>
+                  <div>{{item.reduction_display}}  </div>
+                    <div>{{item.date_to}}  </div>
+                </div>
+            </div>
+
+        </van-popup>
     </div>
 </template>
 
@@ -161,6 +173,8 @@
 export default {
     data(){
       return{
+          couponList:[],
+          isCouponShow:false,
           isShowCode:false,
           sec:60,
           isloading:false,
@@ -190,6 +204,18 @@ export default {
    components: {
    },
    methods: {
+       // 选择优惠券
+       choseCoupon(){
+           this.isCouponShow=true
+           this.$post('/api/user_identity/getCartRules').then(redata => {
+               if(redata.code==200){
+                   this.couponList = redata.data.usable
+               }else {
+                   Toast({duration:'1000',message:redata.message})
+               }
+           })
+
+       },
         //发送验证码
        sandCode(){
            var vm=this
@@ -526,6 +552,20 @@ export default {
 };
 </script>
 <style  scoped>
+    .couponList{
+        width: 80%;
+        margin: 18px auto;
+        height: 74px;
+        -webkit-box-shadow: 0px 0px 2px 0px;
+        box-shadow: 0px 0px 2px 0px;
+    }
+    .couponName{
+        color: red;
+        font-weight: bold;
+        padding: 6px 0 2px 0px;
+    }
+
+
     .checkout .head{
         position: fixed;
         width: 100%;

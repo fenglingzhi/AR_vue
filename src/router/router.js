@@ -31,13 +31,24 @@ const personalAdress = resolve => require(['../views/personalAdress.vue'], resol
 const personalInfo = resolve => require(['../views/personalInfo.vue'], resolve);
 const personalAddAdres = resolve => require(['../views/personalAddAdres.vue'], resolve);
 const personalPwd = resolve => require(['../views/personalPwd.vue'], resolve);
+const support = resolve => require(['../views/support.vue'], resolve);
+
+
 
 var routerMaps = [
     { name: 'Home', path: '/', component: Home, meta: { name: 'home' } },
     // {name:'utilPage',path:'/utilPage',component:utilPage,meta: { name:'utilPage' }},
     { name: 'BottomBar', path: '/BottomBar', component: BottomBar, meta: { name: 'bottomBar' } },
     { name: 'SearchPage', path: '/SearchPage', component: SearchPage, meta: { name: 'searchPage' } },
-    { name: 'PersonHistoryOrder', path: '/PersonHistoryOrder', component: PersonHistoryOrder, meta: { name: 'personHistoryOrder' } },
+    { name: 'PersonHistoryOrder', path: '/PersonHistoryOrder', component: PersonHistoryOrder, meta: { name: 'personHistoryOrder' }, beforeEnter: (to, from, next) => {
+            var token = localStorage.getItem('token');
+            if(token == '' || token == null){
+                router.push('/login')
+            }else{
+                next()
+            }
+        }
+    },
     { name: 'PersonOrderDetail', path: '/PersonOrderDetail', component: PersonOrderDetail, meta: { name: 'personOrderDetail' } },
     { name: 'ProductDetail', path: '/ProductDetail', component: ProductDetail, meta: { name: 'ProductDetail' } },
     { name: 'Bag', path: '/Bag', component: Bag, meta: { name: 'Bag' } },
@@ -54,7 +65,19 @@ var routerMaps = [
     { name: 'FaqDetails', path: '/faqDetails', component: FaqDetails, meta: { name: 'FaqDetails' } },
     { name: 'FaqSearchResult', path: '/faqSearchResult', component: FaqSearchResult, meta: { name: 'FaqSearchResult' } },
     { name: 'fogetPwd', path: '/fogetPwd', component: fogetPwd, meta: { name: 'fogetPwd' } },
-    { name: 'personal', path: '/personal', component: personal, meta: { name: 'personal' } },
+    { name: 'personal',
+        path: '/personal', 
+        component: personal, 
+        meta: { name: 'personal' },
+        beforeEnter: (to, from, next) => {
+            var token = localStorage.getItem('token');
+            if(token == '' || token == null){
+                router.push('/login')
+            }else{
+                next()
+            }
+        }
+    },
     { name: 'personalSetup', path: '/personalSetup', component: personalSetup, meta: { name: 'personalSetup' } },
     { name: 'personalCurrency', path: '/personalCurrency', component: personalCurrency, meta: { name: 'personalCurrency' } },
     { name: 'personalAdress', path: '/personalAdress', component: personalAdress, meta: { name: 'personalAdress' } },
@@ -63,6 +86,8 @@ var routerMaps = [
     { name: 'personalInfo', path: '/personalInfo', component: personalInfo, meta: { name: 'personalInfo' } },
     { name: 'personalAddAdres', path: '/personalAddAdres', component: personalAddAdres, meta: { name: 'personalAddAdres' } },
     { name: 'personalPwd', path: '/personalPwd', component: personalPwd, meta: { name: 'personalPwd' } },
+    { name: 'support', path: '/support', component: support, meta: { name: 'support' } },
+
 
 
 ];
