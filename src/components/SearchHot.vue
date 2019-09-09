@@ -199,7 +199,8 @@
 .historylist{
     ul{
         display: flex;
-        text-align: right;
+        justify-content: flex-end;
+        margin-right: 10px;
     }
    li{
       width: auto;

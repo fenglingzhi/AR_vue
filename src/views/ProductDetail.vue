@@ -176,8 +176,6 @@ export default {
       //   购物车已选择的商品数量
       selected_products_num: 0,
       product_id: this.$store.state.product_id
-      // id_currency: this.$store.state.id_currency,
-      // lang_id: this.$store.state.lang_id
     };
   },
   components: {},
@@ -207,9 +205,7 @@ export default {
     // 获取商品详情
     getDetailInfo() {
       let data = {
-        // id_currency: this.id_currency,
         id_product: this.product_id
-        // lang_id: this.lang_id
       };
       this.$post("/api/product/getProduct", data).then(res => {
         let data = res.data;
@@ -320,7 +316,10 @@ export default {
           this.$toast("添加成功");
           // 写购物车id到session
           if (res.data.cart_id != 0) {
+            // 写到session
             localStorage.cart_id = res.data.cart_id;
+            // 写到vuex
+            this.$store.state.id_cart = res.data.cart_id;
           }
           // 更新购物车商品总量
           this.getSelectedProductsNum();
