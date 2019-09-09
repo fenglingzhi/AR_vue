@@ -9,14 +9,14 @@
                    <div>
                        <p class="message">{{ v.saleMessage }}</p>
                        <p class="price">
-                           <span class="newprice">{{ v.newprice }}</span>
-                           <span class="oldprice" v-if=" v.oldprice !== v.newprice">{{ v.oldprice }}</span>
+                           <span class="newprice" v-if=" v.oldprice !== v.newprice">{{ v.newprice }}</span>
+                           <span class="oldprice"  :class="{textDecoration : v.oldprice !== v.newprice }">{{ v.oldprice }}</span>
                        </p>
                    </div>
                 </div>
             </div>       
        </van-list>
-        <button class="button" @click="changeolalng()">切换</button>
+        <!--<button class="button" @click="changeolalng()">切换</button>-->
     </div>
 </template>
 <script>
@@ -94,11 +94,11 @@ export default {
 <style lang="scss" scoped>
 .pages_ar{
     margin-bottom: 5rem;
-    .newprice{
+    .oldprice{
         color:#444040;
         margin: 10px;
     }
-    .oldprice{
+    .newprice{
         color:red;
     }
     .van-list{
@@ -117,7 +117,7 @@ export default {
         width: 100%;
     }
     .price{
-        font-weight: bold;
+        /*font-weight: bold;*/
         font-size: 14px;
         text-align: right;
         padding: 0px 2px;
@@ -146,6 +146,10 @@ export default {
         transform: translateY(-50%);
         position: relative;
         top: 50%;
+    }
+    .textDecoration{
+        text-decoration: line-through;
+        color: #aaa;
     }
 }
 .pages_en{

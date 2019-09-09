@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="pages_ar">
-            <van-list v-model="loading" :finished="finished" finished-text=""  @load="onLoad" :offset="0">
+            <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :offset="0">
                 <div  v-for="(v,i) in Lists"  :key="i"  class="van-cell">
                     <div class="countimg" @click="detail(v.id_product)">
                        <div class="imgbox" >
@@ -40,8 +40,8 @@
                        <div>
                            <p class="message">{{ v.saleMessage }}</p>
                            <p class="price">
-                               <span class="newprice">{{ v.newprice }}</span>
-                               <span class="oldprice" v-if=" v.oldprice !== v.newprice">{{ v.oldprice }}</span>
+                               <span class="newprice" v-if=" v.oldprice !== v.newprice">{{ v.newprice }}</span>
+                               <span class="oldprice"  :class="{textDecoration : v.oldprice !== v.newprice }">{{ v.oldprice }}</span>
                            </p>
                        </div>
                     </div>
@@ -71,6 +71,7 @@
             },
             total_page:"" ,
             total:"",
+            word:'',
             selected_products_num: 0,
         }
     },
@@ -82,8 +83,9 @@
      methods: {
          //搜索详情页请求
          loadsearpage(data){
+             console.log("12112",this.$store.state.word)
              this.$post("/api/search/getSearch",{
-                 search_query:this.$store.state.searchInput,
+                 search_query:this.word,
                  id_currency:"1",
                  page:"1"
              }).then(redata=>{
@@ -111,6 +113,7 @@
                  }
              }, 3000);
          },
+         //购物车数量计算
          getSelectedProductsNum() {
              let data;
              if (this.$store.state.token == "") {
@@ -144,7 +147,6 @@
          },
          //详情页跳转
          detail(item){
-             console.log(111111);
              this.$store.state.product_id = item;
              this.$router.push('productDetail');
          },
@@ -154,6 +156,7 @@
          },
      },
      mounted(){
+         this.word = this.$route.params.q;
          this.loadsearpage(this.listData);
          this.getSelectedProductsNum();
      }
@@ -237,11 +240,11 @@
 }
 .pages_ar{
     margin-bottom: 5rem;
-    .newprice{
+    .oldprice{
         color:#444040;
         margin: 10px;
     }
-    .oldprice{
+    .newprice{
         color:red;
     }
     .van-list{
@@ -259,7 +262,7 @@
         width: 100%;
     }
     .price{
-        font-weight: bold;
+        /*font-weight: bold;*/
         font-size: 14px;
         text-align: right;
     }
@@ -286,6 +289,10 @@
         transform: translateY(-50%);
         position: relative;
         top: 50%;
+    }
+    .textDecoration{
+        text-decoration: line-through;
+        color: #aaa;
     }
 }
 

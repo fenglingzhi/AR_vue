@@ -46,18 +46,6 @@
                     </div>
                 </div>
             </div>
-            <div class="info_item">
-                <!-- 职业 -->
-                <label for="">الجنس</label>
-                <div class="info_item_inputthree">
-                    <div class="info_item_radio" v-for="(item, index) in personalInfo.genders" :key="index"  @click="selectSex(index,item.gender_id)">
-                        <img :src="index == sexIndex ? radioSleImg : radioImg" alt="" width="20" class="info_item_radio_img">
-                        <input type="radio" name="sex" value="1"  v-model="personalInfo.gender">
-                        <!-- 男性 -->
-                        <label>{{item.name}}</label>
-                    </div>
-                </div>
-            </div>
 
             <div class="info_item">
                 <!-- *国家：请输入您的国家 -->

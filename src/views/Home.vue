@@ -86,8 +86,8 @@
                   <div>
                       <p class="message">{{ m.saleMessage }}</p>
                       <p class="price">
-                          <span class="newprice">{{ m.newprice }}</span>
-                          <span class="oldprice">{{ m.oldprice }}</span>
+                          <span class="newprice" v-if=" m.oldprice !== m.newprice">{{ m.newprice }}</span>
+                          <span class="oldprice"  :class="{textDecoration : m.oldprice !== m.newprice }">{{ m.oldprice }}</span>
                       </p>
                   </div>
               </div>
@@ -309,7 +309,7 @@ header {
   margin: 10px 10px;
 }
 .price{
-   font-weight: bold;
+   /*font-weight: bold;*/
    font-size: 14px;
    text-align: right;
 }
@@ -330,12 +330,17 @@ header {
   position: relative;
   top: 50%;
 }
-    .newprice{
-        color:#444040;
-    }
     .oldprice{
+        /*color:#444040;*/
+        margin: 10px;
+    }
+    .newprice{
         color:red;
     }
 }
+ .textDecoration{
+     text-decoration: line-through;
+     color: #aaa;
+ }
 
 </style>

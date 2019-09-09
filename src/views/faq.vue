@@ -147,6 +147,7 @@ export default {
   .faq_content{
       margin-top:45px;
       direction: rtl;
+      background: #fff;
   }
   .faq_title{
       text-align: center;
