@@ -37,7 +37,15 @@ var routerMaps = [
     // {name:'utilPage',path:'/utilPage',component:utilPage,meta: { name:'utilPage' }},
     { name: 'BottomBar', path: '/BottomBar', component: BottomBar, meta: { name: 'bottomBar' } },
     { name: 'SearchPage', path: '/SearchPage', component: SearchPage, meta: { name: 'searchPage' } },
-    { name: 'PersonHistoryOrder', path: '/PersonHistoryOrder', component: PersonHistoryOrder, meta: { name: 'personHistoryOrder' } },
+    { name: 'PersonHistoryOrder', path: '/PersonHistoryOrder', component: PersonHistoryOrder, meta: { name: 'personHistoryOrder' }, beforeEnter: (to, from, next) => {
+            var token = localStorage.getItem('token');
+            if(token == '' || token == null){
+                router.push('/login')
+            }else{
+                next()
+            }
+        }
+    },
     { name: 'PersonOrderDetail', path: '/PersonOrderDetail', component: PersonOrderDetail, meta: { name: 'personOrderDetail' } },
     { name: 'ProductDetail', path: '/ProductDetail', component: ProductDetail, meta: { name: 'ProductDetail' } },
     { name: 'Bag', path: '/Bag', component: Bag, meta: { name: 'Bag' } },

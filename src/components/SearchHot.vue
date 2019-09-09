@@ -210,6 +210,7 @@
       border-radius: 0.3rem;
       margin: 1rem 0.5rem;
       padding: 0 0.1rem;
+      min-width: 40px;
     }
 }
 

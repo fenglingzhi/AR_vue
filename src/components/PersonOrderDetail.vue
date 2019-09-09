@@ -4,7 +4,7 @@
             <header class="dis_flex" >
                 <span><img src="../assets/img/personal/order_addcart.png" alt="" width="20"></span>
                 <span class="header_titile">رقم الطلب :<span>{{orderList.id_order}}</span></span>
-                <span><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img"></span>
+                <span><img src="../assets/img/personal/adress_return.png" alt="" class="header_return_img" @click="back()"></span>
             </header>
             <div class="orderDetail_content">
                 <div class="orderDetail_container" >
@@ -17,7 +17,7 @@
                         </div>
                         <div class="orderDetail_item_left">
                             <span style="font-size: 12px;color: #999999;margin-left:14px;">أنمنتمر طبيعي</span>
-                            <img src="../assets/img/personal/adress_goLeft.png" alt="" width="8">
+                            <img src="../assets/img/personal/adress_goLeft.png" alt="" width="8" >
                         </div>
                     </div>
                 </div>
@@ -161,8 +161,8 @@
         },
         methods:{
             loadorderdetail(){
-                this.$post("/api/userOrder/getOrderDetail",{
-                    id_order:"1"
+                this.$post("/api/user_order/getOrderDetail",{
+                    id_order:this.$store.state.id_order,
                 }).then(data=>{
                     this.orderList = data.data;
                     this.name = data.data.shipping_address.name;
@@ -171,6 +171,10 @@
                     console.log(error);
                 });
             },
+            //返回上一页
+            back(){
+                this.$router.go(-1);//返回上一层
+            }
 
         },
         mounted(){
