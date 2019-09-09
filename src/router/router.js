@@ -65,6 +65,7 @@ var routerMaps = [
     { name: 'personalPwd', path: '/personalPwd', component: personalPwd, meta: { name: 'personalPwd' } },
 
 
+
 ];
 
 const router = new Router({

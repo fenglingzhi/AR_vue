@@ -13,14 +13,14 @@
         </div>
         <div class="checkoutCon">
             <div class="shippingChose">
-                <div class="choseAddress">
+                <div class="choseAddress" v-for="item in  addressList">
                     <div class="lineColor"></div>
-                    <div class="shippingWay" @click="choseShippingAddress()">
+                    <div class="shippingWay" @click="choseShippingAddress(item.address_id)">
                         <div class="fr addressInformation">
-                            <div  class="name"> Ding Jie </div>
-                            <div style="color: #999">Jiaoyang zhang SA 541236984</div>
-                            <div style="color: #999">Flat 15</div>
-                            <div style="color: #999">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</div>
+                            <div  class="name"> {{item.name}} </div>
+                            <div style="color: #999">{{item.country_code}}{{item.postcode}}</div>
+                            <div style="color: #999">{{item.phone}}</div>
+                            <div style="color: #999">{{item.country}} {{item.state}} {{item.city}} {{item.street}} {{item.address1}}{{item.address1}}</div>
                         </div>
                         <!--<div class="fl">-->
                             <!--<img class="checkImg" style="margin-top: 26px;" src="../assets/img/select.png" width="20" alt="">-->
@@ -29,29 +29,29 @@
                     </div>
                     <div class="addressEdi">
                         <span> تعديل </span>
-                        <img style="margin: 0 8px;" src="../assets/img/personal/adress_edit.png" width="20" alt="">
+                        <img @click="editAddress(item.address_id)" style="margin: 0 8px;" src="../assets/img/personal/adress_edit.png" width="20" alt="">
                     </div>
                 </div>
 
-                <div class="choseAddress">
-                    <div class="lineColor"></div>
-                    <div class="shippingWay" >
-                        <div class="fr addressInformation">
-                            <div  class="name">  Ding Jie </div>
-                            <div style="color: #999">Jiaoyang zhang SA 541236984</div>
-                            <div style="color: #999">Flat 15</div>
-                            <div style="color: #999">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</div>
-                        </div>
-                        <!--<div class="fl">-->
-                            <!--<img class="checkImg" style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">-->
+                <!--<div class="choseAddress">-->
+                    <!--<div class="lineColor"></div>-->
+                    <!--<div class="shippingWay" >-->
+                        <!--<div class="fr addressInformation">-->
+                            <!--<div  class="name">  Ding Jie </div>-->
+                            <!--<div style="color: #999">Jiaoyang zhang SA 541236984</div>-->
+                            <!--<div style="color: #999">Flat 15</div>-->
+                            <!--<div style="color: #999">victoria avenue Alrass AI-Qassim Saudi Arabia 999088 19</div>-->
                         <!--</div>-->
-                        <div style="clear: both"></div>
-                    </div>
-                    <div class="addressEdi">
-                        <span> تعديل </span>
-                        <img style="margin: 0 8px;" src="../assets/img/personal/adress_edit.png" width="20" alt="">
-                    </div>
-                </div>
+                        <!--&lt;!&ndash;<div class="fl">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<img class="checkImg" style="margin-top: 26px;" src="../assets/img/option.png" width="20" alt="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<div style="clear: both"></div>-->
+                    <!--</div>-->
+                    <!--<div class="addressEdi">-->
+                        <!--<span> تعديل </span>-->
+                        <!--<img style="margin: 0 8px;" src="../assets/img/personal/adress_edit.png" width="20" alt="">-->
+                    <!--</div>-->
+                <!--</div>-->
 
 
 
@@ -86,18 +86,33 @@
 export default {
     data(){
       return{
-
+          addressList:[]
       }
     },
    components: {
    },
    methods: {
+        // 编辑地址
+       editAddress(id){
+           this.$router.push({
+               name: 'personalAddAdres',
+               params: {
+                   id: id,
+                   type:'edit'
+               }
+           })
+       },
        goBack(){
            this.$router.go(-1)
        },
        // 物流地址获取
        getShippingAddress(){
-           this.$post('/api/userAddress/getAddresses',{id_cart:this.$store.state.id_cart,lang_id:this.$store.state.lang_id,action:'getAddresses'}).then(redata => {
+           this.$post('/api/user_address/getAddresses',{id_cart:this.$store.state.id_cart,lang_id:this.$store.state.lang_id,action:'getAddresses'}).then(redata => {
+                if(redata.code==200){
+                    this.addressList = redata.data
+                }else{
+                    Toast({duration:'1000',message:redata.message})
+                }
 
            })
        },
@@ -105,7 +120,12 @@ export default {
        // 物流地址选择
        choseShippingAddress(id_address_shipping){
            this.$post('/api/payment/setCartShippingAddress',{id_cart:this.$store.state.id_cart,id_address_shipping:id_address_shipping}).then(redata => {
+               if(redata.code==200){
+                   this.$router.push('/checkout')
+               }else {
+                   Toast({duration:'1000',message:redata.message})
 
+               }
            })
        },
 
